@@ -1,6 +1,7 @@
 """Models and database functions for HB project"""
+
+
 from flask_sqlalchemy import flask_sqlalchemy
-import correlation # do I need this?
 from collections import defaultdict
 
 
@@ -8,6 +9,7 @@ db = flask_sqlalchemy
 
 ##############################################################################
 # Model definitions
+
 
 class City(db.Model):
     """Cities to display for user"""
@@ -44,6 +46,7 @@ class Country(db.Model):
         return "<Country ctry_code={} ctry_name={}>".format(self.ctry_code,
                                                             self.ctry_name)
 
+
 class Weather(db.Model):
     """Temperature and summary by city and month"""
 
@@ -66,6 +69,7 @@ class Weather(db.Model):
                                                      self.temp,
                                                      self.summery)
 
+
 class Month(db.Model):
     """Month name and id"""
 
@@ -78,3 +82,26 @@ class Month(db.Model):
         """Useful printout of month object"""
 
         return "<Month month_id={} month={}>".format(self.month_id, self.month)
+
+##############################################################################
+
+
+def connect_to_db(app):
+    """Connect the database to our Flask app."""
+
+    # Configure to use our PostgresSQL database
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///ratings'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SQLALCHEMY_ECHO'] = True
+    db.app = app
+    db.init_app(app)
+
+
+if __name__ == "__main__":
+    # As a convenience, if we run this module interactively, it will leave
+    # you in a state of being able to work with the database directly.
+
+    from server import app
+
+    connect_to_db(app)
+    print "Connected to DB."
