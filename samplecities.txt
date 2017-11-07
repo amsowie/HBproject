@@ -1,6 +1,4 @@
-city,city_ascii,lat,lng,pop,country,iso2,iso3,province
-Lincoln,Lincoln,40.81997479,-96.68000086,244146,United States of America,US,USA,Nebraska
-Alexandria,Alexandria,31.31109784,-92.44501388,60876,United States of America,US,USA,Louisiana
-Abilene,Abilene,32.4486253,-99.73278609,108008,United States of America,US,USA,Texas
-Brownsville,Brownsville,25.91997988,-97.50000248,174707,United States of America,US,USA,Texas
-Tyler,Tyler,32.35108604,-95.30078272,101561.5,United States of America,US,USA,Texas
+Brazil,Sao Paulo,-23.56288,-46.654659
+Brazil,Viracopos,-14.24292,-54.387829
+Cambodia,Phnom Penh,11.56474,104.913208
+Canada,Brampton,43.684305,-79.758729
