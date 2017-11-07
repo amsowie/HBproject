@@ -1,3 +1,4 @@
+city,city_ascii,lat,lng,pop,country,iso2,iso3,province
 Lincoln,Lincoln,40.81997479,-96.68000086,244146,United States of America,US,USA,Nebraska
 Alexandria,Alexandria,31.31109784,-92.44501388,60876,United States of America,US,USA,Louisiana
 Abilene,Abilene,32.4486253,-99.73278609,108008,United States of America,US,USA,Texas

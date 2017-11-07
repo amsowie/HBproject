@@ -8,4 +8,6 @@ def load_cities():
 
     print "Cities"
 
-    
+    for line in open("samplecities.txt"):  # might need to specifiy file differently
+        line = line.rstrip()
+        city, _, lat, lng, population, country_name, _, country_code, _, = line.split(",")
