@@ -1,11 +1,9 @@
 """Models and database functions for HB project"""
 
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
-from flask_sqlalchemy import flask_sqlalchemy
-from collections import defaultdict
-
-
-db = flask_sqlalchemy
+db = SQLAlchemy()
 
 ##############################################################################
 # Model definitions
@@ -21,14 +19,15 @@ class City(db.Model):
     city_name = db.Column(db.String(50), nullable=False)
     city_lat = db.Column(db.String(50), nullable=False)
     city_long = db.Column(db.String(50), nullable=False)
-    ctry_code = db.Column(db.String(3), nullable=False)
+    ctry_id = db.Column(db.Integer, db.ForeignKey('countries.ctry_id'),
+                        nullable=False)
 
     def __repr__(self):
         """Useful printout of city object"""
 
-        return "<City city_name={} ctry_code={} city_id={}>".format(
+        return "<City city_name={} ctry_id={} city_id={}>".format(
                                                              self.city_name,
-                                                             self.ctry_code,
+                                                             self.ctry_id,
                                                              self.city_id)
 
 
@@ -37,14 +36,28 @@ class Country(db.Model):
 
     __tablename__ = "countries"
 
-    ctry_code = db.Column(db.String(3), primary_key=True)
+    ctry_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     ctry_name = db.Column(db.String(30), nullable=False)
 
     def __repr__(self):
         """Useful printout of country object"""
 
-        return "<Country ctry_code={} ctry_name={}>".format(self.ctry_code,
+        return "<Country ctry_id={} ctry_name={}>".format(self.ctry_id,
                                                             self.ctry_name)
+
+
+class Month(db.Model):
+    """Month name and id"""
+
+    __tablename__ = "months"
+
+    month_code = db.Column(db.String(3), primary_key=True)
+    month = db.Column(db.String(15), nullable=False)
+
+    def __repr__(self):
+        """Useful printout of month object"""
+
+        return "<Month month_id={} month={}>".format(self.month_code, self.month)
 
 
 class Weather(db.Model):
@@ -54,10 +67,12 @@ class Weather(db.Model):
 
     # help with foreign key assignment!!!
     weather_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    city_id = db.Column(db.Integer, db.ForeignKey('cities.city_id'))
-    month = db.Column(db.String(15), db.ForeignKey('months.month'))
+    city_id = db.Column(db.Integer, db.ForeignKey('cities.city_id'), nullable=False)
+    month = db.Column(db.String(15), db.ForeignKey('months.month_code'), nullable=False)
     temp = db.Column(db.Integer, nullable=False)
     summary = db.Column(db.String(100), nullable=False)
+
+    city = db.relationship('City', backref='all_weather')
 
     def __repr__(self):
         """Useful printout of weather object"""
@@ -70,18 +85,6 @@ class Weather(db.Model):
                                                      self.summery)
 
 
-class Month(db.Model):
-    """Month name and id"""
-
-    __tablename__ = "months"
-
-    month_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    month = db.Column(db.String(15), nullable=False)
-
-    def __repr__(self):
-        """Useful printout of month object"""
-
-        return "<Month month_id={} month={}>".format(self.month_id, self.month)
 
 ##############################################################################
 
@@ -90,7 +93,7 @@ def connect_to_db(app):
     """Connect the database to our Flask app."""
 
     # Configure to use our PostgresSQL database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///ratings'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///weather_travel'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_ECHO'] = True
     db.app = app
