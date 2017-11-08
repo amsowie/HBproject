@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Weather{% endblock %}
+
+{% block content %}
+
+  <!-- dropdown form for user to select month -->
+  <form action="display-weather.html" methods="GET">
+    Months
+    <select name="months">
+      <!-- Use Database for this selection output if possible -->
+      <option value="January">January</option>
+      <option value="February">February</option>
+      <option value="March">March</option>
+      <option value="April">April</option>
+    </select>
+  </form>
+{% endblock %}

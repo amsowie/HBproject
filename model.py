@@ -19,15 +19,15 @@ class City(db.Model):
     city_name = db.Column(db.String(50), nullable=False)
     city_lat = db.Column(db.String(50), nullable=False)
     city_long = db.Column(db.String(50), nullable=False)
-    ctry_id = db.Column(db.Integer, db.ForeignKey('countries.ctry_id'),
-                        nullable=False)
+    country_name = db.Column(db.String(30), db.ForeignKey
+                                        ('countries.country_name'), nullable=False)
 
     def __repr__(self):
         """Useful printout of city object"""
 
-        return "<City city_name={} ctry_id={} city_id={}>".format(
+        return "<City city_name={} country_name={} city_id={}>".format(
                                                              self.city_name,
-                                                             self.ctry_id,
+                                                             self.country_name,
                                                              self.city_id)
 
 
@@ -36,14 +36,14 @@ class Country(db.Model):
 
     __tablename__ = "countries"
 
-    ctry_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    ctry_name = db.Column(db.String(30), nullable=False)
+    # ctry_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    country_name = db.Column(db.String(30), nullable=False, primary_key=True)
 
     def __repr__(self):
         """Useful printout of country object"""
 
-        return "<Country ctry_id={} ctry_name={}>".format(self.ctry_id,
-                                                            self.ctry_name)
+        return "<Country country_name{} country_name=>".format(self.country_name)
+                                                            # self.country_name)
 
 
 class Month(db.Model):
@@ -67,11 +67,15 @@ class Weather(db.Model):
 
     # help with foreign key assignment!!!
     weather_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    city_id = db.Column(db.Integer, db.ForeignKey('cities.city_id'), nullable=False)
-    month = db.Column(db.String(15), db.ForeignKey('months.month_code'), nullable=False)
+    city_id = db.Column(db.Integer, db.ForeignKey
+                                   ('cities.city_id'), nullable=False)
+    month = db.Column(db.String(15), db.ForeignKey
+                                     ('months.month_code'), nullable=False)
     temp = db.Column(db.Integer, nullable=False)
+    # summary from data of daily conditions, ex. 'sunny and warm'
     summary = db.Column(db.String(100), nullable=False)
 
+    # set relationshp between cities and weather objects
     city = db.relationship('City', backref='all_weather')
 
     def __repr__(self):
@@ -82,7 +86,7 @@ class Weather(db.Model):
                                                      self.city_id,
                                                      self.month,
                                                      self.temp,
-                                                     self.summery)
+                                                     self.summary)
 
 
 

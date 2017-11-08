@@ -1,0 +1,100 @@
+201 RABAT   Morocco 1,220,000
+202 Wulumuqi    China   1,217,000
+203 Luoyang China   1,202,000
+204 Belém   Brazil  1,200,000
+205 Multan  Pakistan    1,197,000
+206 München (Munich)    Germany 1,194,000
+207 PRAHA (Prague)  Czech Republic  1,193,000
+208 HARARE  Zimbabwe    1,189,000
+209 Dallas (TX) USA 1,188,000
+210 Probolinggo Indonesia   1,174,000
+211 Magelang    Indonesia   1,173,000
+212 Hyderabad   Pakistan    1,166,000
+213 Samara  Russia  1,164,000
+214 Nanning China   1,163,000
+215 Dongtai China   1,162,000
+216 Córdoba Argentina   1,157,000
+217 Heze    China   1,154,000
+218 Ujung Pandang   Indonesia   1,153,000
+219 Omsk    Russia  1,153,000
+220 Handan  China   1,151,000
+221 Weifang China   1,151,000
+222 AMMAN   Jordan  1,147,000
+223 MANAGUA Nicaragua   1,147,000
+224 KUALA LUMPUR    Malaysia    1,145,000
+225 San Antonio (TX)    USA 1,144,000
+226 Ningbo  China   1,142,000
+227 SOFIA   Bulgaria    1,138,000
+228 Qidong  China   1,136,000
+229 Guarulhos   Brazil  1,134,000
+230 Huaian  China   1,132,000
+231 Gujranwala  Pakistan    1,132,000
+232 Xiaoshan    China   1,130,000
+233 Almaty  Kazakhstan  1,129,000
+234 Hiroshima   Japan   1,126,000
+235 La Matanza  Argentina   1,120,000
+236 Leiyang China   1,112,000
+237 Hefei   China   1,110,000
+238 Jiangyin    China   1,108,000
+239 Dnepropetrovsk  Ukraine 1,108,000
+240 Laiwu   China   1,105,000
+241 Pikine-Guediawaye   Senegal 1,096,000
+242 Pakalongan  Indonesia   1,093,000
+243 Adelaide    Australia   1,092,000
+244 Indore  India   1,091,000
+245 Kazan   Russia  1,091,000
+246 Fengcheng   China   1,090,000
+247 Ufa Russia  1,087,000
+248 Chelyabinsk Russia  1,084,000
+249 Suqian  China   1,076,000
+250 Yixing  China   1,074,000
+251 HANOI   Vietnam 1,073,000
+252 Goiânia Brazil  1,073,000
+253 Yuzhou  China   1,072,000
+254 Leshan  China   1,070,000
+255 Monterrey   Mexico  1,069,000
+256 Bursa   Turkey  1,066,000
+257 Macheng China   1,062,000
+258 Bhopal  India   1,062,000
+259 Vadodara    India   1,061,000
+260 Lagos   Nigeria 1,060,000
+261 Shiraz  Iran    1,053,000
+262 Donetsk Ukraine 1,050,000
+263 Ruian   China   1,046,000
+264 Napoli (Naples) Italy   1,046,000
+265 Jingmen China   1,042,000
+266 Ludhiana    India   1,042,000
+267 Adana   Turkey  1,041,000
+268 Tianshui    China   1,039,000
+269 Changshu    China   1,036,000
+270 Haicheng    China   1,036,000
+271 Zhucheng    China   1,030,000
+272 Huzhou  China   1,027,000
+273 Rizhao  China   1,027,000
+274 Daqing  China   1,025,000
+275 Dingzhou    China   1,024,000
+276 Caloocan    Philippines 1,023,000
+277 Birmingham  UK  1,020,000
+278 Fulin   China   1,018,000
+279 Jimo    China   1,018,000
+280 Montréal    Canada  1,016,000
+281 MAPUTO  Mozambique  1,015,000
+282 Kalyan  India   1,014,000
+283 Perm    Russia  1,014,000
+284 Wuxi    China   1,013,000
+285 Kitakyushu  Japan   1,011,000
+286 Sendai  Japan   1,008,000
+287 Davao   Philippines 1,008,000
+288 Pueblade Zaragoza   Mexico  1,007,000
+289 Lianyuan    China   1,006,000
+290 GUATEMALA CITY  Guatemala   1,006,000
+291 Qinzhou China   1,005,000
+292 Rostov-na-Donu (Rostov) Russia  1,003,000
+293 Odessa  Ukraine 1,002,000
+294 Wafangdian  China   1,001,000
+295 PHNOM PENH  Cambodia    999,000
+296 Volgograd   Russia  992,000
+297 PORT-AU-PRINCE  Haiti   990,000
+298 Chifeng China   987,000
+299 Gongzhuling China   987,000
+300 Detroit (MI)    USA 951,0
