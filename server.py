@@ -4,7 +4,7 @@
 from flask import Flask, render_template, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import connect_to_db, db, City, Country, Weather, Month
+from model import connect_to_db, db, City, Country, Weather
 
 app = Flask(__name__)
 app.secret_key = "Ahahahahahha!!!!!!"
