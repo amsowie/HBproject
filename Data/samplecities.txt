@@ -1,0 +1,4 @@
+Brazil,Sao Paulo,-23.56288,-46.654659
+Brazil,Viracopos,-14.24292,-54.387829
+Cambodia,Phnom Penh,11.56474,104.913208
+Canada,Brampton,43.684305,-79.758729

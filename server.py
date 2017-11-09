@@ -26,6 +26,12 @@ def display_search():
 
     return render_template('search.html')
 
+@app.route('/display-weather')
+def display_weather():
+    """Show user weather information for month searched"""
+
+    return render_template('display.html')
+
 ##############################################################################
 
 if __name__ == "__main__":

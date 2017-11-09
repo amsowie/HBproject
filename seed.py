@@ -2,6 +2,8 @@
 
 from model import City, Country, Weather, connect_to_db, db
 from server import app
+import json
+import os
 
 def read_city_file():
     """Read city text from city file
@@ -14,7 +16,7 @@ def read_city_file():
     """
     print "Cities"
     # file open
-    city_file = open("samplecities.txt")
+    city_file = open("Data/samplecities.txt")
 
     city_dict = {}
 
@@ -36,7 +38,7 @@ def read_country_file():
     'BRA'
     """
 
-    country_file = open('CountryCodes.txt')
+    country_file = open('Data/CountryCodes.txt')
 
     print "Countries"
     countries = {}
@@ -81,21 +83,44 @@ def write_citiesdb(city_dict, countries):
     db.session.commit()
 
 
-def write_weatherdb():
-    """Write weather database from json????????"""  # check to see if right?
+def read_month_file():
+    """Read in month file for data seeding, store as list of 3 letter code
 
-    month_file = open('months.txt')  # use this file to write the months out
+    >>> month_list = write_weatherdb()
+    Months
 
+    >>> month_list
+    ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+    """
+
+    print 'Months'
+
+    month_file = open('Data/months.txt')
+    month_list = []  # use this list to write the months out in loops???
+
+    for line in month_file:
+        line = line.rstrip()
+        month_list.append(line)
 
     month_file.close()
 
+    return month_list
+
+def write_weatherdb(month_list):
+    """Write weather database from json????????"""
+
+    results = requests.get() # put the api stuff in these parens
+    weather_data = results.json()
 ##############################################################################
 
 if __name__ == '__main__':
     connect_to_db(app)
     db.create_all()
 
+    month_list = write_weatherdb()
     countries = read_country_file()
     city_dict = read_city_file()
     write_countrydb(countries)
     write_citiesdb(city_dict, countries)
+    write_weatherdb(month_list)
