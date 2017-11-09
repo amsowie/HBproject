@@ -18,7 +18,7 @@ class Country(db.Model):
     def __repr__(self):
         """Useful printout of country object"""
 
-        return "<Country country_code{} country_name=>".format(self.country_code,
+        return "<Country country_code={} country_name=>".format(self.country_code,
                                                                self.country_name)
 
 
@@ -44,7 +44,6 @@ class City(db.Model):
                                                              self.city_name,
                                                              self.country_code,
                                                              self.city_id)
-
 
 
 class Weather(db.Model):

@@ -1,6 +1,7 @@
 from unittest import TestCase
 import doctest
 from server import app
+from model import City, Country, Weather, connect_to_db, db
 
 # Uncomment this if you want to run the doctests here too.
 
@@ -44,7 +45,7 @@ class TestsDatabase(TestCase):
     def setUp(self):
         """Setting up the test database every time"""
 
-        connect_to_db(app, "postgresql:///weather_travel") # work on this postg understanding and db test
+        connect_to_db(app, "postgresql:///testdb")  # work on this postg understanding and db test
 
         #create tables and ad sample data
         db.create_all()
@@ -56,11 +57,18 @@ class TestsDatabase(TestCase):
         db.session.close()
         db.drop_all()  # get rid of fake data
 
-    def test_data_seed(self):
-        """Test that the data seeded properly"""
+    def test_write_citiesdb(self):
+        """Test the city data seeded correctly"""
 
-        result = db.session.query
+        result = db.session.query.filter(City.city_name == 'Sao Paulo').first()
+        self.assertEqual('<City city_name=Sao Paulo country_code=BRA city_id=3>',
+                         result.data)
 
+    def text_write_countrydb(self):
+        """Test the country table seeded correctly"""
+
+        result = db.session.query.filter(Country.country_code == "BRA").first()
+        self.assertEqual('Country country_code=BRA country_name=Brazil', result.data)
 
 ##############################################################################
 

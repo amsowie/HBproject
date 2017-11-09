@@ -80,8 +80,14 @@ def write_citiesdb(city_dict, countries):
 
     db.session.commit()
 
-    # print db.session.query.filter(City.city_name == 'Sao Paulo').all()
 
+def write_weatherdb():
+    """Write weather database from json????????"""  # check to see if right?
+
+    month_file = open('months.txt')  # use this file to write the months out
+
+
+    month_file.close()
 
 ##############################################################################
 
