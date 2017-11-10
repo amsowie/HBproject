@@ -9,7 +9,7 @@
     Months
     <select name="months">
       {% for month in month_list %}
-      <option value="{{ month }}">{{ month }}</option>
+      <option value="{{ month[0] }}">{{ month[0] }}</option>
       {% endfor %}
     </select>
     <input type="submit" value="Search" class="weather-search">

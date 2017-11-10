@@ -3,7 +3,7 @@
 from model import City, Country, Month, connect_to_db, db
 from server import app
 import json
-import os
+# import os
 from datetime import datetime as dt
 from darksky import forecast
 
@@ -140,23 +140,27 @@ def write_month(month_list, date_list):
         date = date_list[i]
         date = dt.strptime(date, '%Y, %m, %d')  # convert to datetime object
         addmonth = Month(month=month,
-                         date=date.isoformat()) # store in iso format
+                         date=date.isoformat())  # store in iso format
         i += 1
         db.session.add(addmonth)
     db.session.commit()
 
-# def write_weatherdb(month_list):
-#     """Write weather database from json????????"""
+def write_weatherdb(month_list):
+    """Write weather database from json????????"""  # need serious hellp in this section!!!!
 
-#     cities = db.session.query(City.city_id).all()
-#     weather_report = DARKSKY_KEY, latitude, longitude
+    # cities = db.session.query(City.city_id).all()
+    dates = db.session.query(Month.date).all()
+    weather_report = forecast(DARKSKY_KEY, City.city_lat, City.city_long, dates)
 
-#     for month in month_list:
-#         for city_id in cities:
-#             weather = Weather(city_id=city_id,
-#                               month=month,
-#                               temp=temperature,
-#                               summary=summary)
+    #code to parse out the actual json data goes here
+
+    for month in month_list:
+        for city_id in cities:
+            weather = Weather(city_id=City.city_id,
+                              month=month,
+                              temp=temperature,
+                              summary=summary,
+                              icon=icon)  # where would i want to send this????
 
 
 ##############################################################################

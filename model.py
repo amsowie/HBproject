@@ -59,6 +59,8 @@ class City(db.Model):
 #     temp = db.Column(db.Integer, nullable=False)
 #     # summary from data of daily conditions, ex. 'sunny and warm'
 #     summary = db.Column(db.String(100), nullable=False)
+      # icon below helps identify pictogram
+#     icon = db.Column(db.String(50), nullable=False)
 
 #     # set relationshp between cities and weather objects
 #     city = db.relationship('City', backref='all_weather')
