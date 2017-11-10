@@ -8,11 +8,10 @@
   <form action="display-weather.html" methods="GET">
     Months
     <select name="months">
-      <!-- Use Database for this selection output if possible -->
-      <option value="January">January</option>
-      <option value="February">February</option>
-      <option value="March">March</option>
-      <option value="April">April</option>
+      {% for month in month_list %}
+      <option value="{{ month }}">{{ month }}</option>
+      {% endfor %}
     </select>
+    <input type="submit" value="Search" class="weather-search">
   </form>
 {% endblock %}

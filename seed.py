@@ -1,9 +1,11 @@
 """Utility file to seed cities database"""
 
-from model import City, Country, Weather, connect_to_db, db
+from model import City, Country, Month, connect_to_db, db
 from server import app
 import json
 import os
+from datetime import datetime as dt
+from darksky import forecast
 
 def read_city_file():
     """Read city text from city file
@@ -86,7 +88,7 @@ def write_citiesdb(city_dict, countries):
 def read_month_file():
     """Read in month file for data seeding, store as list of 3 letter code
 
-    >>> month_list = write_weatherdb()
+    >>> month_list = read_month_file()
     Months
 
     >>> month_list
@@ -107,20 +109,66 @@ def read_month_file():
 
     return month_list
 
-def write_weatherdb(month_list):
-    """Write weather database from json????????"""
+def read_date_file():
+    """Read in list of dates from date file and store as list of lists
 
-    results = requests.get() # put the api stuff in these parens
-    weather_data = results.json()
+    >>> date_list = read_date_file()
+    Dates
+
+    >>> date_list[0]
+    '2018, 1, 15'
+    """
+
+    print "Dates"
+    date_file = open('Data/dates.txt')
+    # date = []
+    date_list = []
+
+    for line in date_file:
+        date = line.rstrip()
+        date_list.append(date)
+
+    date_file.close()
+
+    return date_list
+
+
+def write_month(month_list, date_list):
+    """Write the iso string formatted dates and regular dates to table"""
+    i = 0
+
+    for month in month_list:
+        date = date_list[i]
+        addmonth = Month(month=month,
+                         date=dt(date).isoformat())
+        i += 1
+        db.session.add(addmonth)
+    db.session.commit()
+
+# def write_weatherdb(month_list):
+#     """Write weather database from json????????"""
+
+#     cities = db.session.query(City.city_id).all()
+
+#     for month in month_list:
+#         for city_id in cities:
+#             weather = Weather(city_id=city_id,
+#                               month=month,
+#                               temp=temperature,
+#                               summary=summary)
+
+
 ##############################################################################
 
 if __name__ == '__main__':
     connect_to_db(app)
     db.create_all()
 
-    month_list = write_weatherdb()
     countries = read_country_file()
     city_dict = read_city_file()
+    month_list = read_month_file()
+    date_list = read_date_file()
     write_countrydb(countries)
     write_citiesdb(city_dict, countries)
-    write_weatherdb(month_list)
+    write_month(month_list, date_list)
+    # write_weatherdb(month_list)

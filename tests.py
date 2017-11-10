@@ -1,7 +1,7 @@
 from unittest import TestCase
 import doctest
 from server import app
-from model import City, Country, Weather, connect_to_db, db
+from model import City, Country, connect_to_db, db
 
 # Uncomment this if you want to run the doctests here too.
 
@@ -38,7 +38,7 @@ class FlaskTests(TestCase):
 
         result = self.client.get("/search")
         self.assertEqual(result.status_code, 200)
-        self.assertIn('Month', result.data)  # is this actually the output to test?
+        self.assertIn('February', result.data)  # is this actually the output to test?
 
     def test_display_weather(self):
         """Test the display weather route"""

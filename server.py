@@ -4,7 +4,7 @@
 from flask import Flask, render_template, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import connect_to_db, db, City, Country, Weather
+from model import connect_to_db, db, City, Country
 
 app = Flask(__name__)
 app.secret_key = "Ahahahahahha!!!!!!"
@@ -24,7 +24,9 @@ def index():
 def display_search():
     """Show page with search form"""
 
-    return render_template('search.html')
+    month_list = db.session.query(Weather.month).all()
+
+    return render_template('search.html', month_list=month_list)
 
 @app.route('/display-weather')
 def display_weather():

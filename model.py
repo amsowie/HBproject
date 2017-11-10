@@ -46,33 +46,45 @@ class City(db.Model):
                                                              self.city_id)
 
 
-class Weather(db.Model):
-    """Temperature and summary by city and month"""
+# class Weather(db.Model):
+#     """Temperature and summary by city and month"""
 
-    __tablename__ = "all_weather"
+#     __tablename__ = "all_weather"
 
-    # help with foreign key assignment!!!
-    weather_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    city_id = db.Column(db.Integer, db.ForeignKey
-                                 ('cities.city_id'), index=True, nullable=False)
-    month = db.Column(db.String(3), nullable=False)
-    temp = db.Column(db.Integer, nullable=False)
-    # summary from data of daily conditions, ex. 'sunny and warm'
-    summary = db.Column(db.String(100), nullable=False)
+#     # help with foreign key assignment!!!
+#     weather_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+#     city_id = db.Column(db.Integer, db.ForeignKey
+#                                  ('cities.city_id'), index=True, nullable=False)
+#     month = db.Column(db.String(3), db.ForeignKey('months.month), index=True, nullable=False)
+#     temp = db.Column(db.Integer, nullable=False)
+#     # summary from data of daily conditions, ex. 'sunny and warm'
+#     summary = db.Column(db.String(100), nullable=False)
 
-    # set relationshp between cities and weather objects
-    city = db.relationship('City', backref='all_weather')
+#     # set relationshp between cities and weather objects
+#     city = db.relationship('City', backref='all_weather')
+
+#     def __repr__(self):
+#         """Useful printout of weather object"""
+
+#         return "<Weather weather_id={} city_id={} month={} \
+#                          temp={} summary={}>".format(self.weather_id,
+#                                                      self.city_id,
+#                                                      self.month,
+#                                                      self.temp,
+#                                                      self.summary)
+
+class Month(db.Model):
+    """Month and iso formatted time storage for API weather prediction"""
+
+    __tablename__ = "months"
+
+    month = db.Column(db.String(15), primary_key=True)
+    date = db.Column(db.String(30), nullable=False)
 
     def __repr__(self):
         """Useful printout of weather object"""
 
-        return "<Weather weather_id={} city_id={} month={} \
-                         temp={} summary={}>".format(self.weather_id,
-                                                     self.city_id,
-                                                     self.month,
-                                                     self.temp,
-                                                     self.summary)
-
+        return "<Month month={} date={}>".format(self.month, self.date)
 
 
 ##############################################################################
