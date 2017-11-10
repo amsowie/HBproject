@@ -116,12 +116,11 @@ def read_date_file():
     Dates
 
     >>> date_list[0]
-    '2018, 1, 15'
+    '2018, 01, 15'
     """
 
     print "Dates"
     date_file = open('Data/dates.txt')
-    # date = []
     date_list = []
 
     for line in date_file:
@@ -139,8 +138,9 @@ def write_month(month_list, date_list):
 
     for month in month_list:
         date = date_list[i]
+        date = dt.strptime(date, '%Y, %m, %d')  # convert to datetime object
         addmonth = Month(month=month,
-                         date=dt(date).isoformat())
+                         date=date.isoformat()) # store in iso format
         i += 1
         db.session.add(addmonth)
     db.session.commit()
@@ -149,6 +149,7 @@ def write_month(month_list, date_list):
 #     """Write weather database from json????????"""
 
 #     cities = db.session.query(City.city_id).all()
+#     weather_report = DARKSKY_KEY, latitude, longitude
 
 #     for month in month_list:
 #         for city_id in cities:
