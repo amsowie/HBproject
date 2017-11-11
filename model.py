@@ -55,11 +55,11 @@ class City(db.Model):
 #     weather_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
 #     city_id = db.Column(db.Integer, db.ForeignKey
 #                                  ('cities.city_id'), index=True, nullable=False)
-#     month = db.Column(db.String(3), db.ForeignKey('months.month), index=True, nullable=False)
+#     month = db.Column(db.String(3), db.ForeignKey('months.month'), index=True, nullable=False)
 #     temp = db.Column(db.Integer, nullable=False)
 #     # summary from data of daily conditions, ex. 'sunny and warm'
 #     summary = db.Column(db.String(100), nullable=False)
-      # icon below helps identify pictogram
+#       #icon below helps identify pictogram
 #     icon = db.Column(db.String(50), nullable=False)
 
 #     # set relationshp between cities and weather objects

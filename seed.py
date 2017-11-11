@@ -2,10 +2,12 @@
 
 from model import City, Country, Month, connect_to_db, db
 from server import app
+import requests
 import json
-# import os
+import os
 from datetime import datetime as dt
-from darksky import forecast
+
+KEY = os.environ.get('DARKSKY_KEY')
 
 def read_city_file():
     """Read city text from city file
@@ -67,22 +69,7 @@ def write_countrydb(countries):
 
     db.session.commit()
 
-def write_citiesdb(city_dict, countries):
-    """ Write the cities from dictionary in read_city_file to database
 
-    write_citiesdb({'Sao Paolo': [Brazil', '-23.56288', '-46.654659']})
-    'Sao Paolo': [Brazil', '-23.56288', '-46.654659']
-
-    """
-    # instantiate objects of each city with values from dictionary
-    for city in city_dict:
-        dbcity = City(city_name=city,
-                      country_code=countries[city_dict[city][0]],
-                      city_lat=city_dict[city][1],
-                      city_long=city_dict[city][2])
-        db.session.add(dbcity)
-
-    db.session.commit()
 
 
 def read_month_file():
@@ -145,22 +132,47 @@ def write_month(month_list, date_list):
         db.session.add(addmonth)
     db.session.commit()
 
+
+def write_citiesdb(city_dict, countries):
+    """ Write the cities from dictionary in read_city_file to database
+
+    write_citiesdb({'Sao Paolo': [Brazil', '-23.56288', '-46.654659']})
+    'Sao Paolo': [Brazil', '-23.56288', '-46.654659']
+
+    """
+    # instantiate objects of each city with values from dictionary
+    for city in city_dict:
+        dbcity = City(city_name=city,
+                      country_code=countries[city_dict[city][0]],
+                      city_lat=city_dict[city][1],
+                      city_long=city_dict[city][2])
+        db.session.add(dbcity)
+
+        db.session.commit()
+
 def write_weatherdb(month_list):
-    """Write weather database from json????????"""  # need serious hellp in this section!!!!
+    """Write weather database from json????????
 
-    # cities = db.session.query(City.city_id).all()
-    dates = db.session.query(Month.date).all()
-    weather_report = forecast(DARKSKY_KEY, City.city_lat, City.city_long, dates)
+    >>> forecast = requests.get("https://api.darksky.net/forecast/" + KEY + "/37.8267,-122.4233,1521010800?exclude=hourly,currently")
+    "What???"
+    >>> forecast.json()
+    ['hello']
+    """  # need serious hellp in this section!!!!
 
+    citiesdb = db.session.query(City).all()
+    times = db.session.query(Month).all()
+    forecast = requests.get("https://api.darksky.net/forecast/" + KEY + "/37.8267,-122.4233,1521010800?exclude=hourly,currently")
+    return forecast
     #code to parse out the actual json data goes here
+    # for time in times: # use this!!!!
 
-    for month in month_list:
-        for city_id in cities:
-            weather = Weather(city_id=City.city_id,
-                              month=month,
-                              temp=temperature,
-                              summary=summary,
-                              icon=icon)  # where would i want to send this????
+    # for month in month_list:
+    #     for city_id in cities:
+    #         weather = Weather(city_id=City.city_id,
+    #                           month=time.month,
+    #                           temp=temperature,
+    #                           summary=summary,
+    #                           icon=icon)  # where would i want to send this????
 
 
 ##############################################################################
