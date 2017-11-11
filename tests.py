@@ -1,7 +1,7 @@
 from unittest import TestCase
 import doctest
 from server import app
-from model import City, Country, connect_to_db, db
+from model import City, Country, Weather, Month, connect_to_db, db
 
 # Uncomment this if you want to run the doctests here too.
 

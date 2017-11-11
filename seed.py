@@ -1,6 +1,6 @@
 """Utility file to seed cities database"""
 
-from model import City, Country, Month, connect_to_db, db
+from model import City, Country, Month, Weather, connect_to_db, db
 from server import app
 import requests
 import json
@@ -79,7 +79,7 @@ def read_month_file():
     Months
 
     >>> month_list
-    ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
     """
 
@@ -148,31 +148,46 @@ def write_citiesdb(city_dict, countries):
                       city_long=city_dict[city][2])
         db.session.add(dbcity)
 
-        db.session.commit()
+    db.session.commit()  # if you have to move this write func, also indent this to loop
 
 def write_weatherdb(month_list):
     """Write weather database from json????????
 
     >>> forecast = requests.get("https://api.darksky.net/forecast/" + KEY + "/37.8267,-122.4233,1521010800?exclude=hourly,currently")
-    "What???"
-    >>> forecast.json()
-    ['hello']
-    """  # need serious hellp in this section!!!!
+    >>> forecast = forecast.json()
+    >>> day = forecast['daily']
+    >>> day_data = day['data'][0]
+    >>> summary = day_data['summary']
+    >>> print summary
+    Partly cloudy throughout the day.
 
-    citiesdb = db.session.query(City).all()
-    times = db.session.query(Month).all()
-    forecast = requests.get("https://api.darksky.net/forecast/" + KEY + "/37.8267,-122.4233,1521010800?exclude=hourly,currently")
-    return forecast
-    #code to parse out the actual json data goes here
-    # for time in times: # use this!!!!
+    """
 
-    # for month in month_list:
-    #     for city_id in cities:
-    #         weather = Weather(city_id=City.city_id,
-    #                           month=time.month,
-    #                           temp=temperature,
-    #                           summary=summary,
-    #                           icon=icon)  # where would i want to send this????
+    citiesdb = db.session.query(City).all()  # if this doesn't work, write cities here too
+    timesdb = db.session.query(Month).all()
+
+    for city in citiesdb:
+        for time in timesdb:
+            forecast = requests.get("https://api.darksky.net/forecast/" + KEY + "/" + city.city_lat + ", " + city.city_long + ", " + time.date + "?exclude=hourly,currently")
+            import pdb; pdb.set_trace()
+            forecast = forecast.json()  # save the usable dictionary object to variable
+
+            full_day = forecast['daily']  # the full json inlcuding lat,long,city
+            day_data = full_day['data'][0]   # getting just the weather info out of list
+            icon = day_data['icon']         # the consistent icon description ex. partly-cloudy
+            summary = day_data['summary']   # human readable summary, 'Partly sunny all day'
+            temp_high = day_data['temperatureHigh']
+            temp_low = day_data['temperatureLow']
+
+            weather = Weather(city_id=city.city_id,
+                              month=time.time.month,
+                              temp_high=temp_high,
+                              temp_low=temp_low,
+                              summary=summary,
+                              icon=icon)
+            db.session.add(weather)
+
+    db.session.commit()
 
 
 ##############################################################################
@@ -188,4 +203,4 @@ if __name__ == '__main__':
     write_countrydb(countries)
     write_citiesdb(city_dict, countries)
     write_month(month_list, date_list)
-    # write_weatherdb(month_list)
+    write_weatherdb(month_list)
