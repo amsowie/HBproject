@@ -168,24 +168,27 @@ def write_weatherdb(month_list):
 
     for city in citiesdb:
         for time in timesdb:
+            this = ("https://api.darksky.net/forecast/" + KEY + "/" + city.city_lat + ", " + city.city_long + ", " + time.date + "?exclude=hourly,currently")
             forecast = requests.get("https://api.darksky.net/forecast/" + KEY + "/" + city.city_lat + ", " + city.city_long + ", " + time.date + "?exclude=hourly,currently")
-            import pdb; pdb.set_trace()
+            # import pdb; pdb.set_trace()
+                # find out if daily comes back here.!!!!!
             forecast = forecast.json()  # save the usable dictionary object to variable
+            if 'daily' in forecast:
 
-            full_day = forecast['daily']  # the full json inlcuding lat,long,city
-            day_data = full_day['data'][0]   # getting just the weather info out of list
-            icon = day_data['icon']         # the consistent icon description ex. partly-cloudy
-            summary = day_data['summary']   # human readable summary, 'Partly sunny all day'
-            temp_high = day_data['temperatureHigh']
-            temp_low = day_data['temperatureLow']
+                full_day = forecast['daily']  # the full json inlcuding lat,long,city
+                day_data = full_day['data'][0]   # getting just the weather info out of list
+                icon = day_data['icon']         # the consistent icon description ex. partly-cloudy
+                summary = day_data['summary']   # human readable summary, 'Partly sunny all day'
+                temp_high = day_data['temperatureHigh']
+                temp_low = day_data['temperatureLow']
 
-            weather = Weather(city_id=city.city_id,
-                              month=time.time.month,
-                              temp_high=temp_high,
-                              temp_low=temp_low,
-                              summary=summary,
-                              icon=icon)
-            db.session.add(weather)
+                weather = Weather(city_id=city.city_id,
+                                  month=time.month,
+                                  temp_high=temp_high,
+                                  temp_low=temp_low,
+                                  summary=summary,
+                                  icon=icon)
+                db.session.add(weather)
 
     db.session.commit()
 
