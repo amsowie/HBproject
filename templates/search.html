@@ -5,13 +5,13 @@
 {% block content %}
 
   <!-- dropdown form for user to select month -->
-  <form action="display-weather.html" methods="GET">
-    Months
+  <form action="/display.html" methods="GET">
+    Please select a month.
     <select name="months">
       {% for month in month_list %}
-      <option value="{{ month[0] }}">{{ month[0] }}</option>
+      <option id="month" value="{{ month[0] }}">{{ month[0] }}</option>
       {% endfor %}
     </select>
-    <input type="submit" value="Search" class="weather-search">
+    <input type="submit" id="weather-search" value="Search" class="weather-search">
   </form>
 {% endblock %}

@@ -27,7 +27,7 @@ class City(db.Model):
 
     __tablename__ = "cities"
 
-    # check the format of the lat and long should be string? Integer?
+    # Storing city name, lat, long, three letter country for use in query
     city_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     city_name = db.Column(db.String(50), nullable=False)
     city_lat = db.Column(db.String(50), nullable=False)
@@ -36,6 +36,7 @@ class City(db.Model):
                                            ('countries.country_code'),
                                             index=True,
                                             nullable=False)
+    country = db.relationship('Country', backref="cities")
 
     def __repr__(self):
         """Useful printout of city object"""
@@ -53,24 +54,25 @@ class Weather(db.Model):
 
     # help with foreign key assignment!!!
     weather_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    city_id = db.Column(db.Integer, db.ForeignKey
-                                 ('cities.city_id'), index=True, nullable=False)
-    month = db.Column(db.String(15), db.ForeignKey('months.month'), index=True, nullable=False)
+    city_id = db.Column(db.Integer, db.ForeignKey('cities.city_id'),
+                                                  index=True, nullable=False)
+    month = db.Column(db.String(15), db.ForeignKey('months.month'),
+                                                  index=True, nullable=False)
     temp_high = db.Column(db.Integer, nullable=False)
     temp_low = db.Column(db.Integer, nullable=False)
     # summary from data of daily conditions, ex. 'sunny and warm'
     summary = db.Column(db.String(100), nullable=False)
-      #icon below helps identify pictogram
+    #icon below helps identify pictogram
     icon = db.Column(db.String(50), nullable=False)
 
     # set relationshp between cities and weather objects
-    city = db.relationship('City', backref='all_weather')
+    city = db.relationship('City', backref='weathers')
 
     def __repr__(self):
         """Useful printout of weather object"""
 
-        return "<Weather weather_id={} city_id={} month={} \
-                         temp={} summary={}>".format(self.weather_id,
+        return """<Weather weather_id={} city_id={} month={}
+                        temp={} summary={}>""".format(self.weather_id,
                                                      self.city_id,
                                                      self.month,
                                                      self.temp_high,
@@ -106,7 +108,7 @@ def connect_to_db(app):
 
 
 if __name__ == "__main__":
-    # As a convenience, if we run this module interactively, it will leave
+    # run this module interactively, it will leave
     # you in a state of being able to work with the database directly.
 
     from server import app

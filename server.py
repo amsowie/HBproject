@@ -1,8 +1,9 @@
 """Travel based on weather/time of year search."""
-
+import sys
 # from jinja2 import StrictUndefined
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 from flask_debugtoolbar import DebugToolbarExtension
+import requests
 
 from model import connect_to_db, db, City, Country, Month, Weather
 
@@ -32,15 +33,13 @@ def display_search():
 def display_weather():
     """Show user weather information for month searched"""
     # Really unsure of the below code, especially the cities one.
-    # summary = db.session.query(Weather.summary).filter(Weather.month == 'user_month')
-    # temp = db.session.query(Weather.temp).filter(Weather.month == 'user_month')
-    # icon = db.session.query(Weather.icon).filter(Weather.month == 'user_month')
-    # cities = db.session.query(all_weather.city_name).filter(Weather.month == 'user_month')
+    user_month = request.args.get('month')
+    # summary = db.session.query(Weather.summary).filter(Weather.month == user_month).all()
+    weathers = db.session.query(Weather).filter(Weather.month == user_month).all()
 
-    return render_template('display.html')
-                            # summary=summery,
-                            # temp=temp,
-                            # icon=icon)
+    return render_template('display.html',
+                            weathers=weathers,
+                            month=user_month)
 
 ##############################################################################
 
