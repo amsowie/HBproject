@@ -32,8 +32,10 @@ def display_search():
 @app.route('/display-weather')
 def display_weather():
     """Show user weather information for month searched"""
-    # Really unsure of the below code, especially the cities one.
-    user_month = request.args.get('month')
+
+    # get the value from months dropdown menu
+    user_month = request.args.get('months')
+
     # summary = db.session.query(Weather.summary).filter(Weather.month == user_month).all()
     weathers = db.session.query(Weather).filter(Weather.month == user_month).all()
 
