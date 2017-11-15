@@ -119,7 +119,7 @@ KGZ Kyrgyzstan
 KHM Cambodia 
 KIR Kiribati 
 KNA Saint Kitts and Nevis 
-KOR Korea, Republic of 
+KOR South Korea
 KWT Kuwait 
 LAO Lao People's Democratic Republic 
 LBN Lebanon 
@@ -186,7 +186,7 @@ PYF French Polynesia
 QAT Qatar 
 REU Réunion 
 ROU Romania 
-RUS Russian Federation 
+RUS Russia 
 RWA Rwanda 
 SAU Saudi Arabia 
 SDN Sudan 
@@ -223,20 +223,20 @@ TTO Trinidad and Tobago
 TUN Tunisia 
 TUR Turkey 
 TUV Tuvalu 
-TWN Taiwan, Province of China 
+TWN Taiwan 
 TZA Tanzania, United Republic of 
 UGA Uganda 
 UKR Ukraine 
 UMI United States Minor Outlying Islands 
 URY Uruguay 
-USA United States 
+USA USA 
 UZB Uzbekistan 
 VAT Holy See (Vatican City State) 
 VCT Saint Vincent and the Grenadines 
 VEN Venezuela, Bolivarian Republic of 
 VGB Virgin Islands, British 
 VIR Virgin Islands, U.S. 
-VNM Viet Nam 
+VNM Vietnam 
 VUT Vanuatu 
 WLF Wallis and Futuna 
 WSM Samoa 

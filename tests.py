@@ -1,7 +1,7 @@
 from unittest import TestCase
 import doctest
 from server import app
-from model import City, Country, Weather, Month, connect_to_db, db
+from model import City, Country, Weather, Month, connect_to_db, db, example_data
 
 # Uncomment this if you want to run the doctests here too.
 
@@ -20,25 +20,61 @@ class FlaskTests(TestCase):
         self.client = app.test_client()
         app.config['TESTING'] = True  # shows debugging output
 
-    # def tearDown(self):
-    #     """After each test perform these steps"""
-    #     # insert code to clear database here, but maybe in the next class
-    #     db.session.close()
-    #     db.drop_all()
-
     def test_index(self):
         """Test the homepage route"""
 
         result = self.client.get("/")
         self.assertEqual(result.status_code, 200)
-        self.assertIn('Welcome', result.data)  # getting the data string back
+        self.assertIn('Log In', result.data)  # getting the data string back
 
-    def test_search(self):
-        """Test the search route"""
+    def test_login_page(self):
 
-        result = self.client.get("/search")
+        result = self.client.get("/login")
         self.assertEqual(result.status_code, 200)
-        self.assertIn('February', result.data)  # is this actually the output to test?
+        self.assertIn('Email:', result.data)
+
+    def test_user_page(self):
+
+        result = self.client.get("/user-page")
+        self.assertEqual(result.status_code, 200)
+        self.assertIn("Welcome back", result.data)
+
+class TestUserLoggedIn(TestCase):
+
+    def setUp(self):
+        """Setting up tests for pages where user is logged in"""
+
+        self.client = app.test_client()
+        app.config['TESTING'] = True  # shows debugging output
+        connect_to_db(app, "postgresql:///testdb")  # work on this postg understanding and db test
+        app.config['SECRET_KEY'] = 'key'
+
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess['user_id'] = 1
+
+        #create tables and ad sample data
+        db.create_all()
+        example_data()
+
+class TestsDatabase(TestCase):
+
+    def setUp(self):
+        """Setting up the test database every time"""
+
+        self.client = app.test_client()
+        app.config['TESTING'] = True  # shows debugging output
+        connect_to_db(app, "postgresql:///testdb")  # work on this postg understanding and db test
+
+        #create tables and ad sample data
+        db.create_all()
+        example_data()
+
+    def tearDown(self):
+        """Clear database at end of test"""
+
+        db.session.close()
+        db.drop_all()  # get rid of fake data
 
     def test_display_weather(self):
         """Test the display weather route"""
@@ -47,35 +83,19 @@ class FlaskTests(TestCase):
         self.assertEqual(result.status_code, 200)
         self.assertIn('Display Weather', result.data)  # check the display route
 
-# class TestsDatabase(TestCase):
+    def test_search(self):
+        """Test the search route"""
 
-#     def setUp(self):
-#         """Setting up the test database every time"""
+        result = self.client.get("/search")
+        self.assertEqual(result.status_code, 200)
+        self.assertIn('February', result.data)  # is this actually the output to test?
 
-#         connect_to_db(app, "postgresql:///testdb")  # work on this postg understanding and db test
+    def test_example_data(self):
+        """Test the city data seeded correctly"""
 
-#         #create tables and ad sample data
-#         db.create_all()
-#         # samplecities.txt() What am I doing with this line????
+        city = db.session.query(City).filter(City.city_name == 'Selby').first()
+        self.assertEqual(city.city_name, 'Selby')
 
-#     def tearDown(self):
-#         """Clear database at end of test"""
-
-#         db.session.close()
-#         db.drop_all()  # get rid of fake data
-
-#     def test_write_citiesdb(self):
-#         """Test the city data seeded correctly"""
-
-#         result = db.session.query.filter(City.city_name == 'Sao Paulo').first()
-#         self.assertEqual('<City city_name=Sao Paulo country_code=BRA city_id=3>',
-#                          result.data)
-
-#     def text_write_countrydb(self):
-#         """Test the country table seeded correctly"""
-
-#         result = db.session.query.filter(Country.country_code == "BRA").first()
-#         self.assertEqual('Country country_code=BRA country_name=Brazil', result.data)
 
 ##############################################################################
 

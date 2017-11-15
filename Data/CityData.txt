@@ -1,4 +1,3 @@
-ountry,City,Latitude,Longitude
 Argentina,Buenos Aires,-34.608521,-58.373539
 Australia,Adelaide,-34.926102,138.599884
 Australia,Brisbane,-27.46888,153.022827
@@ -13,7 +12,6 @@ Bangladesh,Chittagong,22.330299,91.825111
 Bangladesh,Dhaka,23.709801,90.407112
 Belgium,Houdeng-Goegnies,50.4893,4.15672
 Belgium,Oevel,51.138741,4.90372
-BELGIUM,SCHOTEN,51.251035,4.49799
 Belgium,Zaventem,50.883545,4.474115
 Botswana,Gaborone,-24.655284,25.919065
 Brazil,Campinas,-22.909049,-47.064594
@@ -188,7 +186,6 @@ Poland,Gdynia,54.519655,18.536485
 Poland,Krakow,50.06006,19.9326
 Poland,Lodz,51.76174,19.468015
 Poland,Tczew,54.092079,18.774006
-Poland,Warsaw,52.23537,21.009485
 Poland,Wroclaw,51.10805,17.026703
 Portugal,Alverca do Ribatejo,38.89996,-9.03975
 Portugal,Lisboa,38.725735,-9.15021
@@ -207,14 +204,12 @@ South Africa,Cape Town,-33.919104,18.42197
 South Africa,Centurion,-25.846284,28.152708
 South Africa,Durban,-29.855744,31.035125
 South Africa,East London,-33.015419,27.90403
-SOUTH AFRICA,EDENVALE,-26.145549,28.154895
 South Africa,Gauteng,-26.01601,28.25897
 South Africa,George,-33.961102,22.471514
 South Africa,Greenstone,-26.118599,28.150762
 South Africa,Jetpark,-28.47933,24.67993
 South Africa,Johannesburg,-26.204944,28.040035
 South Africa,Kimberley,-28.734429,24.76026
-SOUTH AFRICA,LINBRO PARK,-26.083829,28.118925
 South Africa,Midrand,-25.974588,28.135165
 South Africa,Nelspruit,-25.472811,30.976999
 South Africa,Newcastle,-27.756274,29.930345
@@ -274,7 +269,7 @@ Turkey,Ankara,39.94293,32.86048
 Turkey,Istanbul,41.040855,28.986183
 Turkey,Izmir,38.425147,27.142302
 Turkmenistan,Asghabat,37.95042,58.390121
-UAE,Dubai,25.269445,55.30865
+United Arab Emirates,Dubai,25.269445,55.30865
 United Kingdom,Aberdeen,57.15382,-2.106789
 United Kingdom,Aylesford,51.30364,0.48011
 United Kingdom,Barry,51.401782,-3.277994

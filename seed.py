@@ -20,7 +20,7 @@ def read_city_file():
     """
     print "Cities"
     # file open
-    city_file = open("Data/samplecities.txt")
+    city_file = open("Data/CityData.txt")
 
     city_dict = {}
 
@@ -169,26 +169,28 @@ def write_weatherdb():
     for city in citiesdb:
         for time in timesdb:
             forecast = requests.get("https://api.darksky.net/forecast/" + KEY + "/" + city.city_lat + ", " + city.city_long + ", " + time.date + "?exclude=hourly,currently")
-            forecast = forecast.json()  # save the usable dictionary object to variable
+            if forecast.status_code == 200:
+                import pdb; pdb.set_trace()
+                forecast = forecast.json()  # save the usable dictionary object to variable
 
-            #filter out cities without weather information
-            if 'daily' in forecast:
+                #filter out cities without weather information
+                if 'daily' in forecast:
 
-                full_day = forecast['daily']  # the full json inlcuding lat,long,city
-                day_data = full_day['data'][0]   # getting just the weather info out of list
-                icon = day_data['icon']         # the computer/predictible icon description ex. partly-cloudy
-                summary = day_data['summary']   # human readable summary, 'Partly sunny all day'
-                temp_high = day_data['temperatureHigh']
-                temp_low = day_data['temperatureLow']
+                    full_day = forecast['daily']  # the full json inlcuding lat,long,city
+                    day_data = full_day['data'][0]   # getting just the weather info out of list
+                    icon = day_data['icon']         # the computer/predictible icon description ex. partly-cloudy
+                    summary = day_data['summary']   # human readable summary, 'Partly sunny all day'
+                    temp_high = day_data['temperatureHigh']
+                    temp_low = day_data['temperatureLow']
 
-                weather = Weather(city_id=city.city_id,
-                                  month=time.month,
-                                  temp_high=temp_high,
-                                  temp_low=temp_low,
-                                  summary=summary,
-                                  icon=icon)
-                db.session.add(weather)
-                # add logic here to prevent the twelve month cycle for each city without weather
+                    weather = Weather(city_id=city.city_id,
+                                      month=time.month,
+                                      temp_high=temp_high,
+                                      temp_low=temp_low,
+                                      summary=summary,
+                                      icon=icon)
+                    db.session.add(weather)
+                    # add logic here to prevent the twelve month cycle for each city without weather
     db.session.commit()
 
 

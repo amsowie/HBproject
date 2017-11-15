@@ -6,7 +6,6 @@ from flask_debugtoolbar import DebugToolbarExtension
 import requests
 
 from model import connect_to_db, db, City, Country, Month, Weather
-
 app = Flask(__name__)
 app.secret_key = "Ahahahahahha!!!!!!"
 # app.jinja_env.undefined = StrictUndefined
@@ -19,6 +18,30 @@ def index():
     """Welcome/home page"""
 
     return render_template('welcome.html')
+
+@app.route('/login')
+def login():
+    """Show login form to user"""
+
+    return render_template('login.html')
+
+@app.route('/user-page')
+def user_page():
+    """Say hello to logged in user"""
+
+    fname = request.args.get('email')
+    lname = request.args.get('fname')
+    email = request.args.get('fname')
+    password = requests.args.get('password')
+
+    user = db.session.query(User).filter(User.email == email)
+
+    if user and not (user.password == password):
+        return redirect('login')
+    elif user:
+        session[user]
+
+    return render_template('userpage.html')
 
 # page to select month to display
 @app.route('/search')
@@ -36,7 +59,7 @@ def display_weather():
     # get the value from months dropdown menu
     user_month = request.args.get('months')
 
-    # summary = db.session.query(Weather.summary).filter(Weather.month == user_month).all()
+    summary = db.session.query(Weather.summary).filter(Weather.month == user_month).all()
     weathers = db.session.query(Weather).filter(Weather.month == user_month).all()
 
     return render_template('display.html',
@@ -45,8 +68,8 @@ def display_weather():
 
 ##############################################################################
 
-if __name__ == "__main__":
-    app.debug = True
+if __name__ == "__main__":  # will connect to db if you run python server.py
+    app.debug = True        # won't run in testy.py because it's not server.py
     connect_to_db(app)
     DebugToolbarExtension(app)
 

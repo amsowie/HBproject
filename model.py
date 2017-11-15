@@ -92,17 +92,79 @@ class Month(db.Model):
 
         return "<Month month={} date={}>".format(self.month, self.date)
 
+class User(db.Model):
+    """User data to store after login"""
+
+    __tablename__ = "users"
+
+    user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    fname = db.Column(db.String(30), nullable=True)
+    lname = db.Column(db.String(30), nullable=True)
+    email = db.Column(db.String(40), nullable=True)
+    password = db.Column(db.String(30), nullable=True)
+
+    def __repr__(self):
+        """Useful printout of weather object"""
+
+        return "<User user_id={} fname={} lname={} email={}>".format(self.user_id,
+                                                                     self.fname,
+                                                                     self.lname,
+                                                                     self.email)
+
+class Trip(db.Model):
+    """Trip information by specific user"""
+
+    __tablename__ = "trips"
+
+    trip_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    city_id = db.Column(db.Integer, db.ForeignKey('cities.city_id'),
+                                                  index=True,nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'),
+                                                  index=True,nullable=True)
+    month = db.Column(db.String(15), db.ForeignKey('months.month'),
+                                                  index=True,nullable=True, )
+
+    def __repr__(self):
+        """Useful printout of weather object"""
+
+        return "<User user_id={} fname={} lname={} email={}>".format(self.user_id,
+                                                                     self.fname,
+                                                                     self.lname,
+                                                                     self.email)
+
+
 
 ##############################################################################
+def example_data():
+    """Test data samples for tests.py file to use in database"""
 
+    fake_month1 = Month(month='January', date='2018, 01, 15')
+    fake_month2 = Month(month='February', date='2018, 02, 15')
+    city1 = City(city_name='Santa Maria', city_lat='12.123', city_long='56.789', country_code='SPA')
+    city2 = City(city_name='Selby', city_lat='42.123', city_long='-96.789', country_code='USA')
+    weather1 = Weather(city_id=1, month='January', temp_high=50, temp_low=40, summary='Parly cloudy', icon='Partly-cloudy')
+    weather2 = Weather(city_id=2, month='February', temp_high=60, temp_low=55, summary='Parly sunny', icon='Partly-sunny')
+    country1 = Country(country_code='USA', country_name='United States')
+    country2 = Country(country_code='SPA', country_name='Spain')
+    user1 = User(fname='Brian', lname='Beaman', email="bb@bb.com")
+    user2 = User(fname='Kari', lname='Baldwin', email="kb@kb.com")
+    trip1 = Trip(city_id=1, user_id=1, month='January')
+    trip2 = Trip(city_id=2, user_id=2, month='February')
 
-def connect_to_db(app):
+    db.session.add_all([user1, user2, fake_month2, fake_month1, country1, country2])
+    db.session.commit()
+    db.session.add_all([city1, city2])
+    db.session.commit()
+    db.session.add_all([weather1, weather2, trip1, trip2])
+    db.session.commit()
+
+def connect_to_db(app, db_uri='postgresql:///weather_travel'):
     """Connect the database to our Flask app."""
 
     # Configure to use our PostgresSQL database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///weather_travel'
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_ECHO'] = True
+    # app.config['SQLALCHEMY_ECHO'] = True
     db.app = app
     db.init_app(app)
 
