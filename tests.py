@@ -1,7 +1,7 @@
 from unittest import TestCase
 import doctest
 from server import app
-from model import City, Country, Weather, Month, connect_to_db, db, example_data
+from model import City, Country, Weather, Month, User, Trip, connect_to_db, db, example_data
 
 # Uncomment this if you want to run the doctests here too.
 
@@ -33,11 +33,6 @@ class FlaskTests(TestCase):
         self.assertEqual(result.status_code, 200)
         self.assertIn('Email:', result.data)
 
-    def test_user_page(self):
-
-        result = self.client.get("/user-page")
-        self.assertEqual(result.status_code, 200)
-        self.assertIn("Welcome back", result.data)
 
 class TestUserLoggedIn(TestCase):
 
@@ -56,6 +51,21 @@ class TestUserLoggedIn(TestCase):
         #create tables and ad sample data
         db.create_all()
         example_data()
+
+    def tearDown(self):
+        """Clear database at end of test"""
+
+        db.session.close()
+        db.drop_all()  # get rid of fake data
+
+    def test_user_page(self):
+        """Test user page is visible with session"""
+
+        result = self.client.post("/login", data={'email': 'bb@bb.com',
+                                                      'password': 'bestie'},
+                                                      follow_redirects=True)
+        self.assertEqual(result.status_code, 200)
+        self.assertIn("Welcome back", result.data)
 
 class TestsDatabase(TestCase):
 

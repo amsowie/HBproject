@@ -1,11 +1,11 @@
 """Travel based on weather/time of year search."""
 import sys
 # from jinja2 import StrictUndefined
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, session, redirect
 from flask_debugtoolbar import DebugToolbarExtension
 import requests
 
-from model import connect_to_db, db, City, Country, Month, Weather
+from model import connect_to_db, db, City, Country, Month, Weather, User, Trip
 app = Flask(__name__)
 app.secret_key = "Ahahahahahha!!!!!!"
 # app.jinja_env.undefined = StrictUndefined
@@ -25,23 +25,29 @@ def login():
 
     return render_template('login.html')
 
-@app.route('/user-page')
+@app.route('/login', methods=['POST'])
 def user_page():
-    """Say hello to logged in user"""
+    """Process log in"""
+    import pdb; pdb.set_trace()
+    # fname = request.args.get('email')
+    # lname = request.args.get('fname')
+    email = request.form.get('email')
+    password = request.form.get('password')
 
-    fname = request.args.get('email')
-    lname = request.args.get('fname')
-    email = request.args.get('fname')
-    password = requests.args.get('password')
-
-    user = db.session.query(User).filter(User.email == email)
+    user = db.session.query(User).filter(User.email == email).first()
 
     if user and not (user.password == password):
-        return redirect('login')
+        return redirect('/login')
     elif user:
-        session[user]
+        session['user_id'] = user.user_id
+        return render_template('userpage.html')
+    else:
+        return redirect('/register')
 
-    return render_template('userpage.html')
+@app.route('/register')
+def register():
+
+    return render_template('register.html')
 
 # page to select month to display
 @app.route('/search')

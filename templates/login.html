@@ -3,13 +3,14 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-  <form action="user-page" methods="GET">
+  <form action="login" methods="POST">
     First name:<br>
     <input type="text" name="firstname"><br>
     Last name:<br>
     <input type="text" name="lastname"><br>
     Email:<br>
     <input type="text" name="email"><br>
+    Password:<br>
     <input type="password" name="password"><br>
     <input type="submit" value="Submit">
   </form>
