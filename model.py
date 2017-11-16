@@ -98,10 +98,10 @@ class User(db.Model):
     __tablename__ = "users"
 
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    fname = db.Column(db.String(30), nullable=True)
-    lname = db.Column(db.String(30), nullable=True)
-    email = db.Column(db.String(40), nullable=True)
-    password = db.Column(db.String(30), nullable=True)
+    fname = db.Column(db.String(30), nullable=False)
+    lname = db.Column(db.String(30), nullable=False)
+    email = db.Column(db.String(40), nullable=False)
+    password = db.Column(db.String(30), nullable=False)
 
     def __repr__(self):
         """Useful printout of weather object"""

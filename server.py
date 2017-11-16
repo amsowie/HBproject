@@ -1,7 +1,7 @@
 """Travel based on weather/time of year search."""
 import sys
 # from jinja2 import StrictUndefined
-from flask import Flask, render_template, jsonify, request, session, redirect
+from flask import Flask, render_template, jsonify, request, session, redirect, flash
 from flask_debugtoolbar import DebugToolbarExtension
 import requests
 
@@ -19,6 +19,12 @@ def index():
 
     return render_template('welcome.html')
 
+@app.route('/map')
+def map():
+    """Map page"""
+
+    return render_template('weathermap.html')
+
 @app.route('/login')
 def login():
     """Show login form to user"""
@@ -26,28 +32,49 @@ def login():
     return render_template('login.html')
 
 @app.route('/login', methods=['POST'])
-def user_page():
+def user_login():
     """Process log in"""
-    import pdb; pdb.set_trace()
-    # fname = request.args.get('email')
-    # lname = request.args.get('fname')
+
     email = request.form.get('email')
     password = request.form.get('password')
 
     user = db.session.query(User).filter(User.email == email).first()
 
     if user and not (user.password == password):
+        flash("Password incorrect. Please try again.")
         return redirect('/login')
     elif user:
-        session['user_id'] = user.user_id
-        return render_template('userpage.html')
+        session['user_name'] = user.fname
+        return redirect('/search')
     else:
+        flash("No user exists with that information. Please register.")
         return redirect('/register')
 
 @app.route('/register')
 def register():
+    """Show registration form"""
 
     return render_template('register.html')
+
+@app.route('/register-verify', methods=['POST'])
+def process_registration():
+    """Process registration information"""
+
+    fname = request.form.get('firstname')
+    lname = request.form.get('lastname')
+    email = request.form.get('email')
+    password = request.form.get('password')  # hash this later for storage
+
+    user = User(fname=fname, lname=lname, email=email, password=password)
+
+    db.session.add(user)
+    db.session.commit()
+
+    session['user_name'] = fname
+
+    flash("Thank you for registering")
+
+    return redirect('/search')
 
 # page to select month to display
 @app.route('/search')
@@ -72,6 +99,17 @@ def display_weather():
                             weathers=weathers,
                             month=user_month)
 
+@app.route('/weather.json')
+
+@app.route('/logout')
+def log_out():
+    """Log user out and delete session"""
+
+    del session['user_name']
+
+    flash("Logged out.")
+
+    return redirect('/')
 ##############################################################################
 
 if __name__ == "__main__":  # will connect to db if you run python server.py

@@ -3,7 +3,7 @@
 {% block title %}Search Weather{% endblock %}
 
 {% block content %}
-
+  <h3>Welcome, {{ session['user_name'] }}</h3>
   <!-- dropdown form for user to select month -->
   <form action="/display-weather" methods="GET">
     Please select a month.

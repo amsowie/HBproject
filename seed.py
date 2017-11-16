@@ -142,13 +142,13 @@ def write_citiesdb(city_dict, countries):
     """
     # instantiate objects of each city with values from dictionary
     for city in city_dict:
-        dbcity = City(city_name=city,
+        city_table = City(city_name=city,
                       country_code=countries[city_dict[city][0]],  # three letter country code
                       city_lat=city_dict[city][1],
                       city_long=city_dict[city][2])
-        db.session.add(dbcity)
+        db.session.add(city_table)
 
-    db.session.commit()  
+    db.session.commit() 
 
 def write_weatherdb():
     """Write weather database from json from Darsky API
@@ -163,16 +163,15 @@ def write_weatherdb():
 
     """
 
-    citiesdb = db.session.query(City).all()  # use city and month tables to set up get request below
-    timesdb = db.session.query(Month).all()
+    cities_from_table = db.session.query(City).all()  # use city and month tables to set up get request below
+    times_from_table = db.session.query(Month).all()
 
-    for city in citiesdb:
-        for time in timesdb:
-            forecast = requests.get("https://api.darksky.net/forecast/" + KEY + "/" + city.city_lat + ", " + city.city_long + ", " + time.date + "?exclude=hourly,currently")
-            if forecast.status_code == 200:
-                import pdb; pdb.set_trace()
+    for city in cities_from_table:
+        if city.city_id < 20:
+            for time in times_from_table:
+                forecast = requests.get("https://api.darksky.net/forecast/" + KEY + "/" + city.city_lat + ", " + city.city_long + ", " + time.date + "?exclude=hourly,currently")
                 forecast = forecast.json()  # save the usable dictionary object to variable
-
+      
                 #filter out cities without weather information
                 if 'daily' in forecast:
 
@@ -190,6 +189,8 @@ def write_weatherdb():
                                       summary=summary,
                                       icon=icon)
                     db.session.add(weather)
+                else:
+                    break  # get out of the months loop if there's no data for January
                     # add logic here to prevent the twelve month cycle for each city without weather
     db.session.commit()
 

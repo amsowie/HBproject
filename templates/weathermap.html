@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Weather Map
+  <script src="https://maps.googleapis.com/maps/api/js"></script>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+{% endblock %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+       #map {
+        height: 400px;
+        width: 400px;
+       }
+    </style>
+  </head>
+  <body>
+    <h3>My Google Maps Demo</h3>
+    <div id="map"></div>
+          <script src="/static/map.js"></script>
+    
+
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwecRj8BnwNeAVuHQvmW-GQy7ZQLk27jk&callback=initMap">
+    </script>
+
+  </body>
+</html>
+
+{% endblock %}

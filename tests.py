@@ -46,7 +46,7 @@ class TestUserLoggedIn(TestCase):
 
         with self.client as c:
             with c.session_transaction() as sess:
-                sess['user_id'] = 1
+                sess['user_name'] = 'Lord'
 
         #create tables and ad sample data
         db.create_all()
@@ -58,14 +58,22 @@ class TestUserLoggedIn(TestCase):
         db.session.close()
         db.drop_all()  # get rid of fake data
 
-    def test_user_page(self):
+    def test_user_login(self):
         """Test user page is visible with session"""
 
         result = self.client.post("/login", data={'email': 'bb@bb.com',
-                                                      'password': 'bestie'},
-                                                      follow_redirects=True)
+                                                  'password': 'bestie'},
+                                                   follow_redirects=True)
         self.assertEqual(result.status_code, 200)
-        self.assertIn("Welcome back", result.data)
+        self.assertIn("Welcome,", result.data)
+
+    def test_logout(self):
+        """Test the logout function works"""
+
+        result = self.client.get("/logout", follow_redirects=True)
+
+        self.assertEqual(result.status_code, 200)
+        self.assertIn("Logged out.", result.data)
 
 class TestsDatabase(TestCase):
 
@@ -106,6 +114,17 @@ class TestsDatabase(TestCase):
         city = db.session.query(City).filter(City.city_name == 'Selby').first()
         self.assertEqual(city.city_name, 'Selby')
 
+    def test_process_registration(self):
+        """Test registration form process"""
+
+        result = self.client.post("/register-verify", data={
+                                                        'email': 'ham@let.com',
+                                                        'password': 'tobeornot',
+                                                        'firstname': 'Hamlet',
+                                                        'lastname': 'Hammy'},
+                                                        follow_redirects=True)
+        self.assertEqual(result.status_code, 200)
+        self.assertIn("Welcome, Hamlet", result.data)
 
 ##############################################################################
 
