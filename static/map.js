@@ -10,18 +10,24 @@ function initMap() {
       position: uluru,
       map: map
     });
+    console.log(map);
+    makeMarkers(map);
 }
-$.get('/lat-long.json', function (lat_longs){
 
-    let city;
+function makeMarkers(map){
+    $.get('/lat-long.json', function (lat_longs){
 
-    for (let key in lat_longs) {
-        city = lat_longs[key];
+        let city;
 
-        let marker = new google.maps.Marker({
-            position: new google.maps.LatLng(city.lat, city.lng),
-            map: map,
-            title: 'Here!'
-        });
-    }
-});
+        for (let key in lat_longs) {
+            city = lat_longs[key];
+            console.log(map);
+
+            let marker = new google.maps.Marker({
+                position: new google.maps.LatLng(city.lat, city.lng),
+                map: map,
+                title: 'Here!'
+            });
+        }
+    });
+}

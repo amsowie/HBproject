@@ -105,10 +105,10 @@ def lat_long_info():
 
     lat_longs = {}
 
-    cities = db.session.query(City).all()
+    weathers = db.session.query(Weather).all()
 
-    for city in cities:
-        lat_longs = {city.city_name: {'lat': city.city_lat, 'lng': city.city_long}}
+    for weather in weathers:
+            lat_longs[weather.city.city_name] = {'lat': weather.city.city_lat, 'lng': weather.city.city_long}
 
     return jsonify(lat_longs)
 
