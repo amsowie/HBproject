@@ -11,3 +11,17 @@ function initMap() {
       map: map
     });
 }
+$.get('/lat-long.json', function (lat_longs){
+
+    let city;
+
+    for (let key in lat_longs) {
+        city = lat_longs[key];
+
+        let marker = new google.maps.Marker({
+            position: new google.maps.LatLng(city.lat, city.lng),
+            map: map,
+            title: 'Here!'
+        });
+    }
+});

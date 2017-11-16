@@ -99,7 +99,18 @@ def display_weather():
                             weathers=weathers,
                             month=user_month)
 
-@app.route('/weather.json')
+@app.route('/lat-long.json')
+def lat_long_info():
+    """Return lat_long information to plot cities on map"""
+
+    lat_longs = {}
+
+    cities = db.session.query(City).all()
+
+    for city in cities:
+        lat_longs = {city.city_name: {'lat': city.city_lat, 'lng': city.city_long}}
+
+    return jsonify(lat_longs)
 
 @app.route('/logout')
 def log_out():
