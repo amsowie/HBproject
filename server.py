@@ -1,5 +1,6 @@
 """Travel based on weather/time of year search."""
 import sys
+import bcrypt
 # from jinja2 import StrictUndefined
 from flask import Flask, render_template, jsonify, request, session, redirect, flash
 from flask_debugtoolbar import DebugToolbarExtension
@@ -19,12 +20,6 @@ def index():
 
     return render_template('welcome.html')
 
-@app.route('/map')
-def map():
-    """Map page"""
-
-    return render_template('weathermap.html')
-
 @app.route('/login')
 def login():
     """Show login form to user"""
@@ -40,12 +35,12 @@ def user_login():
 
     user = db.session.query(User).filter(User.email == email).first()
 
-    if user and not (user.password == password):
+    if user and not (bcrypt.hashpw(password.encode('utf8'), user.password) == user.password):
         flash("Password incorrect. Please try again.")
         return redirect('/login')
     elif user:
         session['user_name'] = user.fname
-        return redirect('/search')
+        return redirect('/map')
     else:
         flash("No user exists with that information. Please register.")
         return redirect('/register')
@@ -65,7 +60,9 @@ def process_registration():
     email = request.form.get('email')
     password = request.form.get('password')  # hash this later for storage
 
-    user = User(fname=fname, lname=lname, email=email, password=password)
+    hashed_pass = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
+
+    user = User(fname=fname, lname=lname, email=email, password=hashed_pass)
 
     db.session.add(user)
     db.session.commit()
@@ -74,30 +71,30 @@ def process_registration():
 
     flash("Thank you for registering")
 
-    return redirect('/search')
+    return redirect('/map')
 
 # page to select month to display
-@app.route('/search')
-def display_search():
-    """Show page with search form"""
+# @app.route('/search')
+# def display_search():
+#     """Show page with search form"""
 
-    month_list = db.session.query(Month.month).all()
+#     month_list = db.session.query(Month.month).all()
 
-    return render_template('search.html', month_list=month_list)
+#     return render_template('search.html', month_list=month_list)
 
-@app.route('/display-weather')
-def display_weather():
-    """Show user weather information for month searched"""
+# @app.route('/display-weather')
+# def display_weather():
+#     """Show user weather information for month searched"""
 
     # get the value from months dropdown menu
-    user_month = request.args.get('months')
 
-    summary = db.session.query(Weather.summary).filter(Weather.month == user_month).all()
-    weathers = db.session.query(Weather).filter(Weather.month == user_month).all()
+    # summary = db.session.query(Weather.summary).filter(Weather.month == user_month).all()
 
-    return render_template('display.html',
-                            weathers=weathers,
-                            month=user_month)
+    # return render_template('display.html',
+    #                         weathers=weathers,
+    #                         month=user_month)
+
+
 
 @app.route('/lat-long.json')
 def lat_long_info():
@@ -105,12 +102,31 @@ def lat_long_info():
 
     lat_longs = {}
 
-    weathers = db.session.query(Weather).all()
-
+    user_month = request.args.get('month')
+    # weathers = db.session.query(Weather).all()
+    weathers = db.session.query(Weather).filter(Weather.month == user_month).all()
+    import pdb; pdb.set_trace()
     for weather in weathers:
-            lat_longs[weather.city.city_name] = {'lat': weather.city.city_lat, 'lng': weather.city.city_long}
+            lat_longs[weather.city.city_name] = {'lat': weather.city.city_lat,
+                                                 'lng': weather.city.city_long,
+                                                 'summary': weather.summary,
+                                                 'icon': weather.icon,
+                                                 'temp_high': weather.temp_high,
+                                                 'temp_low': weather.temp_low,
+                                                 'city_name': weather.city.city_name}
+    data = {}
+    data["lat_longs"] = lat_longs
+    data["user_month"] = user_month
 
-    return jsonify(lat_longs)
+    return jsonify(data)
+
+@app.route('/map')
+def map():
+    """Map page"""
+
+    month_list = db.session.query(Month.month).all()
+
+    return render_template('weathermap.html', month_list=month_list)
 
 @app.route('/logout')
 def log_out():

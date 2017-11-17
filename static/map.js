@@ -14,20 +14,35 @@ function initMap() {
     makeMarkers(map);
 }
 
-function makeMarkers(map){
-    $.get('/lat-long.json', function (lat_longs){
+function pickMonth(map){
 
-        let city;
+    $('#month').change(function (evt){
+        let monthChosen = $(this).val();
+        $('#month-title').text(monthChosen);
+        $.get('/lat-long.json', {month: monthChosen}, function (results){
+        
+        let latLongs = results.lat_longs;
 
-        for (let key in lat_longs) {
-            city = lat_longs[key];
-            console.log(map);
+        makeMarkers(map, latLongs);
 
-            let marker = new google.maps.Marker({
-                position: new google.maps.LatLng(city.lat, city.lng),
-                map: map,
-                title: 'Here!'
-            });
-        }
     });
+   
+    });
+}
+
+function makeMarkers(map, latLongs){
+
+            // let month = results.user_month;
+            // find a way to clear the markers
+            let city;
+
+            for (let key in latLongs) {
+                city = latLongs[key];
+                console.log(map);
+
+                let marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(city.lat, city.lng),
+                    map: map,
+                    title: city.city_name
+                });
 }

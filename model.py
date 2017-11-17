@@ -101,7 +101,7 @@ class User(db.Model):
     fname = db.Column(db.String(30), nullable=False)
     lname = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(40), nullable=False)
-    password = db.Column(db.String(30), nullable=False)
+    password = db.Column(db.String(100), nullable=False)
 
     def __repr__(self):
         """Useful printout of weather object"""
@@ -146,8 +146,8 @@ def example_data():
     weather2 = Weather(city_id=2, month='February', temp_high=60, temp_low=55, summary='Parly sunny', icon='Partly-sunny')
     country1 = Country(country_code='USA', country_name='United States')
     country2 = Country(country_code='SPA', country_name='Spain')
-    user1 = User(fname='Brian', lname='Beaman', email="bb@bb.com", password='bestie')
-    user2 = User(fname='Kari', lname='Baldwin', email="kb@kb.com", password='hohoho')
+    user1 = User(fname='Brian', lname='Beaman', email="bb@bb.com", password=bcrypt.hashpw('bestie', bcrypt.gensalt()))
+    user2 = User(fname='Kari', lname='Baldwin', email="kb@kb.com", password=bcrypt.hashpw('hohoho', bcrypt.gensalt()))
     trip1 = Trip(city_id=1, user_id=1, month='January')
     trip2 = Trip(city_id=2, user_id=2, month='February')
 

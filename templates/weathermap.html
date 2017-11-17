@@ -18,11 +18,21 @@
     </style>
   </head>
   <body>
-    <h3>My Google Maps Demo</h3>
-    <div id="map"></div>
-          <script src="/static/map.js"></script>
-    
+      <h3>Welcome, {{ session['user_name'] }}</h3>
+  <!-- dropdown form for user to select month -->
+  <form action="/lat-long.json" methods="GET">
+    Please select a month.
+    <select name="months">
+      {% for month in month_list %}
+      <option id="month" value="{{ month[0] }}">{{ month[0] }}</option>
+      {% endfor %}
+    </select>
+    <input type="submit" id="weather-search" value="Search" class="weather-search">
+  </form>
 
+    <h3><span id="month-title"></span> Weather</h3>
+    <div id="map"></div>
+    <script src="/static/map.js"></script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwecRj8BnwNeAVuHQvmW-GQy7ZQLk27jk&callback=initMap">
     </script>
