@@ -1,48 +1,55 @@
 "use strict";
 
+let map;
+
 function initMap() {
-    let uluru = {lat: -25.363, lng: 131.044};
-    let map = new google.maps.Map(document.getElementById('map'), {
+    let uluru = {lat: 41.90311, lng: 12.49576};
+    map = new google.maps.Map(document.getElementById('map'), {
       zoom: 1,
       center: uluru
     });
-    let marker = new google.maps.Marker({
-      position: uluru,
-      map: map
-    });
-    console.log(map);
-    makeMarkers(map);
+    // let marker = new google.maps.Marker({
+    //   position: uluru,
+    //   map: map
+    // });
+    // makeMarkers(map);
 }
 
-function pickMonth(map){
+function pickMonth() {
 
-    $('#month').change(function (evt){
-        let monthChosen = $(this).val();
+    // $('#pick-month').change(function (evt){
+        let monthChosen = $('#pick-month').val();
         $('#month-title').text(monthChosen);
-        $.get('/lat-long.json', {month: monthChosen}, function (results){
-        
+        $.post('/lat-long.json', {month: monthChosen}, function (results){
         let latLongs = results.lat_longs;
+        makeMarkers(latLongs);
 
-        makeMarkers(map, latLongs);
 
     });
    
-    });
+    
 }
 
-function makeMarkers(map, latLongs){
+function makeMarkers(latLongs){
 
             // let month = results.user_month;
             // find a way to clear the markers
-            let city;
+            let city, marker;
 
             for (let key in latLongs) {
                 city = latLongs[key];
-                console.log(map);
 
-                let marker = new google.maps.Marker({
-                    position: new google.maps.LatLng(city.lat, city.lng),
+                 marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(parseFloat(city.lat), parseFloat(city.lng)),
                     map: map,
                     title: city.city_name
                 });
+    }
 }
+
+$('#month-pick').on('submit', function (evt){
+    evt.preventDefault();
+    pickMonth();
+});
+
+

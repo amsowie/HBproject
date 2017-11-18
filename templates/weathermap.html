@@ -13,18 +13,18 @@
     <style>
        #map {
         height: 400px;
-        width: 400px;
+        width: 800px;
        }
     </style>
   </head>
   <body>
       <h3>Welcome, {{ session['user_name'] }}</h3>
   <!-- dropdown form for user to select month -->
-  <form action="/lat-long.json" methods="GET">
+  <form id="month-pick" action="/lat-longs.json" method=POST>
     Please select a month.
-    <select name="months">
+    <select id="pick-month" name="month">
       {% for month in month_list %}
-      <option id="month" value="{{ month[0] }}">{{ month[0] }}</option>
+      <option id="{{ month[0] }}" value="{{ month[0] }}">{{ month[0] }}</option>
       {% endfor %}
     </select>
     <input type="submit" id="weather-search" value="Search" class="weather-search">

@@ -96,16 +96,15 @@ def process_registration():
 
 
 
-@app.route('/lat-long.json')
+@app.route('/lat-long.json', methods=['POST'])
 def lat_long_info():
     """Return lat_long information to plot cities on map"""
 
     lat_longs = {}
 
-    user_month = request.args.get('month')
+    user_month = request.form.get('month')
     # weathers = db.session.query(Weather).all()
     weathers = db.session.query(Weather).filter(Weather.month == user_month).all()
-    import pdb; pdb.set_trace()
     for weather in weathers:
             lat_longs[weather.city.city_name] = {'lat': weather.city.city_lat,
                                                  'lng': weather.city.city_long,
