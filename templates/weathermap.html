@@ -20,17 +20,19 @@
   <body>
       <h3>Welcome, {{ session['user_name'] }}</h3>
   <!-- dropdown form for user to select month -->
-  <form id="month-pick" action="/lat-longs.json" method=POST>
+  <form id="filter-cities" action="/lat-longs.json" method=POST>
     Please select a month.
     <select id="pick-month" name="month">
       {% for month in month_list %}
       <option id="{{ month[0] }}" value="{{ month[0] }}">{{ month[0] }}</option>
       {% endfor %}
     </select>
+    <br>
+    
     <input type="submit" id="weather-search" value="Search" class="weather-search">
   </form>
 
-    <h3><span id="month-title"></span> Weather</h3>
+    <h3><span id="month-title"></span> World Weather</h3>
     <div id="map"></div>
     <script src="/static/map.js"></script>
     <script async defer

@@ -103,6 +103,7 @@ def lat_long_info():
     lat_longs = {}
 
     user_month = request.form.get('month')
+    # user_temp_limit = request.form.get('temp')
     # weathers = db.session.query(Weather).all()
     weathers = db.session.query(Weather).filter(Weather.month == user_month).all()
     for weather in weathers:
