@@ -35,7 +35,7 @@ def user_login():
 
     user = db.session.query(User).filter(User.email == email).first()
 
-    if user and not (bcrypt.hashpw(password.encode('utf8'), user.password) == user.password):
+    if user and not (bcrypt.hashpw(password.encode('utf-8'), user.password.encode('utf-8')) == user.password):
         flash("Password incorrect. Please try again.")
         return redirect('/login')
     elif user:
@@ -60,7 +60,7 @@ def process_registration():
     email = request.form.get('email')
     password = request.form.get('password')  # hash this later for storage
 
-    hashed_pass = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
+    hashed_pass = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
     user = User(fname=fname, lname=lname, email=email, password=hashed_pass)
 
