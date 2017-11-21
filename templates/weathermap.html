@@ -28,8 +28,28 @@
       {% endfor %}
     </select>
     <br>
-    
+   <!--  Please select a minimum temperature to filter the cities.
+    <select id="select-temp" name="temp">
+      <option id="empty" value="empty">None</option>
+      <option id="eight" value="eight">80</option>
+      <option id="seventy" value="seventy">70</option>
+      <option id="sixty" value="sixty">60</option>
+      <option id="fifty" value="fifty">50</option>
+      <option id="forty" value="forty">40</option>
+      <option id="thirty" value="thirty">30</option>
+    </select>
+    <br> -->
+    Please select a zoom area.
+    <select id="select-region" name="regions">
+      <option id="asia" value="asia">Asia</option>
+      <option id="africa" value="africa">Africa</option>
+      <option id="north-america" value="north-america">North America</option>
+      <option id="south-america" value="south-america">South America</option>
+      <option id="oceania" value="oceania">Oceania</option>
+      <option id="europe" value="europe">Europe</option>
+    </select>
     <input type="submit" id="weather-search" value="Search" class="weather-search">
+
   </form>
 
     <h3><span id="month-title"></span> World Weather</h3>

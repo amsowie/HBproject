@@ -17,8 +17,10 @@ app.secret_key = "Ahahahahahha!!!!!!"
 @app.route('/')
 def index():
     """Welcome/home page"""
-
-    return render_template('welcome.html')
+    if 'user_name' in session:
+        return redirect('/map')
+    else:
+        return render_template('welcome.html')
 
 @app.route('/login')
 def login():
@@ -111,9 +113,9 @@ def lat_long_info():
                                                  'lng': weather.city.city_long,
                                                  'summary': weather.summary,
                                                  'icon': weather.icon,
-                                                 'temp_high': weather.temp_high,
-                                                 'temp_low': weather.temp_low,
-                                                 'city_name': weather.city.city_name}
+                                                 'tempHigh': weather.temp_high,
+                                                 'tempLow': weather.temp_low,
+                                                 'cityName': weather.city.city_name}
     data = {}
     data["lat_longs"] = lat_longs
     data["user_month"] = user_month

@@ -1,6 +1,7 @@
 """Models and database functions for HB project"""
 
 from flask import Flask
+import bcrypt
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
