@@ -167,7 +167,7 @@ def write_weatherdb():
 
     for city in cities_from_table:
         try:
-            if ((city.city_id < 160) and (city.city_id > 139)):
+            if ((city.city_id < 225) and (city.city_id > 204)):
                 for time in times_from_table:
                     forecast = requests.get("https://api.darksky.net/forecast/" + KEY + "/" + city.city_lat + ", " + city.city_long + ", " + time.date + "?exclude=hourly,currently")
                     forecast = forecast.json()  # save the usable dictionary object to variable

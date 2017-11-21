@@ -5,14 +5,10 @@ let map;
 function initMap() {
     let rome = {lat: 41.90311, lng: 12.49576};
     map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 4,
+      zoom: 2,
       center: rome
     });
-    // let marker = new google.maps.Marker({
-    //   position: uluru,
-    //   map: map
-    // });
-    // makeMarkers(map);
+
 }
 
 function filterCities() {
@@ -33,13 +29,14 @@ function filterCities() {
 
 function makeMarkers(latLongs){
 
-            // let month = results.user_month;
-            // find a way to clear the markers
+        let infoWindow = new google.maps.InfoWindow({
+              width: 150
+         });
+
             let city, marker, image;
             
             for (let key in latLongs) {
                 city = latLongs[key];
-
                 if (city.tempHigh < 30) {
                     image = 'http://maps.google.com/mapfiles/ms/micons/lightblue.png';
                 }
@@ -64,7 +61,15 @@ function makeMarkers(latLongs){
                     title: (city.tempHigh.toString() + "," + city.cityName),
                     icon: image
                 });
-                
+
+                let content = ('<div id="content>' +
+                            '<p>City: ' + city.cityName + '</p>' +
+                            '<p>High temperature: ' + city.tempHigh + '</p>' +
+                            '<p>Low temperature: ' + city.tempLow + '</p>' +
+                            '<p>Country: ' + city.country + '</p>' +
+                            '</div>');
+
+                infoWindowContent(infoWindow, content, marker);
     }           
 }
 
@@ -88,7 +93,6 @@ function changeCenter(region) {
     else if (region == 'europe') {
         map.setCenter({lat: 52.237049, lng: 21.017532});
     }
-    console.log(region);
     map.setZoom(3);
 
 }
@@ -98,4 +102,13 @@ $('#filter-cities').on('submit', function (evt){
     filterCities();
 });
 
+function infoWindowContent(infoWindow, content, marker) {
+    marker.on('click', function () {
+      infoWindow.close();
+      infoWindow.setContent(content);
+      infoWindow.open(marker);
+  });
+
+
+}
 
