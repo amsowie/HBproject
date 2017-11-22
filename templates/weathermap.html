@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block title %}Weather Map
-  <script src="https://maps.googleapis.com/maps/api/js"></script>
 
 {% endblock %}
 
@@ -20,7 +19,7 @@
   <body>
       <h3>Welcome, {{ session['user_name'] }}</h3>
   <!-- dropdown form for user to select month -->
-  <form id="filter-cities" action="/lat-longs.json" method=POST>
+  <form id="month-pick" action="/lat-long.json" method=POST>
     Please select a month.
     <select id="pick-month" name="month">
       {% for month in month_list %}

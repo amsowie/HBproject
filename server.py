@@ -111,7 +111,7 @@ def lat_long_info():
     for weather in weathers:
             lat_longs[weather.city.city_name] = {'lat': weather.city.city_lat,
                                                  'lng': weather.city.city_long,
-                                                 'summary': weather.summary,
+                                                 'wSummary': weather.summary,
                                                  'icon': weather.icon,
                                                  'tempHigh': weather.temp_high,
                                                  'tempLow': weather.temp_low,

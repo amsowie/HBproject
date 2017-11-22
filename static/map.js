@@ -1,6 +1,8 @@
 "use strict";
 
 let map;
+var allMarkers = [];
+let prevInfoWindow = false;
 
 function initMap() {
     let rome = {lat: 41.90311, lng: 12.49576};
@@ -13,12 +15,13 @@ function initMap() {
 
 function filterCities() {
 
-    // $('#pick-month').change(function (evt){
         let monthChosen = $('#pick-month').val();
         $('#month-title').text(monthChosen);
         $.post('/lat-long.json', {month: monthChosen}, function (results){
         let latLongs = results.lat_longs;
         let region = $('#select-region').val();
+        deleteMarkers();    
+        console.log("hello");
         makeMarkers(latLongs);
         changeCenter(region);
 
@@ -29,12 +32,8 @@ function filterCities() {
 
 function makeMarkers(latLongs){
 
-        let infoWindow = new google.maps.InfoWindow({
-              width: 150
-         });
+            let city, image;  
 
-            let city, marker, image;
-            
             for (let key in latLongs) {
                 city = latLongs[key];
                 if (city.tempHigh < 30) {
@@ -52,25 +51,58 @@ function makeMarkers(latLongs){
                 else if ((city.tempHigh < 70) && (city.tempHigh >= 60)) {
                     image = 'http://maps.google.com/mapfiles/ms/micons/orange.png';
                 }
+                else if ((city.tempHigh < 80) && (city.tempHigh >= 70)) {
+                    image = 'http://maps.google.com/mapfiles/ms/micons/pink.png';
+                }
                 else {
                     image = 'http://maps.google.com/mapfiles/ms/micons/red.png';
                 }
-                 marker = new google.maps.Marker({
+
+                let content = `City: ${city.cityName} <br>
+                Summary: ${city.wSummary} <br>
+                High Temperature: ${city.tempHigh} F <br>
+                Low Temperature: ${city.tempLow} F`;
+                
+                
+
+                // let infoWindow = new google.maps.InfoWindow({
+                //     content: content,
+                //     width: 150
+                //  });
+                let marker = new google.maps.Marker({
                     position: new google.maps.LatLng(parseFloat(city.lat), parseFloat(city.lng)),
                     map: map,
-                    title: (city.tempHigh.toString() + "," + city.cityName),
+                    title: (city.cityName),
                     icon: image
                 });
 
-                let content = ('<div id="content>' +
-                            '<p>City: ' + city.cityName + '</p>' +
-                            '<p>High temperature: ' + city.tempHigh + '</p>' +
-                            '<p>Low temperature: ' + city.tempLow + '</p>' +
-                            '<p>Country: ' + city.country + '</p>' +
-                            '</div>');
+                allMarkers.push(marker);
+                addInfoWindow(content, marker)
+              //   marker.addListener('click', function () {
+              //     infoWindow.close();
+              //     infoWindow.setContent(content);
+              //     infoWindow.open(marker); 
+              // });
+                // infoWindowContent(infoWindow, marker, content);
 
-                infoWindowContent(infoWindow, content, marker);
     }           
+}
+function addInfoWindow(text, marker){
+  var infoWindow = new google.maps.InfoWindow({
+          content: text
+      });
+
+  google.maps.event.addListener(marker,'click', (function(marker,text,infoWindow){ 
+    return function() {
+        if (prevInfoWindow) {
+            prevInfoWindow.close();
+        }
+      infoWindow.setContent(text);
+      infoWindow.open(map,marker);
+      prevInfoWindow = infoWindow;
+  };
+
+  })(marker,text,infoWindow)); 
 }
 
 function changeCenter(region) {
@@ -97,18 +129,18 @@ function changeCenter(region) {
 
 }
 
-$('#filter-cities').on('submit', function (evt){
+$('#month-pick').on('submit', function (evt){
     evt.preventDefault();
     filterCities();
 });
 
-function infoWindowContent(infoWindow, content, marker) {
-    marker.on('click', function () {
-      infoWindow.close();
-      infoWindow.setContent(content);
-      infoWindow.open(marker);
-  });
+// function infoWindowContent(infoWindow, marker, content) {
+    
 
-
+// }
+function deleteMarkers() {
+    for (var i = 0; i < allMarkers.length; i++) {
+      allMarkers[i].setMap(null);
+    }
 }
 
