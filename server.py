@@ -42,6 +42,7 @@ def user_login():
         return redirect('/login')
     elif user:
         session['user_name'] = user.fname
+        session['user_id'] = user.user_id
         return redirect('/map')
     else:
         flash("No user exists with that information. Please register.")
@@ -70,41 +71,34 @@ def process_registration():
     db.session.commit()
 
     session['user_name'] = fname
+    session['user_id'] = user_id
 
     flash("Thank you for registering")
 
     return redirect('/map')
 
-# page to select month to display
-# @app.route('/search')
-# def display_search():
-#     """Show page with search form"""
+@app.route('/save-searches', methods=['POST'])
+def save_searches():
+    """Save searches the user selects to the database for future display"""
 
-#     month_list = db.session.query(Month.month).all()
-
-#     return render_template('search.html', month_list=month_list)
-
-# @app.route('/display-weather')
-# def display_weather():
-#     """Show user weather information for month searched"""
-
-    # get the value from months dropdown menu
-
-    # summary = db.session.query(Weather.summary).filter(Weather.month == user_month).all()
-
-    # return render_template('display.html',
-    #                         weathers=weathers,
-    #                         month=user_month)
+    city_id = request.form.get('cityId')
+    month = request.form.get('monthChosen')
+    user_id = session['user_id']
 
 
+    #this will need to be a query for other things, maybe include weather?
+    data = db.session.query(City).filter(City.city_id == city_id).first()
+    info = {'cityId': data.city_id} # trial lines
+    return jsonify(info)
 
-@app.route('/lat-long.json', methods=['POST'])
+
+@app.route('/lat-long.json', methods=['GET'])
 def lat_long_info():
     """Return lat_long information to plot cities on map"""
 
     lat_longs = {}
 
-    user_month = request.form.get('month')
+    user_month = request.args.get('month')
     # user_temp_limit = request.form.get('temp')
     # weathers = db.session.query(Weather).all()
     weathers = db.session.query(Weather).filter(Weather.month == user_month).all()
@@ -115,7 +109,8 @@ def lat_long_info():
                                                  'icon': weather.icon,
                                                  'tempHigh': weather.temp_high,
                                                  'tempLow': weather.temp_low,
-                                                 'cityName': weather.city.city_name}
+                                                 'cityName': weather.city.city_name,
+                                                 'cityId': weather.city.city_id}
     data = {}
     data["lat_longs"] = lat_longs
     data["user_month"] = user_month
@@ -135,6 +130,7 @@ def log_out():
     """Log user out and delete session"""
 
     del session['user_name']
+    del session['user_id']
 
     flash("Logged out.")
 

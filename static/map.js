@@ -37,19 +37,18 @@ function filterCities() {
 
         let monthChosen = $('#pick-month').val();
         $('#month-title').text(monthChosen);
-        $.post('/lat-long.json', {month: monthChosen}, function (results){
-        let latLongs = results.lat_longs;
-        let region = $('#select-region').val();
-        deleteMarkers();    
-        console.log("hello");
-        makeMarkers(latLongs);
-        changeCenter(region);
+        $.get('/lat-long.json', {month: monthChosen}, function (results){
+            let latLongs = results.lat_longs;
+            let region = $('#select-region').val();
+            deleteMarkers();    
+            makeMarkers(latLongs, monthChosen);
+            changeCenter(region);
 
     });
     
 }
 
-function makeMarkers(latLongs){
+function makeMarkers(latLongs, monthChosen){
 
             let city, image;  
 
@@ -78,13 +77,13 @@ function makeMarkers(latLongs){
                 }
 
                 let content = `City: ${city.cityName} <br>
-                Summary: ${city.wSummary} <br>
+                               Summary: ${city.wSummary} <br>
                 High Temperature: ${city.tempHigh} F <br>
-                Low Temperature: ${city.tempLow} F`;
-                
+                Low Temperature: ${city.tempLow} F <br>
+                <button class="save-button" data-month="${monthChosen}" data-save="${city.cityId}">Save to sidebar</button>`;
                 
                 let marker = new google.maps.Marker({
-                    position: new google.maps.LatLng(parseFloat(city.lat), parseFloat(city.lng)),
+                    position: new google.maps.LatLng((city.lat), (city.lng)),
                     map: map,
                     title: (city.cityName),
                     icon: image
@@ -92,9 +91,27 @@ function makeMarkers(latLongs){
 
                 allMarkers.push(marker);
                 addInfoWindow(content, marker)
-
+              
     }           
 }
+
+$(document).on('click', '.save-button', function(evt) {
+        let savedCity = $(this).data('save');
+        console.log(savedCity);
+        let monthChosen = $(this).data('month');
+        let formInputs = {
+            'cityId': savedCity,
+            'monthChosen': monthChosen,
+        };
+        $.post('/save-searches', formInputs, displaySavedSearches);
+        console.log(monthChosen);
+    });
+
+function displaySavedSearches(results) {
+    let first = results.cityId;
+    $('#saved-list').text(first);
+}
+
 function addInfoWindow(text, marker){
   var infoWindow = new google.maps.InfoWindow({
           content: text
@@ -119,7 +136,7 @@ function changeCenter(region) {
         map.setCenter({lat: 12.1348, lng: 15.0557});
     }
     else if (region == 'asia') {
-        map.setCenter({lat: 19.073212, lng: 72.854195});
+        map.setCenter({lat: 16.85, lng: 96.183333});
     }
     else if (region == 'south-america') {
         map.setCenter({lat: -23.533773, lng: -46.625290});

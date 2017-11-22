@@ -26,7 +26,7 @@
   <body>
       <h3>Welcome, {{ session['user_name'] }}</h3>
   <!-- dropdown form for user to select month -->
-  <form id="month-pick" action="/lat-long.json" method=POST>
+  <form id="month-pick">
     Please select a month.
     <select id="pick-month" name="month">
       {% for month in month_list %}
@@ -34,17 +34,7 @@
       {% endfor %}
     </select>
     <br>
-   <!--  Please select a minimum temperature to filter the cities.
-    <select id="select-temp" name="temp">
-      <option id="empty" value="empty">None</option>
-      <option id="eight" value="eight">80</option>
-      <option id="seventy" value="seventy">70</option>
-      <option id="sixty" value="sixty">60</option>
-      <option id="fifty" value="fifty">50</option>
-      <option id="forty" value="forty">40</option>
-      <option id="thirty" value="thirty">30</option>
-    </select>
-    <br> -->
+   
     Please select a zoom area.
     <select id="select-region" name="regions">
       <option id="asia" value="asia">Asia</option>
@@ -55,8 +45,12 @@
       <option id="europe" value="europe">Europe</option>
     </select>
     <input type="submit" id="weather-search" value="Search" class="weather-search">
-
-  </form>
+    <div id="saved-list" style="float: center;" textalign="center">
+          <ul>
+            <h3>Items</h3>
+          </ul>
+        </div>
+      </form>
 
     <h3><span id="month-title"></span> World Weather</h3>
     <div id="map"></div>
@@ -65,7 +59,7 @@
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwecRj8BnwNeAVuHQvmW-GQy7ZQLk27jk&callback=initMap">
     </script>
-
+    
   </body>
 </html>
 

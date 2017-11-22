@@ -119,11 +119,11 @@ class Trip(db.Model):
 
     trip_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     city_id = db.Column(db.Integer, db.ForeignKey('cities.city_id'),
-                                                  index=True,nullable=True)
+                                                  index=True,nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'),
-                                                  index=True,nullable=True)
+                                                  index=True,nullable=False)
     month = db.Column(db.String(15), db.ForeignKey('months.month'),
-                                                  index=True,nullable=True, )
+                                                  index=True,nullable=False, )
 
     def __repr__(self):
         """Useful printout of weather object"""
