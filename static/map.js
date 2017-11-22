@@ -64,11 +64,6 @@ function makeMarkers(latLongs){
                 Low Temperature: ${city.tempLow} F`;
                 
                 
-
-                // let infoWindow = new google.maps.InfoWindow({
-                //     content: content,
-                //     width: 150
-                //  });
                 let marker = new google.maps.Marker({
                     position: new google.maps.LatLng(parseFloat(city.lat), parseFloat(city.lng)),
                     map: map,
@@ -78,12 +73,6 @@ function makeMarkers(latLongs){
 
                 allMarkers.push(marker);
                 addInfoWindow(content, marker)
-              //   marker.addListener('click', function () {
-              //     infoWindow.close();
-              //     infoWindow.setContent(content);
-              //     infoWindow.open(marker); 
-              // });
-                // infoWindowContent(infoWindow, marker, content);
 
     }           
 }
@@ -134,10 +123,7 @@ $('#month-pick').on('submit', function (evt){
     filterCities();
 });
 
-// function infoWindowContent(infoWindow, marker, content) {
     
-
-// }
 function deleteMarkers() {
     for (var i = 0; i < allMarkers.length; i++) {
       allMarkers[i].setMap(null);
