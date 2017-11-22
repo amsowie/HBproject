@@ -3,6 +3,14 @@
 let map;
 var allMarkers = [];
 let prevInfoWindow = false;
+let iconImages = {
+                LBlue: {name: 'Below 30F', icon: 'http://maps.google.com/mapfiles/ms/micons/lightblue.png'},
+                Blue: {name: '30-40F', icon: 'http://maps.google.com/mapfiles/ms/micons/blue.png'},
+                Green: {name: '41-50F', icon: 'http://maps.google.com/mapfiles/ms/micons/green.png'},
+                Yellow: {name: '51-60F', icon: 'http://maps.google.com/mapfiles/ms/micons/yellow.png'},
+                Orange: {name: '61-70F', icon: 'http://maps.google.com/mapfiles/ms/micons/orange.png'},
+                Pink: {name: '71-80F', icon: 'http://maps.google.com/mapfiles/ms/micons/pink.png'},
+                Red: {name: 'Above 80F', icon: 'http://maps.google.com/mapfiles/ms/micons/red.png'}};
 
 function initMap() {
     let rome = {lat: 41.90311, lng: 12.49576};
@@ -11,6 +19,18 @@ function initMap() {
       center: rome
     });
 
+    var legend = document.getElementById('legend');
+    
+      for (var key in iconImages) {
+        var type = iconImages[key];
+        var name = type.name;
+        var pic = type.icon;
+        var div = document.createElement('div');
+        div.innerHTML = '<img src="' + pic + '"> ' + name;
+        legend.appendChild(div);
+      }
+
+      map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
 }
 
 function filterCities() {
@@ -26,7 +46,6 @@ function filterCities() {
         changeCenter(region);
 
     });
-   
     
 }
 
@@ -114,7 +133,7 @@ function changeCenter(region) {
     else if (region == 'europe') {
         map.setCenter({lat: 52.237049, lng: 21.017532});
     }
-    map.setZoom(3);
+    map.setZoom(4);
 
 }
 
@@ -130,3 +149,4 @@ function deleteMarkers() {
     }
 }
 
+ 
