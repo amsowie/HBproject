@@ -45,21 +45,21 @@
       <option id="europe" value="europe">Europe</option>
     </select>
     <input type="submit" id="weather-search" value="Search" class="weather-search">
-    <div id="saved-list" style="float: center;" textalign="center">
-          <ul>
-            <h3>Items</h3>
-          </ul>
-        </div>
-      </form>
+    
 
     <h3><span id="month-title"></span> World Weather</h3>
-    <div id="map"></div>
+    <div id="map" style="float: left"></div>
     <div id="legend"><h4>Legend</h4></div>
     <script src="/static/map.js"></script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwecRj8BnwNeAVuHQvmW-GQy7ZQLk27jk&callback=initMap">
     </script>
-    
+    <div id="saved-list" style="float: left;" textalign="center">
+          <ul>
+            <h3>Items</h3>
+          </ul>
+        </div>
+      </form>
   </body>
 </html>
 

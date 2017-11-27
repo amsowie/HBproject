@@ -70,6 +70,8 @@ def process_registration():
     db.session.add(user)
     db.session.commit()
 
+    user_id = user.user_id
+
     session['user_name'] = fname
     session['user_id'] = user_id
 
@@ -83,14 +85,35 @@ def save_searches():
 
     city_id = request.form.get('cityId')
     month = request.form.get('monthChosen')
+    summary = request.form.get('summary')
+    temp_high = request.form.get('tempHigh')
+    temp_low = request.form.get('tempLow')
     user_id = session['user_id']
 
 
     #this will need to be a query for other things, maybe include weather?
     data = db.session.query(City).filter(City.city_id == city_id).first()
-    info = {'cityId': data.city_id} # trial lines
+    city_name = data.city_name
+    trip = Trip(city_id=city_id, user_id=user_id, month=month)
+
+    db.session.add(trip)
+    db.session.commit()
+
+    info = {'cityId': data.city_id,
+            'monthChosen': month,
+            'tempHigh': temp_high,
+            'tempLow': temp_low,
+            'summary': summary,
+            'cityName': city_name}  # trial lines
+
     return jsonify(info)
 
+# @app.route('/plan-trip')
+# def plant_trip():
+#     """Take in user's saved trip cities and determine best route based on
+#     length of flight"""
+
+#     let cities_to_calculate = request.form.get()
 
 @app.route('/lat-long.json', methods=['GET'])
 def lat_long_info():
@@ -99,8 +122,6 @@ def lat_long_info():
     lat_longs = {}
 
     user_month = request.args.get('month')
-    # user_temp_limit = request.form.get('temp')
-    # weathers = db.session.query(Weather).all()
     weathers = db.session.query(Weather).filter(Weather.month == user_month).all()
     for weather in weathers:
             lat_longs[weather.city.city_name] = {'lat': weather.city.city_lat,

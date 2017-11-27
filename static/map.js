@@ -30,7 +30,7 @@ function initMap() {
         legend.appendChild(div);
       }
 
-      map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
+      map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(legend);
 }
 
 function filterCities() {
@@ -80,7 +80,10 @@ function makeMarkers(latLongs, monthChosen){
                                Summary: ${city.wSummary} <br>
                 High Temperature: ${city.tempHigh} F <br>
                 Low Temperature: ${city.tempLow} F <br>
-                <button class="save-button" data-month="${monthChosen}" data-save="${city.cityId}">Save to sidebar</button>`;
+                <button class="save-button" data-high="${city.tempHigh}" 
+                              data-month="${monthChosen}" data-low="${city.tempLow}"
+                              data-save="${city.cityId}" data-summary="${city.wSummary}">
+                              Save to sidebar</button>`;
                 
                 let marker = new google.maps.Marker({
                     position: new google.maps.LatLng((city.lat), (city.lng)),
@@ -97,19 +100,28 @@ function makeMarkers(latLongs, monthChosen){
 
 $(document).on('click', '.save-button', function(evt) {
         let savedCity = $(this).data('save');
-        console.log(savedCity);
+        let tempHigh = $(this).data('high');
+        let tempLow = $(this).data('low');
+        let summary = $(this).data('summary');
         let monthChosen = $(this).data('month');
         let formInputs = {
             'cityId': savedCity,
             'monthChosen': monthChosen,
+            'tempLow': tempLow,
+            'tempHigh': tempHigh,
+            'summary': summary,
         };
         $.post('/save-searches', formInputs, displaySavedSearches);
         console.log(monthChosen);
     });
 
 function displaySavedSearches(results) {
-    let first = results.cityId;
-    $('#saved-list').text(first);
+    let high = results.tempHigh;
+    let low = results.tempLow;
+    let summary = results.summary;
+    let month = results.monthChosen;
+    let cityName = results.cityName;
+    $('#saved-list').text(high);
 }
 
 function addInfoWindow(text, marker){
