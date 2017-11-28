@@ -34,7 +34,7 @@ class TripGraph(object):
 
         self.nodes.add(city)
 
-    def set_city_routes(self, city1, city2):
+    def set_city_routes(self, city1, city2, weight):
         """Set two cities as adjacent"""
 
         city1.adjacent[city1] = {city2: weight}
