@@ -62,9 +62,9 @@ class Paths(object):
 def create_nodes(cities, home):
     """Create nodes from node class for city graph"""
 
-    cities.append(home)
+    cities = cities.append(home)
     for city in cities:
-        city_node = City(city)
+        city_node = City(city['name'])
         city_nodes.append(city_node)
 
     distance_calculation(cities)
@@ -78,28 +78,26 @@ def distance_calculation(cities, home):
     cities.append(home)
     for i in range(len(cities) - 1):
         for j in range(1, len(cities)):
-            city1 = (city[i].lat, city[i].long)
-            city2 = (city[j].lat, city[j].long)
-            distance = (vincenty(city1, city2.miles) # save this truncated later
-        
+            city1 = (city[i]['lat'], city[i]['lng'])
+            city2 = (city[j]['lat'], city[j]['lng'])
+            distance = (vincenty(city1, city2).miles)  # save this truncated later
 
-        # city[i] = City(city[i])
+            city1.set_city_routes(city1, city2, distance)
 
-        city[i].set_city_routes(city[i], city[j], distance)
-atlanta = City("Atlanta")
-oakland = City("Oakland")
-la = City("LA")
-selby = City("Selby")
+# atlanta = City("Atlanta")
+# oakland = City("Oakland")
+# la = City("LA")
+# selby = City("Selby")
 
 
-places = Paths([atlanta, oakland, la, selby])
+# places = Paths([atlanta, oakland, la, selby])
 
-atlanta.set_city_routes(atlanta, oakland, 400)
-selby.set_city_routes(selby, oakland, 500)
-selby.set_city_routes(selby, atlanta, 150)
-selby.set_city_routes(selby, la, 900)
-oakland.set_city_routes(oakland, la, 200)
-la.set_city_routes(la, atlanta, 250)
+# atlanta.set_city_routes(atlanta, oakland, 400)
+# selby.set_city_routes(selby, oakland, 500)
+# selby.set_city_routes(selby, atlanta, 150)
+# selby.set_city_routes(selby, la, 900)
+# oakland.set_city_routes(oakland, la, 200)
+# la.set_city_routes(la, atlanta, 250)
 
 
-print "Best paths from {}".format(selby), places.shortest(selby)
+# print "Best paths from {}".format(selby), places.shortest(selby)

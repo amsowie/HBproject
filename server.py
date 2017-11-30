@@ -5,6 +5,7 @@ import bcrypt
 from flask import Flask, render_template, jsonify, request, session, redirect, flash
 from flask_debugtoolbar import DebugToolbarExtension
 import requests
+from pathcalc import City, Paths, create_nodes, distance_calculation
 
 from model import connect_to_db, db, City, Country, Month, Weather, User, Trip
 app = Flask(__name__)
@@ -133,18 +134,23 @@ def map():
 
     return render_template('weathermap.html', month_list=month_list, weathers=weathers)
 
-# @app.route('/calc-city-order')
-# def calc_city_order():
-#     """Use functions to add cities as nodes in graph for use with Dijkstra's
-#     algorithm to return order of cities"""
+@app.route('/calc-city-order', methods=['POST'])
+def calc_city_order():
+    """Use functions to add cities as nodes in graph for use with Dijkstra's
+    algorithm to return order of cities"""
 
-#     cities_for_trip = request.form.get('citiesChosen')
-#     home = request.form.get('home')
-#     city_nodes = create_nodes(cities_for_trip, home)
-#     #create graph with nodes(city_nodes)
-#     #calculate path?
-#     city_order = 
-#     return jsonify(city_order)
+    cities_for_trip = request.form.get('citiesChosen')
+    home = request.form.get('home')
+    import pdb; pdb.set_trace()
+    city_nodes = create_nodes(cities_for_trip, home)
+    route_plan = Paths(city_nodes)
+    route_plan.shortest(home)
+
+    #create graph with nodes(city_nodes)
+    #calculate path?
+    # city_order =
+
+    return jsonify(message='success')
 
 @app.route('/logout')
 def log_out():

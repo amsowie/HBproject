@@ -140,18 +140,21 @@ $(document).on('click', '#path-planner', function (evt) {
         let lng = $(this).data('lng');
         let city_info = {'name': name, 'lat': lat, 'lng': lng};
         checkedValue.push(city_info)
-        debugger;
-        });
+
+         let home = {'name': 'Pusan', 'lat': 35.170429, 'lng': 128.999481};
+        console.log(checkedValue);
+        let formInputs = {'citiesChosen': checkedValue,
+                      'home': home};
+
+           $.post('/calc-city-order', formInputs, function (results) {
+                let orderToDisplay = results;
+                console.log(orderToDisplay);
+
+           });
+     });
 
     // add home logic here
-    let formInputs = {'citiesChosen': checkedValue,
-                      'home': homeValue};
 
-   $.post('/calc-city-order', formInputs, function (results) {
-        let orderToDisplay = results;
-        console.log(orderToDisplay);
-
-   });
 });
 
 
