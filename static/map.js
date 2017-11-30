@@ -125,14 +125,14 @@ $(document).on('click', '.save-button', function(evt) {
         });
     });
 
-// function displaySavedSearches(results) {
-//     let high = results.tempHigh;
-//     let low = results.tempLow;
-//     let summary = results.summary;
-//     let month = results.monthChosen;
-//     let cityName = results.cityName;
-//     $('#saved-list').text(high);
-// }
+$(document).on('click', '.path-planner', function(evt) {
+
+    var checkedValue = $('.messageCheckbox:checked').val();
+
+
+})
+
+
 
 function addInfoWindow(text, marker){
   var infoWindow = new google.maps.InfoWindow({

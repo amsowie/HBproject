@@ -86,10 +86,6 @@ def save_searches():
     weather_id = request.form.get('weatherId')
     user_id = session['user_id']
 
-    #this will need to be a query for other things, maybe include weather?
-    # data = db.session.query(City).filter(City.city_id == city_id).first()
-    # city_name = data.city_name
-
     trip = Trip(weather_id=weather_id, user_id=user_id)
 
     db.session.add(trip)
@@ -136,6 +132,12 @@ def map():
     weathers = db.session.query(Trip).filter(user_id == user_id).all()
 
     return render_template('weathermap.html', month_list=month_list, weathers=weathers)
+
+@app.route('/calc-city-order')
+def calc_city_order():
+    """Use functions to add cities as nodes in graph for use with Dijkstra's
+    algorithm to return order of cities"""
+    return jsonify()
 
 @app.route('/logout')
 def log_out():

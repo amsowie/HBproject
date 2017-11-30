@@ -63,6 +63,7 @@
         hidden
         {% endif %}
           <tr>
+            <th>Check</th>          
             <th>Month</th>
             <th>City</th>
             <th>Summary</th>
@@ -71,6 +72,7 @@
           </tr>
           {% for weather in weathers %}
           <tr>
+            <td><input type="checkbox" id="{{ weather.weather.city.city_name }}"/></td>
             <td>{{ weather.weather.month }} </td>
             <td>{{ weather.weather.city.city_name }} </td>
             <td>{{ weather.weather.temp_high }} </td>
