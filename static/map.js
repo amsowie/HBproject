@@ -83,7 +83,8 @@ function makeMarkers(latLongs, monthChosen){
                 <button class="save-button" data-high="${city.tempHigh}" 
                               data-month="${monthChosen}" data-low="${city.tempLow}"
                               data-save="${city.cityId}" data-summary="${city.wSummary}"
-                              data-name="${city.cityName}" data-weather="${city.weatherId}">
+                              data-name="${city.cityName}" data-weather="${city.weatherId}"
+                              data-lat="${city.lat}" data-lng="${city.lng}">
                               Save to sidebar</button>`;
                 
                 let marker = new google.maps.Marker({
@@ -99,20 +100,24 @@ function makeMarkers(latLongs, monthChosen){
     }           
 }
 
-$(document).on('click', '.save-button', function(evt) {
+$(document).on('click', '.save-button', function (evt) {
         let cityId = $(this).data('save');
         let tempHigh = $(this).data('high');
         let tempLow = $(this).data('low');
         let summary = $(this).data('summary');
         let monthChosen = $(this).data('month');
         let weatherId = $(this).data('weather');
-        let cityName = $(this).data('name')
+        let cityName = $(this).data('name');
+        let cityLat = $(this).data('lat');
+        let cityLong = $(this).data('lng');
         let formInputs = {
             'weatherId': weatherId,
         };
-        $.post('/save-searches', formInputs, function(results){
+        $.post('/save-searches', formInputs, function (results){
             alert(results.message);
             let newRow = $("<tr>");
+            $("<td />").html(`<input type="checkbox" class="check" id="${cityName}" data-lat="${cityLat}" data-lng="${cityLong}" value="${cityName}" />`).appendTo(newRow);
+            // newRow.append($("<td>" + "<input type="checkbox" id="cityName" />" + "</td>"));
             newRow.append($("<td>" + monthChosen + "</td>"));
             newRow.append($("<td>" + cityName + "</td>"));
             newRow.append($("<td>" + tempHigh + "</td>"));
@@ -125,12 +130,29 @@ $(document).on('click', '.save-button', function(evt) {
         });
     });
 
-$(document).on('click', '.path-planner', function(evt) {
 
-    var checkedValue = $('.messageCheckbox:checked').val();
+$(document).on('click', '#path-planner', function (evt) {
 
+    let checkedValue = [];
+    $('.check:checked').each(function(){
+        let name = $(this).val();
+        let lat = $(this).data('lat');
+        let lng = $(this).data('lng');
+        let city_info = {'name': name, 'lat': lat, 'lng': lng};
+        checkedValue.push(city_info)
+        debugger;
+        });
 
-})
+    // add home logic here
+    let formInputs = {'citiesChosen': checkedValue,
+                      'home': homeValue};
+
+   $.post('/calc-city-order', formInputs, function (results) {
+        let orderToDisplay = results;
+        console.log(orderToDisplay);
+
+   });
+});
 
 
 

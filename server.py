@@ -133,11 +133,18 @@ def map():
 
     return render_template('weathermap.html', month_list=month_list, weathers=weathers)
 
-@app.route('/calc-city-order')
-def calc_city_order():
-    """Use functions to add cities as nodes in graph for use with Dijkstra's
-    algorithm to return order of cities"""
-    return jsonify()
+# @app.route('/calc-city-order')
+# def calc_city_order():
+#     """Use functions to add cities as nodes in graph for use with Dijkstra's
+#     algorithm to return order of cities"""
+
+#     cities_for_trip = request.form.get('citiesChosen')
+#     home = request.form.get('home')
+#     city_nodes = create_nodes(cities_for_trip, home)
+#     #create graph with nodes(city_nodes)
+#     #calculate path?
+#     city_order = 
+#     return jsonify(city_order)
 
 @app.route('/logout')
 def log_out():
