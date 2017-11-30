@@ -104,8 +104,10 @@ class User(db.Model):
     email = db.Column(db.String(40), nullable=False)
     password = db.Column(db.String(100), nullable=False)
 
+    trips = db.relationship('Trip', backref='user')
+
     def __repr__(self):
-        """Useful printout of weather object"""
+        """Useful printout of user object"""
 
         return "<User user_id={} fname={} lname={} email={}>".format(self.user_id,
                                                                      self.fname,
@@ -118,20 +120,20 @@ class Trip(db.Model):
     __tablename__ = "trips"
 
     trip_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    city_id = db.Column(db.Integer, db.ForeignKey('cities.city_id'),
+    weather_id = db.Column(db.Integer, db.ForeignKey('all_weather.weather_id'),
                                                   index=True,nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'),
                                                   index=True,nullable=False)
-    month = db.Column(db.String(15), db.ForeignKey('months.month'),
-                                                  index=True,nullable=False, )
+
+    weather = db.relationship('Weather')
 
     def __repr__(self):
-        """Useful printout of weather object"""
-
-        return "<User user_id={} fname={} lname={} email={}>".format(self.user_id,
-                                                                     self.fname,
-                                                                     self.lname,
-                                                                     self.email)
+        """Useful printout of trip object"""
+        pass
+        # return "<User trip_id={} city_id={} user_id={} month={}>".format(self.trip_id,
+        #                                                              self.city_id,
+        #                                                              self.user_id,
+        #                                                              self.month)
 
 
 

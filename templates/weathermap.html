@@ -45,21 +45,42 @@
       <option id="europe" value="europe">Europe</option>
     </select>
     <input type="submit" id="weather-search" value="Search" class="weather-search">
-    
+    </form>
 
+    <div>
     <h3><span id="month-title"></span> World Weather</h3>
     <div id="map" style="float: left"></div>
     <div id="legend"><h4>Legend</h4></div>
+    </div>
     <script src="/static/map.js"></script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwecRj8BnwNeAVuHQvmW-GQy7ZQLk27jk&callback=initMap">
     </script>
-    <div id="saved-list" style="float: left;" textalign="center">
-          <ul>
-            <h3>Items</h3>
-          </ul>
+    <div id="saved-cities" style="float: left;" textalign="center">
+         
+      <table id="saved-cities-table" style="width:50%">
+        {% if not weathers %}
+        hidden
+        {% endif %}
+          <tr>
+            <th>Month</th>
+            <th>City</th>
+            <th>Summary</th>
+            <th>Temperature High</th>
+            <th>Temperature Low</th>
+          </tr>
+          {% for weather in weathers %}
+          <tr>
+            <td>{{ weather.weather.month }} </td>
+            <td>{{ weather.weather.city.city_name }} </td>
+            <td>{{ weather.weather.temp_high }} </td>
+            <td>{{ weather.weather.temp_low }} </td> 
+            <td>{{ weather.weather.summary }} </td>
+                      
+          </tr>
+           {% endfor %}     
+      </table>
         </div>
-      </form>
   </body>
 </html>
 

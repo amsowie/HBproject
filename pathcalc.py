@@ -73,4 +73,4 @@ oakland.set_city_routes(oakland, la, 200)
 la.set_city_routes(la, atlanta, 250)
 
 
-print "Best paths from Atlanta", places.shortest(selby)
+print "Best paths from {}".format(selby), places.shortest(selby)

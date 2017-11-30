@@ -83,30 +83,19 @@ def process_registration():
 def save_searches():
     """Save searches the user selects to the database for future display"""
 
-    city_id = request.form.get('cityId')
-    month = request.form.get('monthChosen')
-    summary = request.form.get('summary')
-    temp_high = request.form.get('tempHigh')
-    temp_low = request.form.get('tempLow')
+    weather_id = request.form.get('weatherId')
     user_id = session['user_id']
 
-
     #this will need to be a query for other things, maybe include weather?
-    data = db.session.query(City).filter(City.city_id == city_id).first()
-    city_name = data.city_name
-    trip = Trip(city_id=city_id, user_id=user_id, month=month)
+    # data = db.session.query(City).filter(City.city_id == city_id).first()
+    # city_name = data.city_name
+
+    trip = Trip(weather_id=weather_id, user_id=user_id)
 
     db.session.add(trip)
     db.session.commit()
 
-    info = {'cityId': data.city_id,
-            'monthChosen': month,
-            'tempHigh': temp_high,
-            'tempLow': temp_low,
-            'summary': summary,
-            'cityName': city_name}  # trial lines
-
-    return jsonify(info)
+    return jsonify(message="success")
 
 # @app.route('/plan-trip')
 # def plant_trip():
@@ -131,7 +120,8 @@ def lat_long_info():
                                                  'tempHigh': weather.temp_high,
                                                  'tempLow': weather.temp_low,
                                                  'cityName': weather.city.city_name,
-                                                 'cityId': weather.city.city_id}
+                                                 'cityId': weather.city.city_id,
+                                                 'weatherId': weather.weather_id}
     data = {}
     data["lat_longs"] = lat_longs
     data["user_month"] = user_month
@@ -141,10 +131,11 @@ def lat_long_info():
 @app.route('/map')
 def map():
     """Map page"""
-
+    user_id = session['user_id']
     month_list = db.session.query(Month.month).all()
+    weathers = db.session.query(Trip).filter(user_id == user_id).all()
 
-    return render_template('weathermap.html', month_list=month_list)
+    return render_template('weathermap.html', month_list=month_list, weathers=weathers)
 
 @app.route('/logout')
 def log_out():

@@ -82,7 +82,8 @@ function makeMarkers(latLongs, monthChosen){
                 Low Temperature: ${city.tempLow} F <br>
                 <button class="save-button" data-high="${city.tempHigh}" 
                               data-month="${monthChosen}" data-low="${city.tempLow}"
-                              data-save="${city.cityId}" data-summary="${city.wSummary}">
+                              data-save="${city.cityId}" data-summary="${city.wSummary}"
+                              data-name="${city.cityName}" data-weather="${city.weatherId}">
                               Save to sidebar</button>`;
                 
                 let marker = new google.maps.Marker({
@@ -91,7 +92,7 @@ function makeMarkers(latLongs, monthChosen){
                     title: (city.cityName),
                     icon: image
                 });
-
+                console.log(city.weatherId);
                 allMarkers.push(marker);
                 addInfoWindow(content, marker)
               
@@ -99,30 +100,39 @@ function makeMarkers(latLongs, monthChosen){
 }
 
 $(document).on('click', '.save-button', function(evt) {
-        let savedCity = $(this).data('save');
+        let cityId = $(this).data('save');
         let tempHigh = $(this).data('high');
         let tempLow = $(this).data('low');
         let summary = $(this).data('summary');
         let monthChosen = $(this).data('month');
+        let weatherId = $(this).data('weather');
+        let cityName = $(this).data('name')
         let formInputs = {
-            'cityId': savedCity,
-            'monthChosen': monthChosen,
-            'tempLow': tempLow,
-            'tempHigh': tempHigh,
-            'summary': summary,
+            'weatherId': weatherId,
         };
-        $.post('/save-searches', formInputs, displaySavedSearches);
-        console.log(monthChosen);
+        $.post('/save-searches', formInputs, function(results){
+            alert(results.message);
+            let newRow = $("<tr>");
+            newRow.append($("<td>" + monthChosen + "</td>"));
+            newRow.append($("<td>" + cityName + "</td>"));
+            newRow.append($("<td>" + tempHigh + "</td>"));
+            newRow.append($("<td>" + tempLow + "</td>"));
+            newRow.append($("<td>" + summary + "</td>"));
+
+            $("#saved-cities-table").append(newRow);
+            $("#saved-cities").show();
+
+        });
     });
 
-function displaySavedSearches(results) {
-    let high = results.tempHigh;
-    let low = results.tempLow;
-    let summary = results.summary;
-    let month = results.monthChosen;
-    let cityName = results.cityName;
-    $('#saved-list').text(high);
-}
+// function displaySavedSearches(results) {
+//     let high = results.tempHigh;
+//     let low = results.tempLow;
+//     let summary = results.summary;
+//     let month = results.monthChosen;
+//     let cityName = results.cityName;
+//     $('#saved-list').text(high);
+// }
 
 function addInfoWindow(text, marker){
   var infoWindow = new google.maps.InfoWindow({

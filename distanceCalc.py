@@ -1,3 +1,5 @@
+from geopy.distance import vincenty
+
 def distance_calculation(cities):
     """Take in a list of four cities or less and determine the best route based
     on the shortest flight being last"""
