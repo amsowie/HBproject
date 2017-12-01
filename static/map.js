@@ -136,7 +136,6 @@ $(document).on('click', '#delete-cities', function (evt) {
     $('.check:checked').each(function(){
         let name = $(this).val();
         let weatherId = $(this).data('del');
-        console.log(weatherId);
         let city_info = {'name': name, 'weatherId': weatherId};
         checkedValues.push(city_info)
          
@@ -145,9 +144,10 @@ $(document).on('click', '#delete-cities', function (evt) {
     let formInputs = {'citiesChosen': checkedValues};
     let formJSON = JSON.stringify(formInputs);
     $.post('/delete-cities', {'json': formJSON}, function (results) {
-        // delete from db via server here and remember pusan
-        debugger;
-        alert(results.message)
+        // delete from db via server here 
+        //NEED to update rows in display table or refresh page somehow
+        //NEED button unclick after submit
+                alert(results.message)
     });
 
 });
@@ -166,13 +166,12 @@ $(document).on('click', '#path-planner', function (evt) {
      });
 
         // add home logic here
-        let home = {'name': 'Pusan', 'lat': 35.170429, 'lng': 128.999481};
-        let formInputs = {'citiesChosen': checkedValues,
-                      'home': home};
+        let formInputs = {'citiesChosen': checkedValues};
+                      
         let formJSON = JSON.stringify(formInputs);
            $.post('/calc-city-order', {'json': formJSON}, function (results) {
                 let orderToDisplay = results;
-
+                $('#path').text('');
                 for (let city in orderToDisplay){
                     $('#path').append(orderToDisplay[city] + "&nbsp; &nbsp;");
                 }

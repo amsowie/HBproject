@@ -149,12 +149,18 @@ def calc_city_order():
     """Use functions to add cities as nodes in graph for use with Dijkstra's
     algorithm to return order of cities"""
 
+    home = {}
     form_JSON = request.form.get('json')
     form_data = json.loads(form_JSON)  # turns back to dictionary
     cities_for_trip = form_data.get('citiesChosen')
+    hometown = session['hometown_name']
 
+    home_obj = db.session.query(City).filter(City.city_name == hometown).first()
+    print home_obj
+    home['name'] = home_obj.city_name
+    home['lat'] = home_obj.city_lat
+    home['lng'] = home_obj.city_long
 
-    home = form_data.get('home')
     city_nodes = create_nodes(cities_for_trip, home)
     route_plan = Paths(city_nodes)
     trip_routes = route_plan.shortest(home["name"])[::-1]
