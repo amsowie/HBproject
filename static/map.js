@@ -34,15 +34,15 @@ function initMap() {
 }
 
 function filterCities() {
+    let monthChosen = $('#pick-month').val();
+    $('#month-title').text(monthChosen);
 
-        let monthChosen = $('#pick-month').val();
-        $('#month-title').text(monthChosen);
-        $.get('/lat-long.json', {month: monthChosen}, function (results){
-            let latLongs = results.lat_longs;
-            let region = $('#select-region').val();
-            deleteMarkers();    
-            makeMarkers(latLongs, monthChosen);
-            changeCenter(region);
+    $.get('/lat-long.json', {month: monthChosen}, function (results){
+        let latLongs = results.lat_longs;
+        let region = $('#select-region').val();
+        deleteMarkers();    
+        makeMarkers(latLongs, monthChosen);
+        changeCenter(region);
 
     });
     
@@ -50,86 +50,90 @@ function filterCities() {
 
 function makeMarkers(latLongs, monthChosen){
 
-            let city, image;  
+    let city, image;  
 
-            for (let key in latLongs) {
-                city = latLongs[key];
-                if (city.tempHigh < 30) {
-                    image = 'http://maps.google.com/mapfiles/ms/micons/lightblue.png';
-                }
-                else if ((city.tempHigh < 40) && (city.tempHigh >= 30)) {
-                    image = 'http://maps.google.com/mapfiles/ms/micons/blue.png';
-                }
-                else if ((city.tempHigh < 50) && (city.tempHigh >= 40)) {
-                    image = 'http://maps.google.com/mapfiles/ms/micons/green.png';
-                }
-                else if ((city.tempHigh < 60) && (city.tempHigh >= 50)) {
-                    image = 'http://maps.google.com/mapfiles/ms/micons/yellow.png';
-                }
-                else if ((city.tempHigh < 70) && (city.tempHigh >= 60)) {
-                    image = 'http://maps.google.com/mapfiles/ms/micons/orange.png';
-                }
-                else if ((city.tempHigh < 80) && (city.tempHigh >= 70)) {
-                    image = 'http://maps.google.com/mapfiles/ms/micons/pink.png';
-                }
-                else {
-                    image = 'http://maps.google.com/mapfiles/ms/micons/red.png';
-                }
+    for (let key in latLongs) {
+        city = latLongs[key];
+        if (city.tempHigh < 30) {
+            image = 'http://maps.google.com/mapfiles/ms/micons/lightblue.png';
+        }
+        else if ((city.tempHigh < 40) && (city.tempHigh >= 30)) {
+            image = 'http://maps.google.com/mapfiles/ms/micons/blue.png';
+        }
+        else if ((city.tempHigh < 50) && (city.tempHigh >= 40)) {
+            image = 'http://maps.google.com/mapfiles/ms/micons/green.png';
+        }
+        else if ((city.tempHigh < 60) && (city.tempHigh >= 50)) {
+            image = 'http://maps.google.com/mapfiles/ms/micons/yellow.png';
+        }
+        else if ((city.tempHigh < 70) && (city.tempHigh >= 60)) {
+            image = 'http://maps.google.com/mapfiles/ms/micons/orange.png';
+        }
+        else if ((city.tempHigh < 80) && (city.tempHigh >= 70)) {
+            image = 'http://maps.google.com/mapfiles/ms/micons/pink.png';
+        }
+        else {
+            image = 'http://maps.google.com/mapfiles/ms/micons/red.png';
+        }
 
-                let content = `City: ${city.cityName} <br>
-                               Summary: ${city.wSummary} <br>
-                High Temperature: ${city.tempHigh} F <br>
-                Low Temperature: ${city.tempLow} F <br>
-                <button class="save-button" data-high="${city.tempHigh}" 
-                              data-month="${monthChosen}" data-low="${city.tempLow}"
-                              data-save="${city.cityId}" data-summary="${city.wSummary}"
-                              data-name="${city.cityName}" data-weather="${city.weatherId}"
-                              data-lat="${city.lat}" data-lng="${city.lng}">
-                              Save City</button>`;
-                
-                let marker = new google.maps.Marker({
-                    position: new google.maps.LatLng((city.lat), (city.lng)),
-                    map: map,
-                    title: (city.cityName),
-                    icon: image
-                });
-                allMarkers.push(marker);
-                addInfoWindow(content, marker)
-              
+        let content =  `City: ${city.cityName} <br>
+                        Summary: ${city.wSummary} <br>
+                        High Temperature: ${city.tempHigh} F <br>
+                        Low Temperature: ${city.tempLow} F <br>
+                    <button class="save-button" 
+                    data-high="${city.tempHigh}" 
+                    data-month="${monthChosen}" data-low="${city.tempLow}"
+                    data-save="${city.cityId}" data-summary="${city.wSummary}"
+                    data-name="${city.cityName}" data-weather="${city.weatherId}"
+                    data-lat="${city.lat}" data-lng="${city.lng}">
+                    Save City</button>`;
+        
+        let marker = new google.maps.Marker({
+            position: new google.maps.LatLng((city.lat), (city.lng)),
+            map: map,
+            title: (city.cityName),
+            icon: image
+        });
+
+        allMarkers.push(marker);
+        addInfoWindow(content, marker)
+      
     }           
 }
 
 $(document).on('click', '.save-button', function (evt) {
-        let cityId = $(this).data('save');
-        let tempHigh = $(this).data('high');
-        let tempLow = $(this).data('low');
-        let summary = $(this).data('summary');
-        let monthChosen = $(this).data('month');
-        let weatherId = $(this).data('weather');
-        let cityName = $(this).data('name');
-        let cityLat = $(this).data('lat');
-        let cityLong = $(this).data('lng');
-        let formInputs = {'weatherId': weatherId,
-                          'cityId': cityId,
-                          'cityName': cityName};
 
-        $.post('/save-searches', formInputs, function (results){
-                 alert(results.message);
-            if (results.message !== 'Departure city saved.'){
-                let newRow = $("<tr>");
-                $("<td />").html(`<input type="checkbox" class="check" id="${cityName}" data-del="${weatherId}" data-lat="${cityLat}" data-lng="${cityLong}" value="${cityName}" />`).appendTo(newRow);
-                // newRow.append($("<td>" + "<input type="checkbox" id="cityName" />" + "</td>"));
-                newRow.append($("<td>" + monthChosen + "</td>"));
-                newRow.append($("<td>" + cityName + "</td>"));
-                newRow.append($("<td>" + tempHigh + "</td>"));
-                newRow.append($("<td>" + tempLow + "</td>"));
-                newRow.append($("<td>" + summary + "</td>"));
+    let cityId = $(this).data('save');
+    let tempHigh = $(this).data('high');
+    let tempLow = $(this).data('low');
+    let summary = $(this).data('summary');
+    let monthChosen = $(this).data('month');
+    let weatherId = $(this).data('weather');
+    let cityName = $(this).data('name');
+    let cityLat = $(this).data('lat');
+    let cityLong = $(this).data('lng');
 
-                $("#saved-cities-table").append(newRow);
-                $("#saved-cities").show();
-            }
-        });
+    let formInputs = {'weatherId': weatherId,
+                      'cityId': cityId,
+                      'cityName': cityName};
+
+    $.post('/save-searches', formInputs, function (results){
+             alert(results.message);
+        if (results.message !== 'Departure city saved.'){
+            let newRow = $("<tr>");
+            $("<td />").html(`<input type="checkbox" class="check" id="${cityName}" data-del="${weatherId}" data-lat="${cityLat}" data-lng="${cityLong}" value="${cityName}" />`).appendTo(newRow);
+            // newRow.append($("<td>" + "<input type="checkbox" id="cityName" />" + "</td>"));
+            newRow.append($("<td>" + monthChosen + "</td>"));
+            newRow.append($("<td>" + cityName + "</td>"));
+            newRow.append($("<td>" + tempHigh + "</td>"));
+            newRow.append($("<td>" + tempLow + "</td>"));
+            newRow.append($("<td>" + summary + "</td>"));
+
+            $("#saved-cities-table").append(newRow);
+            // $("#saved-cities").show();
+        }     
     });
+});
 
 $(document).on('click', '#delete-cities', function (evt) {
     let checkedValues = [];
@@ -138,16 +142,19 @@ $(document).on('click', '#delete-cities', function (evt) {
         let weatherId = $(this).data('del');
         let city_info = {'name': name, 'weatherId': weatherId};
         checkedValues.push(city_info)
+
+        if ($(this).is(":checked")){
+            $(this).parents("tr").remove();
+        }
          
      });
 
     let formInputs = {'citiesChosen': checkedValues};
     let formJSON = JSON.stringify(formInputs);
+
     $.post('/delete-cities', {'json': formJSON}, function (results) {
-        // delete from db via server here 
-        //NEED to update rows in display table or refresh page somehow
-        //NEED button unclick after submit
-                alert(results.message)
+        // deleted from database via server and return results
+        alert(results.message);
     });
 
 });
@@ -155,27 +162,29 @@ $(document).on('click', '#delete-cities', function (evt) {
 $(document).on('click', '#path-planner', function (evt) {
 
     let checkedValues = [];
-    $('.check:checked').each(function(){
+
+    $('.check:checked').each(function() {
+
         let name = $(this).val();
         let lat = $(this).data('lat');
         let lng = $(this).data('lng');
         let city_info = {'name': name, 'lat': lat, 'lng': lng};
-        checkedValues.push(city_info)
-
+        checkedValues.push(city_info);
+        $(this).prop('checked', false);
          
-     });
+    });
 
-        // add home logic here
-        let formInputs = {'citiesChosen': checkedValues};
-                      
-        let formJSON = JSON.stringify(formInputs);
-           $.post('/calc-city-order', {'json': formJSON}, function (results) {
-                let orderToDisplay = results;
-                $('#path').text('');
-                for (let city in orderToDisplay){
-                    $('#path').append(orderToDisplay[city] + "&nbsp; &nbsp;");
-                }
-           });
+    let formInputs = {'citiesChosen': checkedValues};              
+    let formJSON = JSON.stringify(formInputs);
+
+   $.post('/calc-city-order', {'json': formJSON}, function (results) {
+        let orderToDisplay = results;
+        $('#path').text('');
+
+        for (let city in orderToDisplay){
+            $('#path').append(orderToDisplay[city] + "&nbsp; &nbsp;");
+        }
+   });
 
 });
 

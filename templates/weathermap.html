@@ -24,83 +24,85 @@
     </style>
   </head>
   <body>
-      <h3>Welcome, {{ session['user_name'] }}</h3>
-  
+    <div><h3>Welcome, {{ session['user_name'] }}</h3></div>
   <div>
     {% if session['hometown'] %}
       <p>Your departure city is: {{ session['hometown_name'] }}</p>
     {% else %}  
       <p>Please select your departure city by clicking a marker on the map</p>
     {% endif %}
-  <!-- dropdown form for user to select month -->
-  <form id="month-pick">
-    {% if session['hometown'] %}
-   <p>Please select a month.</p>
-    <select id="pick-month" name="month">
-      {% for month in month_list %}
-      <option id="{{ month[0] }}" value="{{ month[0] }}">{{ month[0] }}</option>
-      {% endfor %}
-    </select>
-    {% else %}  
-    <input type="hidden" id="pick-month" name="month" value="January">
-    {% endif %}
-   <p></p>
-    <p>Please select a zoom area.</p>
-    <select id="select-region" name="regions">
-      <option id="asia" value="asia">Asia</option>
-      <option id="africa" value="africa">Africa</option>
-      <option id="north-america" value="north-america">North America</option>
-      <option id="south-america" value="south-america">South America</option>
-      <option id="oceania" value="oceania">Oceania</option>
-      <option id="europe" value="europe">Europe</option>
-    </select>
-      <input type="submit" id="weather-search" value="Search" class="weather-search">
-  </form>
   </div>
-      
-    <div>
-      <h4>Ideal Route</h4>
-      <p id="path"></p>
-    </div>
-    <div>
+  <div>
+  <!-- dropdown form for user to select month -->
+    <form id="month-pick">
+      {% if session['hometown'] %}
+       <p>Please select a month.</p>
+        <select id="pick-month" name="month">
+          {% for month in month_list %}
+          <option id="{{ month[0] }}" value="{{ month[0] }}">{{ month[0] }}</option>
+          {% endfor %}
+          </select>
+          {% else %}  
+          <input type="hidden" id="pick-month" name="month" value="January">
+      {% endif %}
+      <p></p>
+      <p>Please select a zoom area.</p>
+        <select id="select-region" name="regions">
+          <option id="asia" value="asia">Asia</option>
+          <option id="africa" value="africa">Africa</option>
+          <option id="north-america" value="north-america">North America</option>
+          <option id="south-america" value="south-america">South America</option>
+          <option id="oceania" value="oceania">Oceania</option>
+          <option id="europe" value="europe">Europe</option>
+        </select>
+        <input type="submit" id="weather-search" value="Search" class="weather-search">
+    </form>
+  </div>     
+  <div>
+    <h4>Recommended route for the shortest flight home: </h4>
+    <p id="path"></p>
+  </div>
+  <div>
     <h3><span id="month-title"></span> World Weather</h3>
     <div id="map" style="float: left"></div>
     <div id="legend"><h4>Legend</h4></div>
-    </div>
-    <script src="/static/map.js"></script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwecRj8BnwNeAVuHQvmW-GQy7ZQLk27jk&callback=initMap">
-    </script>
+  </div>
+  <script src="/static/map.js"></script>
+  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwecRj8BnwNeAVuHQvmW-GQy7ZQLk27jk&callback=initMap">
+  </script>
     <div id="saved-cities" style="float: left;" textalign="center">
-         <h2>Saved Cities</h2>
-      <table id="saved-cities-table" style="width:50%">
-<!--         {% if not weathers %}
-        hidden
-        {% endif %} -->
-          <tr>
-            <th>Check</th>          
-            <th>Month</th>
-            <th>City</th>
-            <th>Summary</th>
-            <th>Temperature High</th>
-            <th>Temperature Low</th>
-          </tr>
+      <h2>Saved Cities</h2>
+      <table id="saved-cities-table" style="width:50%">  
+        <tr>
+          <th>Check</th>          
+          <th>Month</th>
+          <th>City</th>
+          <th>Summary</th>
+          <th>Temperature High</th>
+          <th>Temperature Low</th>
+        </tr>
+        {% if weathers %}
           {% for weather in weathers %}
           <tr>
-            <td><input type="checkbox" class="check" id="{{ weather.weather.city.city_name }}" value="{{ weather.weather.city.city_name }}" data-lat="{{ weather.weather.city.city_lat }}" data-lng="{{ weather.weather.city.city_long }}" data-del="{{ weather.weather.weather_id }}" /></td>
+            <td><input type="checkbox" class="check" 
+              id="{{ weather.weather.city.city_name }}" 
+              value="{{ weather.weather.city.city_name }}" 
+              data-lat="{{ weather.weather.city.city_lat }}" 
+              data-lng="{{ weather.weather.city.city_long }}" 
+              data-del="{{ weather.weather.weather_id }}" /></td>
             <td>{{ weather.weather.month }} </td>
             <td>{{ weather.weather.city.city_name }} </td>
             <td>{{ weather.weather.temp_high }} </td>
             <td>{{ weather.weather.temp_low }} </td> 
-            <td>{{ weather.weather.summary }} </td>
-                      
+            <td>{{ weather.weather.summary }} </td>               
           </tr>
-           {% endfor %}  
-           <button class="buttons" id="path-planner">Plan Trip</button>
-           <button class="buttons" id="delete-cities">Delete Cities</button>      
+          {% endfor %} 
+        {% endif %}    
+          <button class="buttons" id="path-planner">Plan Trip</button>
+          <button class="buttons" id="delete-cities">Delete Cities</button>       
       </table>
-        </div>
+    </div>
   </body>
 </html>
-
 {% endblock %}

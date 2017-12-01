@@ -100,7 +100,7 @@ def save_searches():
         db.session.commit()
         message = "City saved."
     else:
-        user = db.session.query(User).filter(user_id == user_id).first()
+        user = db.session.query(User).filter(User.user_id == user_id).first()
         user.city_id = city_id
         db.session.commit()
         session['hometown'] = city_id
@@ -140,7 +140,8 @@ def map():
     """Map page"""
     user_id = session['user_id']
     month_list = db.session.query(Month.month).all()
-    weathers = db.session.query(Trip).filter(user_id == user_id).all()
+    weathers = db.session.query(Trip).filter(Trip.user_id == user_id).all()
+    print user_id
 
     return render_template('weathermap.html', month_list=month_list, weathers=weathers)
 
