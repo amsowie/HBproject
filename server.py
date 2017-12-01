@@ -109,12 +109,7 @@ def save_searches():
 
     return jsonify(message=message)
 
-@app.route('/delete-cities')
-def delete_routes():
-    """Delete cities from checkboxes"""
 
-    
-    return jsonify(message="Cities deleted")
 
 @app.route('/lat-long.json', methods=['GET'])
 def lat_long_info():
@@ -171,6 +166,23 @@ def calc_city_order():
 
     print order
     return jsonify(order)
+
+
+@app.route('/delete-cities', methods=['POST'])
+def delete_routes():
+    """Delete cities from checkboxes"""
+
+    form_JSON = request.form.get('json')
+    form_data = json.loads(form_JSON)
+    cities_to_delete = form_data.get('citiesChosen')
+    print cities_to_delete
+
+    for i in range(len(cities_to_delete)):
+        weather_id = cities_to_delete[i]['weatherId']
+        db.session.query(Trip).filter(Trip.weather_id == weather_id).delete()
+        db.session.commit()
+
+    return jsonify(message="Cities deleted")
 
 @app.route('/logout')
 def log_out():

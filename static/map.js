@@ -93,7 +93,6 @@ function makeMarkers(latLongs, monthChosen){
                     title: (city.cityName),
                     icon: image
                 });
-                console.log(city.weatherId);
                 allMarkers.push(marker);
                 addInfoWindow(content, marker)
               
@@ -118,7 +117,7 @@ $(document).on('click', '.save-button', function (evt) {
                  alert(results.message);
             if (results.message !== 'Departure city saved.'){
                 let newRow = $("<tr>");
-                $("<td />").html(`<input type="checkbox" class="check" id="${cityName}" data-lat="${cityLat}" data-lng="${cityLong}" value="${cityName}" />`).appendTo(newRow);
+                $("<td />").html(`<input type="checkbox" class="check" id="${cityName}" data-del="${weatherId}" data-lat="${cityLat}" data-lng="${cityLong}" value="${cityName}" />`).appendTo(newRow);
                 // newRow.append($("<td>" + "<input type="checkbox" id="cityName" />" + "</td>"));
                 newRow.append($("<td>" + monthChosen + "</td>"));
                 newRow.append($("<td>" + cityName + "</td>"));
@@ -132,21 +131,23 @@ $(document).on('click', '.save-button', function (evt) {
         });
     });
 
-$('#delete-cities').on('click', function (evt) {
+$(document).on('click', '#delete-cities', function (evt) {
     let checkedValues = [];
     $('.check:checked').each(function(){
         let name = $(this).val();
-        let lat = $(this).data('lat');
-        let lng = $(this).data('lng');
-        let city_info = {'name': name, 'lat': lat, 'lng': lng};
+        let weatherId = $(this).data('del');
+        console.log(weatherId);
+        let city_info = {'name': name, 'weatherId': weatherId};
         checkedValues.push(city_info)
          
      });
 
     let formInputs = {'citiesChosen': checkedValues};
-        let formJSON = JSON.stringify(formInputs);
+    let formJSON = JSON.stringify(formInputs);
     $.post('/delete-cities', {'json': formJSON}, function (results) {
         // delete from db via server here and remember pusan
+        debugger;
+        alert(results.message)
     });
 
 });

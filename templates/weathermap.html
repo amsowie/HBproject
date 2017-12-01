@@ -87,7 +87,7 @@
           </tr>
           {% for weather in weathers %}
           <tr>
-            <td><input type="checkbox" class="check" id="{{ weather.weather.city.city_name }}" value="{{ weather.weather.city.city_name }}" data-lat="{{ weather.weather.city.city_lat }}" data-lng="{{ weather.weather.city.city_long }}" /></td>
+            <td><input type="checkbox" class="check" id="{{ weather.weather.city.city_name }}" value="{{ weather.weather.city.city_name }}" data-lat="{{ weather.weather.city.city_lat }}" data-lng="{{ weather.weather.city.city_long }}" data-del="{{ weather.weather.weather_id }}" /></td>
             <td>{{ weather.weather.month }} </td>
             <td>{{ weather.weather.city.city_name }} </td>
             <td>{{ weather.weather.temp_high }} </td>
