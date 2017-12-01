@@ -25,17 +25,27 @@
   </head>
   <body>
       <h3>Welcome, {{ session['user_name'] }}</h3>
+  
+  <div>
+    {% if session['hometown'] %}
+      <p>Your departure city is: {{ session['hometown_name'] }}</p>
+    {% else %}  
+      <p>Please select your departure city by clicking a marker on the map</p>
+    {% endif %}
   <!-- dropdown form for user to select month -->
   <form id="month-pick">
-    Please select a month.
+    {% if session['hometown'] %}
+   <p>Please select a month.</p>
     <select id="pick-month" name="month">
       {% for month in month_list %}
       <option id="{{ month[0] }}" value="{{ month[0] }}">{{ month[0] }}</option>
       {% endfor %}
     </select>
-    <br>
-   
-    Please select a zoom area.
+    {% else %}  
+    <input type="hidden" id="pick-month" name="month" value="January">
+    {% endif %}
+   <p></p>
+    <p>Please select a zoom area.</p>
     <select id="select-region" name="regions">
       <option id="asia" value="asia">Asia</option>
       <option id="africa" value="africa">Africa</option>
@@ -44,9 +54,14 @@
       <option id="oceania" value="oceania">Oceania</option>
       <option id="europe" value="europe">Europe</option>
     </select>
-    <input type="submit" id="weather-search" value="Search" class="weather-search">
-    </form>
-
+      <input type="submit" id="weather-search" value="Search" class="weather-search">
+  </form>
+  </div>
+      
+    <div>
+      <h4>Ideal Route</h4>
+      <p id="path"></p>
+    </div>
     <div>
     <h3><span id="month-title"></span> World Weather</h3>
     <div id="map" style="float: left"></div>
@@ -57,11 +72,11 @@
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwecRj8BnwNeAVuHQvmW-GQy7ZQLk27jk&callback=initMap">
     </script>
     <div id="saved-cities" style="float: left;" textalign="center">
-         
+         <h2>Saved Cities</h2>
       <table id="saved-cities-table" style="width:50%">
-        {% if not weathers %}
+<!--         {% if not weathers %}
         hidden
-        {% endif %}
+        {% endif %} -->
           <tr>
             <th>Check</th>          
             <th>Month</th>
@@ -81,7 +96,8 @@
                       
           </tr>
            {% endfor %}  
-           <button class="buttons" id="path-planner">Plan my trip</button>   
+           <button class="buttons" id="path-planner">Plan Trip</button>
+           <button class="buttons" id="delete-cities">Delete Cities</button>      
       </table>
         </div>
   </body>

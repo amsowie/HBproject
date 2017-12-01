@@ -1,5 +1,6 @@
 """Travel based on weather/time of year search."""
 import sys
+import json
 import bcrypt
 # from jinja2 import StrictUndefined
 from flask import Flask, render_template, jsonify, request, session, redirect, flash
@@ -44,6 +45,9 @@ def user_login():
     elif user:
         session['user_name'] = user.fname
         session['user_id'] = user.user_id
+        if user.hometown:
+            session['hometown'] = user.hometown.city_id
+            session['hometown_name'] = user.hometown.city_name
         return redirect('/map')
     else:
         flash("No user exists with that information. Please register.")
@@ -85,21 +89,32 @@ def save_searches():
     """Save searches the user selects to the database for future display"""
 
     weather_id = request.form.get('weatherId')
+    city_id = request.form.get('cityId')
+    city_name = request.form.get('cityName')
     user_id = session['user_id']
 
-    trip = Trip(weather_id=weather_id, user_id=user_id)
+    if 'hometown' in session:  
+        trip = Trip(weather_id=weather_id, user_id=user_id)
 
-    db.session.add(trip)
-    db.session.commit()
+        db.session.add(trip)
+        db.session.commit()
+        message = "City saved."
+    else:
+        user = db.session.query(User).filter(user_id == user_id).first()
+        user.city_id = city_id
+        db.session.commit()
+        session['hometown'] = city_id
+        session['hometown_name'] = city_name
+        message = "Departure city saved."
 
-    return jsonify(message="success")
+    return jsonify(message=message)
 
-# @app.route('/plan-trip')
-# def plant_trip():
-#     """Take in user's saved trip cities and determine best route based on
-#     length of flight"""
+@app.route('/delete-cities')
+def delete_routes():
+    """Delete cities from checkboxes"""
 
-#     let cities_to_calculate = request.form.get()
+    
+    return jsonify(message="Cities deleted")
 
 @app.route('/lat-long.json', methods=['GET'])
 def lat_long_info():
@@ -139,25 +154,33 @@ def calc_city_order():
     """Use functions to add cities as nodes in graph for use with Dijkstra's
     algorithm to return order of cities"""
 
-    cities_for_trip = request.form.get('citiesChosen')
-    home = request.form.get('home')
-    import pdb; pdb.set_trace()
+    form_JSON = request.form.get('json')
+    form_data = json.loads(form_JSON)  # turns back to dictionary
+    cities_for_trip = form_data.get('citiesChosen')
+
+
+    home = form_data.get('home')
     city_nodes = create_nodes(cities_for_trip, home)
     route_plan = Paths(city_nodes)
-    route_plan.shortest(home)
+    trip_routes = route_plan.shortest(home["name"])[::-1]
+    order = {}
+    print "here"
 
-    #create graph with nodes(city_nodes)
-    #calculate path?
-    # city_order =
+    for i in range(len(trip_routes)):
+        order[i] = trip_routes[i].city
 
-    return jsonify(message='success')
+    print order
+    return jsonify(order)
 
 @app.route('/logout')
 def log_out():
     """Log user out and delete session"""
 
-    del session['user_name']
     del session['user_id']
+    del session['user_name']
+    if 'hometown' in session:
+        del session['hometown']
+        del session['hometown_name']
 
     flash("Logged out.")
 

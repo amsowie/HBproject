@@ -103,8 +103,10 @@ class User(db.Model):
     lname = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(40), nullable=False)
     password = db.Column(db.String(100), nullable=False)
+    city_id = db.Column(db.Text, db.ForeignKey('cities.city_id'), nullable=True)
 
     trips = db.relationship('Trip', backref='user')
+    hometown = db.relationship('City')
 
     def __repr__(self):
         """Useful printout of user object"""
@@ -129,12 +131,11 @@ class Trip(db.Model):
 
     def __repr__(self):
         """Useful printout of trip object"""
-        pass
-        # return "<User trip_id={} city_id={} user_id={} month={}>".format(self.trip_id,
-        #                                                              self.city_id,
-        #                                                              self.user_id,
-        #                                                              self.month)
-
+        
+        return "<User trip_id={} weather_id={} user_id={}>".format(self.trip_id,
+                                                                     self.weather_id,
+                                                                     self.user_id)
+                                                                     
 
 
 ##############################################################################

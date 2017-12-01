@@ -85,7 +85,7 @@ function makeMarkers(latLongs, monthChosen){
                               data-save="${city.cityId}" data-summary="${city.wSummary}"
                               data-name="${city.cityName}" data-weather="${city.weatherId}"
                               data-lat="${city.lat}" data-lng="${city.lng}">
-                              Save to sidebar</button>`;
+                              Save City</button>`;
                 
                 let marker = new google.maps.Marker({
                     position: new google.maps.LatLng((city.lat), (city.lng)),
@@ -110,50 +110,72 @@ $(document).on('click', '.save-button', function (evt) {
         let cityName = $(this).data('name');
         let cityLat = $(this).data('lat');
         let cityLong = $(this).data('lng');
-        let formInputs = {
-            'weatherId': weatherId,
-        };
+        let formInputs = {'weatherId': weatherId,
+                          'cityId': cityId,
+                          'cityName': cityName};
+
         $.post('/save-searches', formInputs, function (results){
-            alert(results.message);
-            let newRow = $("<tr>");
-            $("<td />").html(`<input type="checkbox" class="check" id="${cityName}" data-lat="${cityLat}" data-lng="${cityLong}" value="${cityName}" />`).appendTo(newRow);
-            // newRow.append($("<td>" + "<input type="checkbox" id="cityName" />" + "</td>"));
-            newRow.append($("<td>" + monthChosen + "</td>"));
-            newRow.append($("<td>" + cityName + "</td>"));
-            newRow.append($("<td>" + tempHigh + "</td>"));
-            newRow.append($("<td>" + tempLow + "</td>"));
-            newRow.append($("<td>" + summary + "</td>"));
+                 alert(results.message);
+            if (results.message !== 'Departure city saved.'){
+                let newRow = $("<tr>");
+                $("<td />").html(`<input type="checkbox" class="check" id="${cityName}" data-lat="${cityLat}" data-lng="${cityLong}" value="${cityName}" />`).appendTo(newRow);
+                // newRow.append($("<td>" + "<input type="checkbox" id="cityName" />" + "</td>"));
+                newRow.append($("<td>" + monthChosen + "</td>"));
+                newRow.append($("<td>" + cityName + "</td>"));
+                newRow.append($("<td>" + tempHigh + "</td>"));
+                newRow.append($("<td>" + tempLow + "</td>"));
+                newRow.append($("<td>" + summary + "</td>"));
 
-            $("#saved-cities-table").append(newRow);
-            $("#saved-cities").show();
-
+                $("#saved-cities-table").append(newRow);
+                $("#saved-cities").show();
+            }
         });
     });
 
-
-$(document).on('click', '#path-planner', function (evt) {
-
-    let checkedValue = [];
+$('#delete-cities').on('click', function (evt) {
+    let checkedValues = [];
     $('.check:checked').each(function(){
         let name = $(this).val();
         let lat = $(this).data('lat');
         let lng = $(this).data('lng');
         let city_info = {'name': name, 'lat': lat, 'lng': lng};
-        checkedValue.push(city_info)
-
-         let home = {'name': 'Pusan', 'lat': 35.170429, 'lng': 128.999481};
-        console.log(checkedValue);
-        let formInputs = {'citiesChosen': checkedValue,
-                      'home': home};
-
-           $.post('/calc-city-order', formInputs, function (results) {
-                let orderToDisplay = results;
-                console.log(orderToDisplay);
-
-           });
+        checkedValues.push(city_info)
+         
      });
 
-    // add home logic here
+    let formInputs = {'citiesChosen': checkedValues};
+        let formJSON = JSON.stringify(formInputs);
+    $.post('/delete-cities', {'json': formJSON}, function (results) {
+        // delete from db via server here and remember pusan
+    });
+
+});
+
+$(document).on('click', '#path-planner', function (evt) {
+
+    let checkedValues = [];
+    $('.check:checked').each(function(){
+        let name = $(this).val();
+        let lat = $(this).data('lat');
+        let lng = $(this).data('lng');
+        let city_info = {'name': name, 'lat': lat, 'lng': lng};
+        checkedValues.push(city_info)
+
+         
+     });
+
+        // add home logic here
+        let home = {'name': 'Pusan', 'lat': 35.170429, 'lng': 128.999481};
+        let formInputs = {'citiesChosen': checkedValues,
+                      'home': home};
+        let formJSON = JSON.stringify(formInputs);
+           $.post('/calc-city-order', {'json': formJSON}, function (results) {
+                let orderToDisplay = results;
+
+                for (let city in orderToDisplay){
+                    $('#path').append(orderToDisplay[city] + "&nbsp; &nbsp;");
+                }
+           });
 
 });
 
