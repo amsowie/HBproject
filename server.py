@@ -38,7 +38,6 @@ def user_login():
     password = request.form.get('password')
 
     user = db.session.query(User).filter(User.email == email).first()
-
     if user and not (bcrypt.hashpw(password.encode('utf-8'), user.password.encode('utf-8')) == user.password):
         flash("Password incorrect. Please try again.")
         return redirect('/login')

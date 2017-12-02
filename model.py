@@ -103,7 +103,7 @@ class User(db.Model):
     lname = db.Column(db.String(30), nullable=False)
     email = db.Column(db.String(40), nullable=False)
     password = db.Column(db.String(100), nullable=False)
-    city_id = db.Column(db.Text, db.ForeignKey('cities.city_id'), nullable=True)
+    city_id = db.Column(db.Integer, db.ForeignKey('cities.city_id'), nullable=True)
 
     trips = db.relationship('Trip', backref='user')
     hometown = db.relationship('City')
@@ -152,8 +152,8 @@ def example_data():
     country2 = Country(country_code='SPA', country_name='Spain')
     user1 = User(fname='Brian', lname='Beaman', email="bb@bb.com", password=bcrypt.hashpw('bestie', bcrypt.gensalt()))
     user2 = User(fname='Kari', lname='Baldwin', email="kb@kb.com", password=bcrypt.hashpw('hohoho', bcrypt.gensalt()))
-    trip1 = Trip(city_id=1, user_id=1, month='January')
-    trip2 = Trip(city_id=2, user_id=2, month='February')
+    trip1 = Trip(weather_id=2, user_id=1)
+    trip2 = Trip(weather_id=1, user_id=2)
 
     db.session.add_all([user1, user2, fake_month2, fake_month1, country1, country2])
     db.session.commit()

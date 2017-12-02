@@ -21,30 +21,43 @@
         margin: 5px;
         border: 3px solid #000;
       }
+     
     </style>
   </head>
   <body>
     <div><h3>Welcome, {{ session['user_name'] }}</h3></div>
-  <div>
-    {% if session['hometown'] %}
-      <p>Your departure city is: {{ session['hometown_name'] }}</p>
-    {% else %}  
-      <p>Please select your departure city by clicking a marker on the map</p>
+  <div id="disply-home">
+    
+    <p id="has-hometown"
+    {% if 'hometown' not in session %}
+      hidden
     {% endif %}
+      >Your departure city is: <span id="hometown-name">{{ session['hometown_name'] }}</span></p>
+    <p id="no-hometown"
+    {% if 'hometown' in session %}
+      hidden
+    {% endif %}
+      >Please select your departure city by clicking a marker on the map</p>
   </div>
   <div>
   <!-- dropdown form for user to select month -->
     <form id="month-pick">
-      {% if session['hometown'] %}
+      <div id="month-dropdown"
+      {% if 'hometown' not in session %}
+      hidden
+      {% endif %}
+      >
        <p>Please select a month.</p>
-        <select id="pick-month" name="month">
+        <select class="hide" id="pick-month" name="month"
+      {% if 'hometown' not in session %}
+      value="January"
+      {% endif %}
+        >
           {% for month in month_list %}
-          <option id="{{ month[0] }}" value="{{ month[0] }}">{{ month[0] }}</option>
+          <option class="hide" id="{{ month[0] }}" value="{{ month[0] }}">{{ month[0] }}</option>
           {% endfor %}
           </select>
-          {% else %}  
-          <input type="hidden" id="pick-month" name="month" value="January">
-      {% endif %}
+      </div>
       <p></p>
       <p>Please select a zoom area.</p>
         <select id="select-region" name="regions">
