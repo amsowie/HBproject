@@ -104,13 +104,12 @@ class TestUserLoggedIn(TestCase):
                                                             'summary': 'Partly cloudy',
                                                             'cityName': 'Santa Maria'})
         data = json.loads(response.get_data(as_text=True))
-        self.assertEqual(data['tempHigh'], '50')
+        self.assertEqual(data['message'], 'Departure city saved.')
 
     def test_lat_long_info(self):
         """Test the lat, long information comes back to plot on map correctly"""
 
         response = self.client.get("/lat-long.json", data={'month': 'January', })
-        print response
         data = json.loads(response.get_data(as_text=True))
         self.assertIn('user_month', data)
 

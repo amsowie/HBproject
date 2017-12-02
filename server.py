@@ -92,7 +92,7 @@ def save_searches():
     city_name = request.form.get('cityName')
     user_id = session['user_id']
 
-    if 'hometown' in session:  
+    if 'hometown' in session:
         trip = Trip(weather_id=weather_id, user_id=user_id)
 
         db.session.add(trip)
@@ -140,7 +140,6 @@ def map():
     user_id = session['user_id']
     month_list = db.session.query(Month.month).all()
     weathers = db.session.query(Trip).filter(Trip.user_id == user_id).all()
-    print user_id
 
     return render_template('weathermap.html', month_list=month_list, weathers=weathers)
 
