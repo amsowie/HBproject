@@ -25,9 +25,14 @@
     </style>
   </head>
   <body>
+  <div class="container">
+    {% if 'user_name' in session %}
+      <form id="logout" method=GET action="logout">
+        <button class="btn btn-default btn-btnselect" type="submit" id="logout">Log Out</button>
+      </form>
+    {% endif %}
     <div><h3>Welcome, {{ session['user_name'] }}</h3></div>
-  <div id="disply-home">
-    
+  <div id="disply-home">  
     <p id="has-hometown"
     {% if 'hometown' not in session %}
       hidden
@@ -48,19 +53,19 @@
       {% endif %}
       >
        <p>Please select a month.</p>
-        <select class="hide" id="pick-month" name="month"
+        <select class="btn btn-default btn-btnselect" id="pick-month" name="month" width="100"
       {% if 'hometown' not in session %}
       value="January"
       {% endif %}
         >
           {% for month in month_list %}
-          <option class="hide" id="{{ month[0] }}" value="{{ month[0] }}">{{ month[0] }}</option>
+          <option id="{{ month[0] }}" value="{{ month[0] }}">{{ month[0] }}</option>
           {% endfor %}
           </select>
       </div>
       <p></p>
       <p>Please select a zoom area.</p>
-        <select id="select-region" name="regions">
+        <select class="btn btn-default btn-btnselect" id="select-region" name="regions">
           <option id="asia" value="asia">Asia</option>
           <option id="africa" value="africa">Africa</option>
           <option id="north-america" value="north-america">North America</option>
@@ -68,25 +73,27 @@
           <option id="oceania" value="oceania">Oceania</option>
           <option id="europe" value="europe">Europe</option>
         </select>
-        <input type="submit" id="weather-search" value="Search" class="weather-search">
+        <input class="btn btn-default btn-btnselect" type="submit" id="weather-search" value="Search" class="weather-search">
     </form>
   </div>     
   <div>
     <h4>Recommended route for the shortest flight home: </h4>
     <p id="path"></p>
   </div>
+</div>
+<div class="container">
   <div>
     <h3><span id="month-title"></span> World Weather</h3>
-    <div id="map" style="float: left"></div>
+    <div id="map"></div>
     <div id="legend"><h4>Legend</h4></div>
   </div>
   <script src="/static/map.js"></script>
   <script async defer
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwecRj8BnwNeAVuHQvmW-GQy7ZQLk27jk&callback=initMap">
   </script>
-    <div id="saved-cities" style="float: left;" textalign="center">
+    <div id="saved-cities">
       <h2>Saved Cities</h2>
-      <table id="saved-cities-table" style="width:50%">  
+      <table id="saved-cities-table">  
         <tr>
           <th>Check</th>          
           <th>Month</th>
@@ -112,10 +119,11 @@
           </tr>
           {% endfor %} 
         {% endif %}    
-          <button class="buttons" id="path-planner">Plan Trip</button>
-          <button class="buttons" id="delete-cities">Delete Cities</button>       
+          <button class="btn btn-default btn-btnselect buttons" id="path-planner">Plan Trip</button>
+          <button class="btn btn-default btn-btnselect buttons" id="delete-cities">Delete Cities</button>       
       </table>
     </div>
+  </div>
   </body>
 </html>
 {% endblock %}

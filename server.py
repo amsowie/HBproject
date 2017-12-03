@@ -178,6 +178,7 @@ def delete_routes():
     """Delete cities from checkboxes"""
 
     form_JSON = request.form.get('json')
+    print form_JSON
     form_data = json.loads(form_JSON)
     cities_to_delete = form_data.get('citiesChosen')
     print cities_to_delete

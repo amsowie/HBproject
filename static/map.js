@@ -119,7 +119,6 @@ $(document).on('click', '.save-button', function (evt) {
 
     $.post('/save-searches', formInputs, function (results){
              alert(results.message);
-             console.log(results.message);
         if (results.message !== 'Departure city saved.'){
             let newRow = $("<tr>");
             $("<td />").html(`<input type="checkbox" class="check" id="${cityName}" data-del="${weatherId}" data-lat="${cityLat}" data-lng="${cityLong}" value="${cityName}" />`).appendTo(newRow);
@@ -134,7 +133,6 @@ $(document).on('click', '.save-button', function (evt) {
             // $("#saved-cities").show();
         }
         else{
-            console.log("here");
             $('#no-hometown').hide();
             $('#hometown-name').text(cityName);
             $('#has-hometown').show();
@@ -158,6 +156,7 @@ $(document).on('click', '#delete-cities', function (evt) {
      });
 
     let formInputs = {'citiesChosen': checkedValues};
+    console.log(formInputs);
     let formJSON = JSON.stringify(formInputs);
 
     $.post('/delete-cities', {'json': formJSON}, function (results) {
@@ -183,6 +182,7 @@ $(document).on('click', '#path-planner', function (evt) {
     });
 
     let formInputs = {'citiesChosen': checkedValues};              
+    console.log(formInputs);
     let formJSON = JSON.stringify(formInputs);
 
    $.post('/calc-city-order', {'json': formJSON}, function (results) {

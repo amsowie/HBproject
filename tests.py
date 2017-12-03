@@ -2,6 +2,7 @@ from unittest import TestCase
 import doctest
 import bcrypt
 import json
+from flask import jsonify
 from server import app
 from model import City, Country, Weather, Month, User, Trip, connect_to_db, db, example_data
 
@@ -35,6 +36,38 @@ class FlaskTests(TestCase):
         self.assertEqual(result.status_code, 200)
         self.assertIn('Email:', result.data)
 
+class TestUserLoggedInNoHometown(TestCase):
+
+    def setUp(self):
+        """Setting up tests for pages where user is logged in"""
+
+        self.client = app.test_client()
+        app.config['TESTING'] = True  # shows debugging output
+        connect_to_db(app, "postgresql:///testdb")  # work on this postg understanding and db test
+        app.config['SECRET_KEY'] = 'key'
+
+        with self.client as c:
+            with c.session_transaction() as sess:
+                sess['user_name'] = 'Brian'
+                sess['user_id'] = 1
+
+        #create tables and ad sample data
+        db.create_all()
+        example_data()
+
+    def tearDown(self):
+        """Clear database at end of test"""
+
+        db.session.close()
+        db.drop_all()  # get rid of fake dat
+
+    def test_save_searches(self):
+        response = self.client.post("/save-searches", data={'cityId': 1,
+                                                            'weatherId': 1,
+                                                            'cityName': 'Santa Maria'})
+        data = json.loads(response.get_data(as_text=True))
+        self.assertIn(data['message'], "Departure city saved.")
+
 
 class TestUserLoggedIn(TestCase):
 
@@ -50,6 +83,8 @@ class TestUserLoggedIn(TestCase):
             with c.session_transaction() as sess:
                 sess['user_name'] = 'Brian'
                 sess['user_id'] = 1
+                sess['hometown'] = 2
+                sess['hometown_name'] = 'Selby'
 
         #create tables and ad sample data
         db.create_all()
@@ -80,6 +115,13 @@ class TestUserLoggedIn(TestCase):
         self.assertEqual(result.status_code, 200)
         self.assertIn("Welcome,", result.data)
 
+        # test hometown saves and outputs to screen
+        result = self.client.post('/login', data={'email': 'bb@bb.com',
+                                                  'password': 'bestie'},
+                                                   follow_redirects=True)
+        self.assertEqual(result.status_code, 200)
+        self.assertIn('Selby', result.data)
+
         # test incorrect password
         result = self.client.post("/login", data={'email': 'bb@bb.com',
                                                   'password': 'fail'},
@@ -98,13 +140,17 @@ class TestUserLoggedIn(TestCase):
         """Test the searches save and print to screen"""
 
         response = self.client.post("/save-searches", data={'cityId': 1,
-                                                            'monthChosen': 'January',
-                                                            'tempHigh': 50,
-                                                            'tempLow': 40,
-                                                            'summary': 'Partly cloudy',
+                                                            'weatherId': 1,
                                                             'cityName': 'Santa Maria'})
         data = json.loads(response.get_data(as_text=True))
-        self.assertEqual(data['message'], 'Departure city saved.')
+        self.assertIn(data['message'], "City saved.")
+
+    # def test_delete_routes(self):
+    #     """Test deleting cities from db works properly"""
+ 
+    #     response = self.client.post('/delete-cities', data={'json': {'citiesChosen': [{'weatherId': 2, 'name': 'Selby'}]}})
+    #     # data = json.loads(response.get_data(as_text=True))
+    #     self.assertEqual(response.message, "Cities deleted")
 
     def test_lat_long_info(self):
         """Test the lat, long information comes back to plot on map correctly"""
@@ -112,6 +158,11 @@ class TestUserLoggedIn(TestCase):
         response = self.client.get("/lat-long.json", data={'month': 'January', })
         data = json.loads(response.get_data(as_text=True))
         self.assertIn('user_month', data)
+
+    # def test_calc_city_order(self):
+    #     """Test the city order calculation"""
+
+    #     response = self.client.post("/calc-city-order", data={})
 
     def test_logout(self):
         """Test the logout function works"""
@@ -147,12 +198,6 @@ class TestsDatabase(TestCase):
         self.assertEqual(result.status_code, 200)
         self.assertIn('Registration Page', result.data)  # check the register form route
 
-    # def test_search(self):
-    #     """Test the search route"""
-
-    #     result = self.client.get("/search")
-    #     self.assertEqual(result.status_code, 200)
-    #     self.assertIn('February', result.data)  # is this actually the output to test?
 
     def test_example_data(self):
         """Test the city data seeded correctly"""
