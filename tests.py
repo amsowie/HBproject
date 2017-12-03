@@ -145,24 +145,35 @@ class TestUserLoggedIn(TestCase):
         data = json.loads(response.get_data(as_text=True))
         self.assertIn(data['message'], "City saved.")
 
-    # def test_delete_routes(self):
-    #     """Test deleting cities from db works properly"""
- 
-    #     response = self.client.post('/delete-cities', data={'json': {'citiesChosen': [{'weatherId': 2, 'name': 'Selby'}]}})
-    #     # data = json.loads(response.get_data(as_text=True))
-    #     self.assertEqual(response.message, "Cities deleted")
+    def test_delete_routes(self):
+        """Test deleting cities from db works properly"""
+
+        info = {'citiesChosen': [{'weatherId': '2', 'name': 'Selby'}]}
+        send_data = json.dumps(info)
+        response = self.client.post('/delete-cities', data={'json': send_data}, follow_redirects=True)
+        data = json.loads(response.get_data(as_text=True))
+        self.assertIn(data['message'], "Cities deleted")
 
     def test_lat_long_info(self):
         """Test the lat, long information comes back to plot on map correctly"""
 
-        response = self.client.get("/lat-long.json", data={'month': 'January', })
+        response = self.client.get("/lat-long.json", data={'month': 'January', },)
         data = json.loads(response.get_data(as_text=True))
         self.assertIn('user_month', data)
 
-    # def test_calc_city_order(self):
-    #     """Test the city order calculation"""
+        response = self.client.get("/lat-long.json", data={'month': 'January', },)
+        data = json.loads(response.get_data(as_text=True))
+        self.assertIn('Partly cloudy', data['lat_longs'])
 
-    #     response = self.client.post("/calc-city-order", data={})
+    def test_calc_city_order(self):
+        """Test the city order calculation"""
+
+        cities = {'citiesChosen': [{'name': 'Santa Maria', 'lat': 12.123, 'lng': 56.789}]}
+        send_cities = json.dumps(cities)
+        response = self.client.post("/calc-city-order", data={'json': send_cities}, follow_redirects=True)
+        data = json.loads(response.get_data(as_text=True))
+
+        self.assertEqual(data, {'1': 'Selby', '0': 'Santa Maria'})
 
     def test_logout(self):
         """Test the logout function works"""
@@ -179,7 +190,7 @@ class TestsDatabase(TestCase):
 
         self.client = app.test_client()
         app.config['TESTING'] = True  # shows debugging output
-        connect_to_db(app, "postgresql:///testdb")  # work on this postg understanding and db test
+        connect_to_db(app, "postgresql:///testdb")  
 
         #create tables and ad sample data
         db.create_all()

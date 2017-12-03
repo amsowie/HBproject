@@ -155,7 +155,6 @@ def calc_city_order():
     hometown = session['hometown_name']
 
     home_obj = db.session.query(City).filter(City.city_name == hometown).first()
-    print home_obj
     home['name'] = home_obj.city_name
     home['lat'] = home_obj.city_lat
     home['lng'] = home_obj.city_long
@@ -164,12 +163,10 @@ def calc_city_order():
     route_plan = Paths(city_nodes)
     trip_routes = route_plan.shortest(home["name"])[::-1]
     order = {}
-    print "here"
 
     for i in range(len(trip_routes)):
         order[i] = trip_routes[i].city
 
-    print order
     return jsonify(order)
 
 
@@ -178,10 +175,8 @@ def delete_routes():
     """Delete cities from checkboxes"""
 
     form_JSON = request.form.get('json')
-    print form_JSON
     form_data = json.loads(form_JSON)
     cities_to_delete = form_data.get('citiesChosen')
-    print cities_to_delete
 
     for i in range(len(cities_to_delete)):
         weather_id = cities_to_delete[i]['weatherId']
@@ -204,7 +199,6 @@ def log_out():
 
     return redirect('/')
 ##############################################################################
-
 if __name__ == "__main__":  # will connect to db if you run python server.py
     app.debug = True        # won't run in testy.py because it's not server.py
     connect_to_db(app)

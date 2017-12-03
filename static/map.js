@@ -156,7 +156,6 @@ $(document).on('click', '#delete-cities', function (evt) {
      });
 
     let formInputs = {'citiesChosen': checkedValues};
-    console.log(formInputs);
     let formJSON = JSON.stringify(formInputs);
 
     $.post('/delete-cities', {'json': formJSON}, function (results) {

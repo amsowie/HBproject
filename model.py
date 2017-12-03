@@ -16,7 +16,7 @@ class Country(db.Model):
     country_code = db.Column(db.String(3), nullable=False, primary_key=True)
     country_name = db.Column(db.String(50), nullable=False)
 
-    def __repr__(self):
+    def __repr__(self):  # pragma: no cover
         """Useful printout of country object"""
 
         return "<Country country_code={} country_name=>".format(self.country_code,
@@ -39,7 +39,7 @@ class City(db.Model):
                                             nullable=False)
     country = db.relationship('Country', backref="cities")
 
-    def __repr__(self):
+    def __repr__(self):  # pragma: no cover
         """Useful printout of city object"""
 
         return "<City city_name={} country_code={} city_id={}>".format(
@@ -69,7 +69,7 @@ class Weather(db.Model):
     # set relationshp between cities and weather objects
     city = db.relationship('City', backref='weathers')
 
-    def __repr__(self):
+    def __repr__(self):  # pragma: no cover
         """Useful printout of weather object"""
 
         return """<Weather weather_id={} city_id={} month={}
@@ -88,7 +88,7 @@ class Month(db.Model):
     month = db.Column(db.String(15), primary_key=True)
     date = db.Column(db.String(30), nullable=False)
 
-    def __repr__(self):
+    def __repr__(self):  # pragma: no cover
         """Useful printout of weather object"""
 
         return "<Month month={} date={}>".format(self.month, self.date)
@@ -108,7 +108,7 @@ class User(db.Model):
     trips = db.relationship('Trip', backref='user')
     hometown = db.relationship('City')
 
-    def __repr__(self):
+    def __repr__(self):  # pragma: no cover
         """Useful printout of user object"""
 
         return "<User user_id={} fname={} lname={} email={}>".format(self.user_id,
@@ -129,7 +129,7 @@ class Trip(db.Model):
 
     weather = db.relationship('Weather')
 
-    def __repr__(self):
+    def __repr__(self):  # pragma: no cover
         """Useful printout of trip object"""
         
         return "<User trip_id={} weather_id={} user_id={}>".format(self.trip_id,
@@ -179,5 +179,5 @@ if __name__ == "__main__":
 
     from server import app
 
-    connect_to_db(app)
+    connect_to_db(app)  
     print "Connected to DB."

@@ -11,7 +11,7 @@ class City(object):
         self.lng = lng
         self.adjacent = set()
 
-    def __repr__(self):
+    def __repr__(self):  # pragma: no cover
         return self.city
 
     def set_distance(self, city2, miles):

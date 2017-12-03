@@ -26,12 +26,15 @@
   </head>
   <body>
   <div class="container">
-    {% if 'user_name' in session %}
-      <form id="logout" method=GET action="logout">
-        <button class="btn btn-default btn-btnselect" type="submit" id="logout">Log Out</button>
-      </form>
-    {% endif %}
-    <div><h3>Welcome, {{ session['user_name'] }}</h3></div>
+    <div class="row">
+      {% if 'user_name' in session %}
+        <form id="logout" method=GET action="logout">
+          <button class="btn btn-default btn-btnselect" type="submit" id="logout">Log Out</button>
+        </form>
+      {% endif %}
+      <div><h3>Welcome, {{ session['user_name'] }}</h3></div>
+    </div>
+  <div class="row">  
   <div id="disply-home">  
     <p id="has-hometown"
     {% if 'hometown' not in session %}
@@ -75,13 +78,15 @@
         </select>
         <input class="btn btn-default btn-btnselect" type="submit" id="weather-search" value="Search" class="weather-search">
     </form>
-  </div>     
-  <div>
+  </div> 
+  </div>    
+  <div class="row">
     <h4>Recommended route for the shortest flight home: </h4>
     <p id="path"></p>
   </div>
 </div>
 <div class="container">
+  <div class="row">
   <div>
     <h3><span id="month-title"></span> World Weather</h3>
     <div id="map"></div>
@@ -124,6 +129,7 @@
       </table>
     </div>
   </div>
+</div>
   </body>
 </html>
 {% endblock %}
