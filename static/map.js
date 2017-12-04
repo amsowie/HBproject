@@ -181,7 +181,6 @@ $(document).on('click', '#path-planner', function (evt) {
     });
 
     let formInputs = {'citiesChosen': checkedValues};              
-    console.log(formInputs);
     let formJSON = JSON.stringify(formInputs);
 
    $.post('/calc-city-order', {'json': formJSON}, function (results) {
@@ -217,7 +216,7 @@ function addInfoWindow(text, marker){
 function changeCenter(region) {
 
     if (region == 'africa') {
-        map.setCenter({lat: 12.1348, lng: 15.0557});
+        map.setCenter({lat: -15.40884, lng: 28.2824});
     }
     else if (region == 'asia') {
         map.setCenter({lat: 16.85, lng: 96.183333});
@@ -232,7 +231,7 @@ function changeCenter(region) {
         map.setCenter({lat: -25.760321, lng: 122.805176});
     }
     else if (region == 'europe') {
-        map.setCenter({lat: 52.237049, lng: 21.017532});
+        map.setCenter({lat: 45.759399, lng: 4.82897});
     }
     map.setZoom(4);
 

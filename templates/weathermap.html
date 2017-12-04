@@ -12,35 +12,41 @@
     <style>
     </style>
   </head>
-  <body>
-<div class="container">
-    <div class="row">
-      <div class="col-md-6"><h1>Welcome, {{ session['user_name'] }}</h1></div>
-      <div class="col-md-6">
+  <body class="background">
+<div class="container-fluid">
+    <div class="row nav">
+      <div class="col-xs-6"><h4>Weather to Wander</h4>
+      <div class="hello"><h4>Hello, {{ session['user_name'] }}</h4></div> 
+    </div>
+      <div class="col-xs-6">
+        <form class="logout" id="change-home" method=GET action="change-home">
+          <button class="btn btn-default btn-sm" type="submit" id="change-home">Change Hometown</button>
+         </form>
       {% if 'user_name' in session %}
-        <form id="logout" method=GET action="logout">
+        <form class="logout" id="logout" method=GET action="logout">
           <button class="btn btn-default btn-sm" type="submit" id="logout">Log Out</button>
          </form>
         {% endif %}
         </div> <!-- end of column -->
-    </div> <!-- end of row -->
+    </div> <!-- end of row nav -->
+    
+    </div> <!-- end of container -->
+
+<div class="container-fluid">
     <div class="row">  
-      <div class="col-md-12" id="disply-home">  
-        <h3 id="has-hometown"
+      <div class="col-xs-2" id="disply-home"> 
+      <h3 class="end-titles">Search</h3> 
+        <h4  id="has-hometown"
           {% if 'hometown' not in session %}
             hidden
           {% endif %}
-        >Your departure city is: <span id="hometown-name">{{ session['hometown_name'] }}</span></h3>
-        <h3 id="no-hometown"
+        >Your departure city is: <p></p><span id="hometown-name">{{ session['hometown_name'] }}</span></h4>
+        <h4 id="no-hometown"
           {% if 'hometown' in session %}
            hidden
           {% endif %}
-        >Please select your departure city by clicking a marker on the map</h3>
+        >Please locate your departure city on the map and save it.</h4>
         <p></p>
-      </div> <!-- end of hometown column -->
-    </div> <!-- end row for hometown -->
-    <div class="row"> 
-      <div class="col-md-4 col-md-offset-3">
         <!-- dropdown form for user to select month -->
         <form id="month-pick">
           <div id="month-dropdown"
@@ -48,8 +54,8 @@
           hidden
           {% endif %}
           >
-            <p>Please select a month.
-            <select class="btn btn-default btn-btnselect input-lg" id="pick-month" name="month" width="100"
+            <p class="bold-labels">Please select a month.
+            <select class="btn btn-default btn-btnselect" id="pick-month" name="month" width="100"
               {% if 'hometown' not in session %}
               value="January"
               {% endif %}
@@ -59,11 +65,8 @@
               {% endfor %}
               </select></p>
             </div> <!-- end of month dropdown -->
-      </div> <!-- end of column month pick -->
-      <div class="col-md-5">
-        <p></p>
-        <p>Please select a zoom area.
-          <select class="btn btn-default btn-btnselect input-lg" id="select-region" name="regions">
+        <p class="bold-labels">Please select a zoom area.
+          <select class="btn btn-default btn-btnselect" id="select-region" name="regions">
             <option id="asia" value="asia">Asia</option>
             <option id="africa" value="africa">Africa</option>
             <option id="north-america" value="north-america">North America</option>
@@ -71,39 +74,30 @@
             <option id="oceania" value="oceania">Oceania</option>
             <option id="europe" value="europe">Europe</option>
           </select>
-          <input class="btn btn-default btn-btnselect" type="submit" id="weather-search" value="Search" class="weather-search"> </p>
+          <input class="btn btn-default btn-btnselect btn-sm" type="submit" id="weather-search" value="Search" class="weather-search"> </p>
         </form> <!-- end of month and area form -->
         <p></p>
-      </div> <!-- end of column  zoom area-->
-    </div> <!-- end of form row -->
-      <div class="row">
-        <div class="col-md-6">
-          <h4>Recommended route for the shortest flight home: </h4>
-          <p id="path"></p>
-        </div> <!-- end of column shortest flight -->
-      </div> <!-- end of row  shortes flight home-->
-</div> <!-- end of container -->
-<div class="container">
-  <div class="row">
-    <div>
-       <h3><span id="month-title"></span> World Weather</h3>
-        <div id="map"></div>
+      </div> <!-- end of column search area-->
+      
+    <div class="col-xs-6 ">
+       <h2 class="title-map"><span id="month-title"></span> World Weather</h2>
+        <div class="map-words" id="map"></div>
         <div id="legend"><h4>Legend</h4></div>
-      </div> <!-- end of empty label div -->
       <script src="/static/map.js"></script>
       <script async defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwecRj8BnwNeAVuHQvmW-GQy7ZQLk27jk&callback=initMap">
       </script>
-    <div id="saved-cities">
-      <h2>Saved Cities</h2>
-      <table id="saved-cities-table">  
-        <tr>
-          <th>Check</th>          
+    </div> <!-- end of col map div -->
+    <div class="col-xs-4" id="saved-cities">
+      <h3 class="table-title end-titles">Saved Cities</h3>
+      <table class="table table-condensed table-hover table-responsive" id="saved-cities-table"> 
+        <tr class="headers">
+          <th>Select</th>          
           <th>Month</th>
           <th>City</th>
+          <th>High</th>
+          <th>Low</th>
           <th>Summary</th>
-          <th>Temperature High</th>
-          <th>Temperature Low</th>
         </tr>
           {% if weathers %}
           {% for weather in weathers %}
@@ -122,11 +116,14 @@
           </tr>
           {% endfor %} 
           {% endif %}    
-          <button class="btn btn-default btn-btnselect buttons" id="path-planner">Plan Trip</button>
-          &nbsp;
-          <button class="btn btn-default btn-btnselect buttons" id="delete-cities">Delete Cities</button>       
+          <h4>Fly this route for the shortest possible flight home: </h4>
+          <p class="route-names" id="path"></p>
+         
+          <button class="btn btn-default btn-sm btn-btnselect buttons table-button" id="delete-cities">Delete Cities</button>    
+           &nbsp;
+          <button class="btn btn-default btn-sm btn-btnselect buttons table-button" id="path-planner">Plan Trip</button>   
       </table>
-    </div> <!-- end of saved-cities div -->
+    </div> <!-- end of saved-cities col -->
   </div> <!-- end of row -->
 </div> <!-- end of container -->
 </body>
