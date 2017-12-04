@@ -61,8 +61,8 @@ class Paths(object):
 
 def create_nodes(cities, home):
     """Create nodes from node class for city graph"""
-    city_nodes = []
 
+    city_nodes = []
 
     cities.append(home)
     for city in cities:
@@ -76,14 +76,6 @@ def create_nodes(cities, home):
 def distance_calculation(cities):
     """Take in a list of four cities or less and determine the best route based
     on the shortest flight being last"""
-    
-    # for i in range(len(cities) - 1):
-    #     for j in range(i + 1, len(cities)):
-    #         city1 = (cities[i]['lat'], cities[i]['lng'])
-    #         city2 = (cities[j]['lat'], cities[j]['lng'])
-    #         distance = vincenty(city1, city2).miles # save this truncated later
-
-    #         city1.set_city_routes(city1, city2, distance)
 
     for i in range(len(cities) - 1):
         city1 = cities[i]

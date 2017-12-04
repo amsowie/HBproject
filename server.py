@@ -38,7 +38,8 @@ def user_login():
     password = request.form.get('password')
 
     user = db.session.query(User).filter(User.email == email).first()
-    if user and not (bcrypt.hashpw(password.encode('utf-8'), user.password.encode('utf-8')) == user.password):
+    if user and not ((bcrypt.hashpw(password.encode('utf-8'),
+                     user.password.encode('utf-8')) == user.password)):
         flash("Password incorrect. Please try again.")
         return redirect('/login')
     elif user:
@@ -119,15 +120,15 @@ def lat_long_info():
     user_month = request.args.get('month')
     weathers = db.session.query(Weather).filter(Weather.month == user_month).all()
     for weather in weathers:
-            lat_longs[weather.city.city_name] = {'lat': weather.city.city_lat,
-                                                 'lng': weather.city.city_long,
-                                                 'wSummary': weather.summary,
-                                                 'icon': weather.icon,
-                                                 'tempHigh': weather.temp_high,
-                                                 'tempLow': weather.temp_low,
-                                                 'cityName': weather.city.city_name,
-                                                 'cityId': weather.city.city_id,
-                                                 'weatherId': weather.weather_id}
+        lat_longs[weather.city.city_name] = {'lat': weather.city.city_lat,
+                                             'lng': weather.city.city_long,
+                                             'wSummary': weather.summary,
+                                             'icon': weather.icon,
+                                             'tempHigh': weather.temp_high,
+                                             'tempLow': weather.temp_low,
+                                             'cityName': weather.city.city_name,
+                                             'cityId': weather.city.city_id,
+                                             'weatherId': weather.weather_id}
     data = {}
     data["lat_longs"] = lat_longs
     data["user_month"] = user_month
@@ -141,7 +142,8 @@ def map():
     month_list = db.session.query(Month.month).all()
     weathers = db.session.query(Trip).filter(Trip.user_id == user_id).all()
 
-    return render_template('weathermap.html', month_list=month_list, weathers=weathers)
+    return render_template('weathermap.html', month_list=month_list,
+                                              weathers=weathers)
 
 @app.route('/calc-city-order', methods=['POST'])
 def calc_city_order():

@@ -1,4 +1,4 @@
-"""Models and database functions for HB project"""
+"""Models and database functions for Weather to Wander project"""
 
 from flask import Flask
 import bcrypt
@@ -133,8 +133,8 @@ class Trip(db.Model):
         """Useful printout of trip object"""
         
         return "<User trip_id={} weather_id={} user_id={}>".format(self.trip_id,
-                                                                     self.weather_id,
-                                                                     self.user_id)
+                                                                self.weather_id,
+                                                                self.user_id)
                                                                      
 
 
