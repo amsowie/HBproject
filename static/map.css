@@ -1,0 +1,62 @@
+ #map {
+        height: 550px;
+        width: 100%;
+}
+#legend {
+  font-family: Arial, sans-serif;
+  background: #fff;
+  padding: 5px;
+  margin: 5px;
+  border: 3px solid #000;
+}
+.logout {
+  float: right;
+  margin: 5px;
+}
+.table-title {
+  text-align: center;
+}
+.table-button {
+  float: right;
+}
+.user-name {
+  text-align: left;
+}
+.background{
+  /*background-color: black;*/
+  color: white;
+  background-size: cover;
+  background: url(/static/grey_wash_wall/grey_wash_wall.png) center center;
+}
+.map-words {
+  color: black;
+  border-radius: 15px;
+  border: 2px solid #333;
+}
+.nav {
+  color: white;
+  background-color: #333;
+}
+.title-map {
+  text-align: center;
+}
+.bold-labels {
+  font-weight: bold;
+}
+.end-titles {
+  margin-top: 60px;
+}
+.route-names {
+  color: #EAE151;
+}
+#hometown-name {
+  color: #EAE151;
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: #333;
+}
+div {
+  font-family: 'Quicksand', sans-serif;
+
+}
