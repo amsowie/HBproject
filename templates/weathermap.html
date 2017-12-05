@@ -40,12 +40,12 @@
           {% if 'hometown' not in session %}
             hidden
           {% endif %}
-        >Your departure city is: <p></p><span id="hometown-name">{{ session['hometown_name'] }}</span></h4>
+        >Your hometown is: <p></p><span id="hometown-name">{{ session['hometown_name'] }}</span></h4>
         <h4 id="no-hometown"
           {% if 'hometown' in session %}
            hidden
           {% endif %}
-        >Please locate your departure city on the map and save it.</h4>
+        >Please locate your hometown on the map and save it.</h4>
         <p></p>
         <!-- dropdown form for user to select month -->
         <form id="month-pick">
@@ -74,7 +74,7 @@
             <option id="oceania" value="oceania">Oceania</option>
             <option id="europe" value="europe">Europe</option>
           </select>
-          <input class="btn btn-default btn-btnselect btn-sm" type="submit" id="weather-search" value="Search" class="weather-search"> </p>
+          <input class="btn btn-default btn-btnselect btn-sm" type="submit" id="weather-search" value="Go!" class="weather-search"></p>
         </form> <!-- end of month and area form -->
         <p></p>
       </div> <!-- end of column search area-->
@@ -83,10 +83,7 @@
        <h2 class="title-map"><span id="month-title"></span> World Weather</h2>
         <div class="map-words" id="map"></div>
         <div id="legend"><h4>Legend</h4></div>
-      <script src="/static/map.js"></script>
-      <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCwecRj8BnwNeAVuHQvmW-GQy7ZQLk27jk&callback=initMap">
-      </script>
+     
     </div> <!-- end of col map div -->
     <div class="col-xs-4" id="saved-cities">
       <h3 class="table-title end-titles">Saved Cities</h3>

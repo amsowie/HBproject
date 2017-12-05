@@ -48,9 +48,11 @@
 }
 .route-names {
   color: #EAE151;
+  font-size: 100%;
 }
 #hometown-name {
   color: #EAE151;
+  font-size: 100%;
 }
 
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {

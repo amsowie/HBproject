@@ -118,7 +118,7 @@ $(document).on('click', '.save-button', function (evt) {
                       'cityName': cityName};
 
     $.post('/save-searches', formInputs, function (results){
-             alert(results.message);
+             swal(results.message);
         if (results.message !== 'Departure city saved.'){
             let newRow = $("<tr>");
             $("<td />").html(`<input type="checkbox" class="check" id="${cityName}" data-del="${weatherId}" data-lat="${cityLat}" data-lng="${cityLong}" value="${cityName}" />`).appendTo(newRow);
@@ -160,7 +160,7 @@ $(document).on('click', '#delete-cities', function (evt) {
 
     $.post('/delete-cities', {'json': formJSON}, function (results) {
         // deleted from database via server and return results
-        alert(results.message);
+        swal(results.message);
     });
 
 });
