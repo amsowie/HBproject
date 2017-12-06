@@ -66,7 +66,7 @@ class TestUserLoggedInNoHometown(TestCase):
                                                             'weatherId': 1,
                                                             'cityName': 'Santa Maria'})
         data = json.loads(response.get_data(as_text=True))
-        self.assertIn(data['message'], "Departure city saved.")
+        self.assertIn(data['message'], "Hometown saved.")
 
 
 class TestUserLoggedIn(TestCase):

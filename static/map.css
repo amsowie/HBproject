@@ -12,13 +12,12 @@
 .logout {
   float: right;
   margin: 5px;
+  padding-top: 12px;
 }
 .table-title {
   text-align: center;
 }
-.table-button {
-  float: right;
-}
+
 .user-name {
   text-align: left;
 }
@@ -48,11 +47,16 @@
 }
 .route-names {
   color: #EAE151;
-  font-size: 100%;
+  font-size: 125%;
+  font-weight: bold;
 }
 #hometown-name {
   color: #EAE151;
-  font-size: 100%;
+  font-size: 110%;
+  font-weight: bold;
+}
+#info-btn:hover {
+  background-color: #EAE053;
 }
 
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {

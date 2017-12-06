@@ -105,7 +105,7 @@ def save_searches():
         db.session.commit()
         session['hometown'] = city_id
         session['hometown_name'] = city_name
-        message = "Departure city saved."
+        message = "Hometown saved. You can start adding cities to your vacation now!"
 
     return jsonify(message=message)
 
@@ -202,7 +202,7 @@ def log_out():
     return redirect('/')
 ##############################################################################
 if __name__ == "__main__":  # will connect to db if you run python server.py
-    app.debug = True        # won't run in testy.py because it's not server.py
+    app.debug = False        # won't run in testy.py because it's not server.py
     connect_to_db(app)
     DebugToolbarExtension(app)
 

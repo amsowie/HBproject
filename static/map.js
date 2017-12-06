@@ -80,7 +80,7 @@ function makeMarkers(latLongs, monthChosen){
                         Summary: ${city.wSummary} <br>
                         High Temperature: ${city.tempHigh} F <br>
                         Low Temperature: ${city.tempLow} F <br>
-                    <button class="save-button" 
+                    <button class="save-button " id="info-btn" 
                     data-high="${city.tempHigh}" 
                     data-month="${monthChosen}" data-low="${city.tempLow}"
                     data-save="${city.cityId}" data-summary="${city.wSummary}"
@@ -119,7 +119,7 @@ $(document).on('click', '.save-button', function (evt) {
 
     $.post('/save-searches', formInputs, function (results){
              swal(results.message);
-        if (results.message !== 'Departure city saved.'){
+        if (results.message !== 'Hometown saved. You can start adding cities to your vacation now!'){
             let newRow = $("<tr>");
             $("<td />").html(`<input type="checkbox" class="check" id="${cityName}" data-del="${weatherId}" data-lat="${cityLat}" data-lng="${cityLong}" value="${cityName}" />`).appendTo(newRow);
             // newRow.append($("<td>" + "<input type="checkbox" id="cityName" />" + "</td>"));
@@ -130,7 +130,6 @@ $(document).on('click', '.save-button', function (evt) {
             newRow.append($("<td>" + summary + "</td>"));
 
             $("#saved-cities-table").append(newRow);
-            // $("#saved-cities").show();
         }
         else{
             $('#no-hometown').hide();
