@@ -1,3 +1,5 @@
+![header](markdown/background-header.png "header")
+
 <snippet>
   <content><![CDATA[
 # ${1:Weather to Wander}
@@ -50,3 +52,4 @@ development and the study of algorithms.
 ]]></content>
   <tabTrigger>readme</tabTrigger>
 </snippet>
+![break](markdown/background-line.png "line break")
