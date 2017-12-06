@@ -2,6 +2,7 @@
 
 <snippet>
   <content><![CDATA[
+    
 ## About
 Weather to Wander is a travel planning app that uses weather data from the
 Dark Sky API and Google maps to provide monthly weather predictions for world 
