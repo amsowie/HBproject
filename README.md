@@ -1,8 +1,8 @@
-![header](markdown/background-header.png "header")
+![header](markdown/background-header.png "Weather to Wander")
 
 <snippet>
   <content><![CDATA[
-# ${1:Weather to Wander}
+## About
 Weather to Wander is a travel planning app that uses weather data from the
 Dark Sky API and Google maps to provide monthly weather predictions for world 
 cities. It also provides a route planning tool that calculates the best path
@@ -48,7 +48,6 @@ Bootstrap, Python, AJAX, Jinja
 I am a former athlete turned developer who is passionate about test driven 
 development and the study of algorithms.
 
-## Tech Stack
 ]]></content>
   <tabTrigger>readme</tabTrigger>
 </snippet>
