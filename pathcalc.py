@@ -86,20 +86,4 @@ def distance_calculation(cities):
             distance = vincenty(lat_lng1, lat_lng2).miles
             city1.set_distance(city2, distance)
 
-# atlanta = City("Atlanta")
-# oakland = City("Oakland")
-# la = City("LA")
-# selby = City("Selby")
 
-
-# places = Paths([atlanta, oakland, la, selby])
-
-# atlanta.set_city_routes(atlanta, oakland, 400)
-# selby.set_city_routes(selby, oakland, 500)
-# selby.set_city_routes(selby, atlanta, 150)
-# selby.set_city_routes(selby, la, 900)
-# oakland.set_city_routes(oakland, la, 200)
-# la.set_city_routes(la, atlanta, 250)
-
-
-# print "Best paths from {}".format(selby), places.shortest(selby)

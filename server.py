@@ -19,7 +19,9 @@ app.secret_key = "Ahahahahahha!!!!!!"
 @app.route('/')
 def index():
     """Welcome/home page"""
-    if 'user_name' in session:
+
+    # check if you need to redirect to user page based on login
+    if 'user_name' in session: 
         return redirect('/map')
     else:
         return render_template('welcome.html')
@@ -27,21 +29,24 @@ def index():
 @app.route('/login')
 def login():
     """Show login form to user"""
-
+    # allow user to login
     return render_template('login.html')
 
 @app.route('/login', methods=['POST'])
 def user_login():
     """Process log in"""
 
+    # pull email and password from form
     email = request.form.get('email')
     password = request.form.get('password')
 
+    # check the user email and password against database/hashed password
     user = db.session.query(User).filter(User.email == email).first()
     if user and not ((bcrypt.hashpw(password.encode('utf-8'),
                      user.password.encode('utf-8')) == user.password)):
         flash("Password incorrect. Please try again.")
         return redirect('/login')
+    # user exists and password correct, redirect to map display
     elif user:
         session['user_name'] = user.fname
         session['user_id'] = user.user_id
@@ -49,6 +54,7 @@ def user_login():
             session['hometown'] = user.hometown.city_id
             session['hometown_name'] = user.hometown.city_name
         return redirect('/map')
+    # Redirect to registration, incorrect username
     else:
         flash("No user exists with that information. Please register.")
         return redirect('/register')
@@ -57,12 +63,14 @@ def user_login():
 def register():
     """Show registration form"""
 
+    #registration render
     return render_template('register.html')
 
 @app.route('/register-verify', methods=['POST'])
 def process_registration():
     """Process registration information"""
 
+    # get registration information from form
     fname = request.form.get('firstname')
     lname = request.form.get('lastname')
     email = request.form.get('email')
@@ -70,6 +78,7 @@ def process_registration():
 
     hashed_pass = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
+    # save new user to database
     user = User(fname=fname, lname=lname, email=email, password=hashed_pass)
 
     db.session.add(user)
@@ -77,6 +86,7 @@ def process_registration():
 
     user_id = user.user_id
 
+    # add user to session for display
     session['user_name'] = fname
     session['user_id'] = user_id
 
@@ -88,17 +98,20 @@ def process_registration():
 def save_searches():
     """Save searches the user selects to the database for future display"""
 
+    # get weather and city information from saved searches in info windows on map
     weather_id = request.form.get('weatherId')
     city_id = request.form.get('cityId')
     city_name = request.form.get('cityName')
     user_id = session['user_id']
 
+    # Add a city to sidebar because hometown exists already
     if 'hometown' in session:
         trip = Trip(weather_id=weather_id, user_id=user_id)
 
         db.session.add(trip)
         db.session.commit()
         message = "City saved."
+    # no hometown in session, so save hometown to database
     else:
         user = db.session.query(User).filter(User.user_id == user_id).first()
         user.city_id = city_id
@@ -117,6 +130,7 @@ def lat_long_info():
 
     lat_longs = {}
 
+    # use the selected month to query db for the markers on the map
     user_month = request.args.get('month')
     weathers = db.session.query(Weather).filter(Weather.month == user_month).all()
     for weather in weathers:
@@ -130,6 +144,7 @@ def lat_long_info():
                                              'cityId': weather.city.city_id,
                                              'weatherId': weather.weather_id}
     data = {}
+    # send selected month and weather information back in json
     data["lat_longs"] = lat_longs
     data["user_month"] = user_month
 
@@ -137,7 +152,8 @@ def lat_long_info():
 
 @app.route('/map')
 def map():
-    """Map page"""
+    """Map page with month list"""
+
     user_id = session['user_id']
     month_list = db.session.query(Month.month).all()
     weathers = db.session.query(Trip).filter(Trip.user_id == user_id).all()
