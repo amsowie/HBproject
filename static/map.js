@@ -13,12 +13,13 @@ let iconImages = {
                 Red: {name: 'Above 80F', icon: 'http://maps.google.com/mapfiles/ms/micons/red.png'}};
 
 function initMap() {
+    // center map on rome and render map
     let rome = {lat: 41.90311, lng: 12.49576};
     map = new google.maps.Map(document.getElementById('map'), {
       zoom: 2,
       center: rome
     });
-
+    // add legend with color coded markers
     var legend = document.getElementById('legend');
     
       for (var key in iconImages) {
@@ -29,11 +30,13 @@ function initMap() {
         div.innerHTML = '<img src="' + pic + '"> ' + name;
         legend.appendChild(div);
       }
-
+      // push legend to bottom left of map
       map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(legend);
 }
 
 function filterCities() {
+    // grab value from month drop down make markers using the weather data
+    // from that month, recenter the map according to region
     let monthChosen = $('#pick-month').val();
     $('#month-title').text(monthChosen);
 
@@ -51,7 +54,7 @@ function filterCities() {
 function makeMarkers(latLongs, monthChosen){
 
     let city, image;  
-
+    // set each marker color to a corresponding temperature
     for (let key in latLongs) {
         city = latLongs[key];
         if (city.tempHigh < 30) {
@@ -75,7 +78,7 @@ function makeMarkers(latLongs, monthChosen){
         else {
             image = 'http://maps.google.com/mapfiles/ms/micons/red.png';
         }
-
+        // create the info windows and set data attributes for save to sidebar use
         let content =  `City: ${city.cityName} <br>
                         Summary: ${city.wSummary} <br>
                         High Temperature: ${city.tempHigh} F <br>
@@ -112,13 +115,14 @@ $(document).on('click', '.save-button', function (evt) {
     let cityName = $(this).data('name');
     let cityLat = $(this).data('lat');
     let cityLong = $(this).data('lng');
-
+    // grab data from info windows and pass to save searches
     let formInputs = {'weatherId': weatherId,
                       'cityId': cityId,
                       'cityName': cityName};
-
+    // save trips to database with post request
     $.post('/save-searches', formInputs, function (results){
              swal(results.message);
+        // add new rows to saved searches table display
         if (results.message !== 'Hometown saved. You can start adding cities to your vacation now!'){
             let newRow = $("<tr>");
             $("<td />").html(`<input type="checkbox" class="check" id="${cityName}" data-del="${weatherId}" data-lat="${cityLat}" data-lng="${cityLong}" value="${cityName}" />`).appendTo(newRow);
@@ -130,7 +134,8 @@ $(document).on('click', '.save-button', function (evt) {
             newRow.append($("<td>" + summary + "</td>"));
 
             $("#saved-cities-table").append(newRow);
-        }
+        } // only show the hometown if user has selected one and hide month 
+        // until they select hometown
         else{
             $('#no-hometown').hide();
             $('#hometown-name').text(cityName);
@@ -142,6 +147,7 @@ $(document).on('click', '.save-button', function (evt) {
 
 $(document).on('click', '#delete-cities', function (evt) {
     let checkedValues = [];
+    // get values from checkboxes and remove from display table
     $('.check:checked').each(function(){
         let name = $(this).val();
         let weatherId = $(this).data('del');
@@ -153,7 +159,7 @@ $(document).on('click', '#delete-cities', function (evt) {
         }
          
      });
-
+    // send checkbox values back to db to delete from trip table
     let formInputs = {'citiesChosen': checkedValues};
     let formJSON = JSON.stringify(formInputs);
 
@@ -167,7 +173,7 @@ $(document).on('click', '#delete-cities', function (evt) {
 $(document).on('click', '#path-planner', function (evt) {
 
     let checkedValues = [];
-
+    // get values from check boxes to send to route planner functions
     $('.check:checked').each(function() {
 
         let name = $(this).val();
@@ -181,11 +187,11 @@ $(document).on('click', '#path-planner', function (evt) {
 
     let formInputs = {'citiesChosen': checkedValues};              
     let formJSON = JSON.stringify(formInputs);
-
+    // send cities to calculation for distance, graph, ideal path
    $.post('/calc-city-order', {'json': formJSON}, function (results) {
         let orderToDisplay = results;
         $('#path').text('');
-
+        // display the route to user
         for (let city in orderToDisplay){
             $('#path').append(orderToDisplay[city] + "&nbsp; &nbsp;");
         }
@@ -198,7 +204,7 @@ function addInfoWindow(text, marker){
   var infoWindow = new google.maps.InfoWindow({
           content: text
       });
-
+  // set up markers so they automatically close when another one opens
   google.maps.event.addListener(marker,'click', (function(marker,text,infoWindow){ 
     return function() {
         if (prevInfoWindow) {
@@ -213,7 +219,7 @@ function addInfoWindow(text, marker){
 }
 
 function changeCenter(region) {
-
+    // recenter map when new region selected from dropdown
     if (region == 'africa') {
         map.setCenter({lat: -15.40884, lng: 28.2824});
     }
@@ -235,13 +241,13 @@ function changeCenter(region) {
     map.setZoom(4);
 
 }
-
+// intercept form from month drop down and call filterCities for map display
 $('#month-pick').on('submit', function (evt){
     evt.preventDefault();
     filterCities();
 });
 
-    
+// clear all markers
 function deleteMarkers() {
     for (var i = 0; i < allMarkers.length; i++) {
       allMarkers[i].setMap(null);

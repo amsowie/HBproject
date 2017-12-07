@@ -63,12 +63,14 @@ def create_nodes(cities, home):
     """Create nodes from node class for city graph"""
 
     city_nodes = []
-
+    # add hometown to the list of additional cities
     cities.append(home)
+    # instantiate nodes passing in name, latitude, and longitude
     for city in cities:
         city_node = City(city['name'], city['lat'], city['lng'])
+        # append list of all city nodes
         city_nodes.append(city_node)
-
+    # call the distance calculator to find distance between cities
     distance_calculation(city_nodes)
     return city_nodes
 
@@ -77,6 +79,8 @@ def distance_calculation(cities):
     """Take in a list of four cities or less and determine the best route based
     on the shortest flight being last"""
 
+    # loop through each city and set adjacency to all other cities in list
+    # using the vincenty calculation and set_distance method on nodes
     for i in range(len(cities) - 1):
         city1 = cities[i]
         lat_lng1 = (city1.lat, city1.lng)

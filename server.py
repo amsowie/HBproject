@@ -152,8 +152,9 @@ def lat_long_info():
 
 @app.route('/map')
 def map():
-    """Map page with month list"""
+    """Map page with month and region list, user saved cities, and hometown"""
 
+    # display the trips a user has saved and the month list
     user_id = session['user_id']
     month_list = db.session.query(Month.month).all()
     weathers = db.session.query(Trip).filter(Trip.user_id == user_id).all()
@@ -177,11 +178,17 @@ def calc_city_order():
     home['lat'] = home_obj.city_lat
     home['lng'] = home_obj.city_long
 
+    # create nodes for graph including home town
     city_nodes = create_nodes(cities_for_trip, home)
+    # add each node to the graph Paths
     route_plan = Paths(city_nodes)
+    # pass hometown and the nodes in to the shortest method to calculate route
     trip_routes = route_plan.shortest(home["name"])[::-1]
+
+    # empty dictionary for storing route with indices set as keys
     order = {}
 
+    # set up dictionary to pass in json using index as key and city as value
     for i in range(len(trip_routes)):
         order[i] = trip_routes[i].city
 
@@ -192,12 +199,16 @@ def calc_city_order():
 def delete_routes():
     """Delete cities from checkboxes"""
 
+    # get cities from the vacation planner to delete
     form_JSON = request.form.get('json')
+    # turn back into dictionary
     form_data = json.loads(form_JSON)
+    # use only the cities chosen for the for loop below
     cities_to_delete = form_data.get('citiesChosen')
 
     for i in range(len(cities_to_delete)):
         weather_id = cities_to_delete[i]['weatherId']
+        # find trip by weather id and then delete from db
         db.session.query(Trip).filter(Trip.weather_id == weather_id).delete()
         db.session.commit()
 
@@ -209,6 +220,7 @@ def log_out():
 
     del session['user_id']
     del session['user_name']
+    # new users won't have a hometown, but can still log out without errors
     if 'hometown' in session:
         del session['hometown']
         del session['hometown_name']

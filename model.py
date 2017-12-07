@@ -53,7 +53,6 @@ class Weather(db.Model):
 
     __tablename__ = "all_weather"
 
-    # help with foreign key assignment!!!
     weather_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     city_id = db.Column(db.Integer, db.ForeignKey('cities.city_id'),
                                                   index=True, nullable=False)
