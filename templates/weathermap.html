@@ -18,10 +18,10 @@
       <div class="col-xs-6"><h4>Weather to Wander</h4>
       <div class="hello"><h4>Hello, {{ session['user_name'] }}</h4></div> 
     </div>
-      <div class="col-xs-6">
+      <!-- <div class="col-xs-6">
         <form class="logout" id="change-home" method=GET action="change-home">
           <button class="btn btn-default btn-sm" type="submit" id="change-home">Change Hometown</button>
-         </form>
+         </form> -->
       {% if 'user_name' in session %}
         <form class="logout" id="logout" method=GET action="logout">
           <button class="btn btn-default btn-sm" type="submit" id="logout">Log Out</button>
