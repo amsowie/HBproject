@@ -12,6 +12,14 @@ vacation can be complicated. It's difficult to decide on a route, but this app
 makes that easier. The last flight is always the most miserable, so I minimized 
 user suffering by making certain it would be as short as possible.
 
+Testing and Development
+
+Weather to Wander was developed using Test Driven Development and has 98% test
+coverage of the backend. The route planning tool is implemented using a graph
+class and modified version of Dijkstra's algorithm. The map and markers were
+implemented with the googlemaps API and the Darksky API.
+
+
 Installation
 
 To use locally:
