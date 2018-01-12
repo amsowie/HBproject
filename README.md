@@ -35,7 +35,7 @@ Features
 
 Users register and their password is hashed and then stored in the database. They
 also save their hometown to their profile. 
-(./LoginPageW2W.png)
+(Screenshots/LoginPageW2W.png)
 They can filter searches by world
 region, month, or both in order to view city specific weather data. Clicking
 on a city marker will reveal an info window with additional details and gives
