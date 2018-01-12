@@ -21,7 +21,7 @@ class City(object):
         city2.adjacent.add((self, miles))
 
 class Paths(object):
-    """Directed graph of flights."""
+    """Undirected, weighted graph of cities."""
 
     def __init__(self, cities):
         self.cities = cities
@@ -31,12 +31,12 @@ class Paths(object):
 
         """
 
-        # This uses "Dijkstra's algorithm" 
+        # This uses "Dijkstra's algorithm"
 
         inf = float('inf')   # infinity
 
-        # for each vertex of the graph, add an entry to the 
-        # queue, with home having distance 0 and all 
+        # for each vertex of the graph, add an entry to the
+        # queue, with home having distance 0 and all
         # others having infinite distance
 
         start = {vertex: 0 if vertex.city == home_name else inf for vertex in self.cities}
@@ -76,7 +76,7 @@ def create_nodes(cities, home):
 
 
 def distance_calculation(cities):
-    """Take in a list of four cities or less and determine the best route based
+    """Take in a list cities and determine the best route based
     on the shortest flight being last"""
 
     # loop through each city and set adjacency to all other cities in list
@@ -89,5 +89,4 @@ def distance_calculation(cities):
             lat_lng2 = (city2.lat, city2.lng)
             distance = vincenty(lat_lng1, lat_lng2).miles
             city1.set_distance(city2, distance)
-
 

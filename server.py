@@ -21,7 +21,7 @@ def index():
     """Welcome/home page"""
 
     # check if you need to redirect to user page based on login
-    if 'user_name' in session: 
+    if 'user_name' in session:
         return redirect('/map')
     else:
         return render_template('welcome.html')

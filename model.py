@@ -76,7 +76,6 @@ class Weather(db.Model):
                                                      self.city_id,
                                                      self.month,
                                                      self.temp_high,
-                                                     self.temp_low,
                                                      self.summary)
 
 class Month(db.Model):
@@ -130,12 +129,11 @@ class Trip(db.Model):
 
     def __repr__(self):  # pragma: no cover
         """Useful printout of trip object"""
-        
+
         return "<User trip_id={} weather_id={} user_id={}>".format(self.trip_id,
                                                                 self.weather_id,
                                                                 self.user_id)
-                                                                     
-
+                                                 
 
 ##############################################################################
 def example_data():
