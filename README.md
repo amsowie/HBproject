@@ -35,23 +35,23 @@ Features
 
 Users register and their password is hashed and then stored in the database. They
 also save their hometown to their profile. 
-(https://amsowie/HBproject/static/Screenshots/LoginPageW2W.png
-(HBproject/static/Screenshots/ZoomAsiaW2W.png)
+(https://amsowie/HBproject/static/Screenshots/LoginPageW2W.png)
+(https://amsowie/HBproject/static/Screenshots/ZoomAsiaW2W.png)
 
 
 They can filter searches by world region, month, or both in order to view 
 city specific weather data. Clicking on a city marker will reveal an info 
 window with additional details and gives users the option to save the city to 
 their vacation planner. 
-(HBproject/static/Screenshots/CitiesSavedW2W.png)
+(https://amsowie/HBproject/static/Screenshots/CitiesSavedW2W.png)
 
 The vacation planner
 will calculate a a route home, guaranteeing the last leg is the shortest. 
-(HBproject/static/Screenshots/RoutePlanW2W.png)
+(https://amsowie/HBproject/static/Screenshots/RoutePlanW2W.png)
 
 If a user no longer wants to keep a city in their vacation planner, they can simply
 delete it.
-(HBproject/static/Screenshots/CitiesDeletedW2W.png)
+(https://amsowie/HBproject/static/Screenshots/CitiesDeletedW2W.png)
 This
 app has 98% test coverage of the backend and was developed using test driven
 development.
@@ -66,4 +66,5 @@ Author
 
 I am a former athlete turned developer who is passionate about test driven 
 development and the study of algorithms.
+linkedin/amysowash
 
