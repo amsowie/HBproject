@@ -1,6 +1,6 @@
 
 
-##About
+## About
 
 Weather to Wander is a travel planning app that uses weather data from the
 Dark Sky API and Google maps to provide monthly weather predictions for world 
@@ -12,60 +12,49 @@ vacation can be complicated. It's difficult to decide on a route, but this app
 makes that easier. The last flight is always the most miserable, so I minimized 
 user suffering by making certain it would be as short as possible.
 
-##Testing and Development
+## Testing and Development
 
 Weather to Wander was developed using Test Driven Development and has 98% test
 coverage of the backend. The route planning tool is implemented using a graph
 class and modified version of Dijkstra's algorithm. The map and markers were
 implemented with the googlemaps API and the Darksky API.
 
-
-##Installation
-
-To use locally:
-Make a directory.
-Clone repository.
-Create a virtual env.
-Source secrets.
-Pip install requirements.
-Run python server.py
-Go to your local host to view the app.
-
-##Features
+## Features
 
 Users register and their password is hashed and then stored in the database. They
-also save their hometown to their profile. 
+also save their hometown to their profile by chosing it from the map. 
 ![alt tag](Screenshots/LoginPageW2W.png "Login page")
 ![alt tag](ScreenshotsZoomAsiaW2W.png "Zoomed Area")
 
 
-##Searching by Region and Weather
-They can filter searches by world region, month, or both in order to view 
+## Searching by Region and Weather
+Users can filter searches by world region, month, or both in order to view 
 city specific weather data. Clicking on a city marker will reveal an info 
 window with additional details and gives users the option to save the city to 
 their vacation planner. 
 ![alt tag](Screenshots/CitiesSavedW2W.png "Saved cities")
 
-##Route Planning
-The vacation planner will calculate a a route home, guaranteeing the last leg 
-is the shortest. 
+## Route Planning
+The vacation planner will calculate a a route home using selected cities from 
+the side bar, guaranteeing the last leg is the shortest. It will display the 
+route above the saved cities table. 
 ![alt tag](Screenshots/RoutePlanW2W.png "Route planner")
 
-##Delete Cities
+## Delete Cities
 If a user no longer wants to keep a city in their vacation planner, they can simply
 delete it.
 ![alt tag](Screenshots/CitiesDeletedW2W.png "Deleted cities")
-This
-app has 98% test coverage of the backend and was developed using test driven
+
+This app has 98% test coverage of the backend and was developed using test driven
 development.
 
-##Tech Stack
+## Tech Stack
 
 Flask, PostgreSQL, JQuery, SQLAlchemy, bcrypt, JSON, geopy, HTML, CSS, 
 Bootstrap, Python, AJAX, Jinja
 
 
-##Author
+## Author
 
 I am a former professional athlete turned developer who is passionate about test driven 
 development and the study of algorithms.
