@@ -35,19 +35,19 @@ Features
 
 Users register and their password is hashed and then stored in the database. They
 also save their hometown to their profile. 
-https://amsowie/HBproject/static/Screenshots/LoginPageW2W.png
-(https://amsowie/HBproject/static/Screenshots/ZoomAsiaW2W.png)
+Screenshots/LoginPageW2W.png
+/static/Screenshots/ZoomAsiaW2W.png
 
 
 They can filter searches by world region, month, or both in order to view 
 city specific weather data. Clicking on a city marker will reveal an info 
 window with additional details and gives users the option to save the city to 
 their vacation planner. 
-(https://amsowie/HBproject/static/Screenshots/CitiesSavedW2W.png)
+![screenshot]/HBproject/static/Screenshots/CitiesSavedW2W.png
 
 The vacation planner
 will calculate a a route home, guaranteeing the last leg is the shortest. 
-(https://amsowie/HBproject/static/Screenshots/RoutePlanW2W.png)
+/RoutePlanW2W.png
 
 If a user no longer wants to keep a city in their vacation planner, they can simply
 delete it.
