@@ -44,8 +44,10 @@ def user_login():
     user = db.session.query(User).filter(User.email == email).first()
     if user and not ((bcrypt.hashpw(password.encode('utf-8'),
                      user.password.encode('utf-8')) == user.password)):
+
         flash("Password incorrect. Please try again.")
         return redirect('/login')
+
     # user exists and password correct, redirect to map display
     elif user:
         session['user_name'] = user.fname
@@ -54,6 +56,7 @@ def user_login():
             session['hometown'] = user.hometown.city_id
             session['hometown_name'] = user.hometown.city_name
         return redirect('/map')
+
     # Redirect to registration, incorrect username
     else:
         flash("No user exists with that information. Please register.")
@@ -111,6 +114,7 @@ def save_searches():
         db.session.add(trip)
         db.session.commit()
         message = "City saved."
+
     # no hometown in session, so save hometown to database
     else:
         user = db.session.query(User).filter(User.user_id == user_id).first()
@@ -180,8 +184,10 @@ def calc_city_order():
 
     # create nodes for graph including home town
     city_nodes = create_nodes(cities_for_trip, home)
+
     # add each node to the graph Paths
     route_plan = Paths(city_nodes)
+
     # pass hometown and the nodes in to the shortest method to calculate route
     trip_routes = route_plan.shortest(home["name"])[::-1]
 
@@ -201,13 +207,16 @@ def delete_routes():
 
     # get cities from the vacation planner to delete
     form_JSON = request.form.get('json')
+
     # turn back into dictionary
     form_data = json.loads(form_JSON)
+
     # use only the cities chosen for the for loop below
     cities_to_delete = form_data.get('citiesChosen')
 
     for i in range(len(cities_to_delete)):
         weather_id = cities_to_delete[i]['weatherId']
+
         # find trip by weather id and then delete from db
         db.session.query(Trip).filter(Trip.weather_id == weather_id).delete()
         db.session.commit()
@@ -220,6 +229,7 @@ def log_out():
 
     del session['user_id']
     del session['user_name']
+
     # new users won't have a hometown, but can still log out without errors
     if 'hometown' in session:
         del session['hometown']
