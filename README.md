@@ -35,7 +35,7 @@ Features
 
 Users register and their password is hashed and then stored in the database. They
 also save their hometown to their profile. 
-(HBproject/static/Screenshots/LoginPageW2W.png)
+(https://amsowie/HBproject/static/Screenshots/LoginPageW2W.png
 (HBproject/static/Screenshots/ZoomAsiaW2W.png)
 
 
