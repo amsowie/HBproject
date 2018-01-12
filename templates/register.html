@@ -3,16 +3,23 @@
 {% block title %}Register{% endblock %}
 
 {% block content %}
+<div class="container-fluid">
+<div class="row">
+<div class="col-xs-4 col-md-offset-4">
+
 <h2>Registration Page</h2>
 <form action="register-verify" method="POST">
-    First name:<br>
+    <p>First name:</p>
     <input type="text" class="maintain" name="firstname"><br>
-    Last name:<br>
+    <p>Last name:</p>
     <input type="text" class="maintain" name="lastname"><br>
-    Email:<br>
+    <p>Email:</p>
     <input type="text" class="maintain" name="email"><br>
-    Password:<br>
-    <input type="password" class="maintain" name="password"><br>
+    <p>Password:</p>
+    <input type="password" class="maintain" name="password"><br><br>
     <input class="btn btn-default btn-btnselect" type="submit" value="Submit">
   </form>
+</div>
+</div>
+</div>
 {% endblock %}
