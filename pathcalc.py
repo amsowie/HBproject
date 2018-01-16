@@ -45,14 +45,16 @@ class Paths(object):
 
         while queue:
             # Remove the shortest path from the queue
+            # miles_in is weight of edge using distance
+            # m is the vertex city
             miles_in, m = queue.pop(sorted(queue.values())[0][1])
-            #miles_in is weight of edge using distance
 
-            # Save shortest city path from last node
+            # Save shortest city path from last node to list for return
             path.append(m)
 
             for vertex, dist in m.adjacent:  # unpack the city, dist tuple
                 # Look for all possible routes that haven't been used yet
+                # to add to queue and reset their edge distances
                 if vertex not in set(path):
                     start[vertex] = dist
                     queue[vertex] = (dist, vertex)
@@ -63,15 +65,19 @@ def create_nodes(cities, home):
     """Create nodes from node class for city graph"""
 
     city_nodes = []
+
     # add hometown to the list of additional cities
     cities.append(home)
+
     # instantiate nodes passing in name, latitude, and longitude
     for city in cities:
         city_node = City(city['name'], city['lat'], city['lng'])
         # append list of all city nodes
         city_nodes.append(city_node)
+
     # call the distance calculator to find distance between cities
     distance_calculation(city_nodes)
+
     return city_nodes
 
 

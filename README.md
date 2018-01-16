@@ -32,7 +32,6 @@ Users can filter searches by world region, month, or both in order to view
 city specific weather data. Clicking on a city marker will reveal an info 
 window with additional details and gives users the option to save the city to 
 their vacation planner. 
-![alt tag](Screenshots/CitiesSavedW2W.png "Saved cities")
 
 ## Route Planning
 The vacation planner will calculate a a route home using selected cities from 

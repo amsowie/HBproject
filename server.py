@@ -171,12 +171,14 @@ def calc_city_order():
     """Use functions to add cities as nodes in graph for use with Dijkstra's
     algorithm to return order of cities"""
 
+    # get user hometown name for database lookup
     home = {}
     form_JSON = request.form.get('json')
     form_data = json.loads(form_JSON)  # turns back to dictionary
     cities_for_trip = form_data.get('citiesChosen')
     hometown = session['hometown_name']
 
+    # retrieve hometown lat and long from the database for calculation
     home_obj = db.session.query(City).filter(City.city_name == hometown).first()
     home['name'] = home_obj.city_name
     home['lat'] = home_obj.city_lat
