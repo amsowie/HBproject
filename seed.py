@@ -143,17 +143,20 @@ def write_citiesdb(city_dict, countries):
     # instantiate objects of each city with values from dictionary
     for city in city_dict:
         city_table = City(city_name=city,
-                      country_code=countries[city_dict[city][0]],  # three letter country code
+                      country_code=countries[city_dict[city][0]],
                       city_lat=city_dict[city][1],
                       city_long=city_dict[city][2])
         db.session.add(city_table)
 
-    db.session.commit() 
+    db.session.commit()
+
 
 def write_weatherdb():
     """Write weather database from json from Darsky API
 
-    >>> forecast = requests.get("https://api.darksky.net/forecast/" + KEY + "/37.8267,-122.4233,1521010800?exclude=hourly,currently")
+    >>> forecast = (requests.get("https://api.darksky.net/forecast/"
+                    + KEY
+                    + "/37.8267,-122.4233,1521010800?exclude=hourly,currently"))
     >>> forecast = forecast.json()
     >>> day = forecast['daily']
     >>> day_data = day['data'][0]
@@ -162,23 +165,32 @@ def write_weatherdb():
     Partly cloudy throughout the day.
 
     """
-    cities_from_table = db.session.query(City).all()  # use city and month tables to set up get request below
+    # use city and month tables to set up get request below
+    cities_from_table = db.session.query(City).all()
     times_from_table = db.session.query(Month).all()
 
     for city in cities_from_table:
         try:
             if ((city.city_id < 265) and (city.city_id > 244)):
                 for time in times_from_table:
-                    forecast = requests.get("https://api.darksky.net/forecast/" + KEY + "/" + city.city_lat + ", " + city.city_long + ", " + time.date + "?exclude=hourly,currently")
-                    forecast = forecast.json()  # save the usable dictionary object to variable
+                    forecast = (requests.get("https://api.darksky.net/forecast/"
+                                + KEY + "/" + city.city_lat + ", "
+                                + city.city_long + ", " + time.date
+                                + "?exclude=hourly,currently"))
+
+                    # save the usable dictionary object to variable
+                    forecast = forecast.json()
 
                     #filter out cities without weather information
                     if 'daily' in forecast:
-
-                        full_day = forecast['daily']  # the full json inlcuding lat,long,city
-                        day_data = full_day['data'][0]   # getting just the weather info out of list
-                        icon = day_data['icon']         # the computer/predictible icon description ex. partly-cloudy
-                        summary = day_data['summary']   # human readable summary, 'Partly sunny all day'
+                        # the full json inlcuding lat,long,city
+                        full_day = forecast['daily']
+                        # weather info
+                        day_data = full_day['data'][0]
+                         # the computer/predictible icon description
+                        icon = day_data['icon']
+                         # human readable summary, 'Partly sunny all day'
+                        summary = day_data['summary']
                         temp_high = day_data['temperatureHigh']
                         temp_low = day_data['temperatureLow']
 
@@ -190,8 +202,7 @@ def write_weatherdb():
                                           icon=icon)
                         db.session.add(weather)
                     else:
-                        break  # get out of the months loop if there's no data for January
-                    # add logic here to prevent the twelve month cycle for each city without weather
+                        break  # leave month loop if there's no data for January
         except:
             print city
     db.session.commit()

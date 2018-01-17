@@ -47,6 +47,7 @@ class Paths(object):
             # Remove the shortest path from the queue
             # miles_in is weight of edge using distance
             # m is the vertex city
+            # optimize later using priority queue instead of sort
             miles_in, m = queue.pop(sorted(queue.values())[0][1])
 
             # Save shortest city path from last node to list for return
