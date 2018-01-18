@@ -20,6 +20,7 @@ class City(object):
         self.adjacent.add((city2, miles))
         city2.adjacent.add((self, miles))
 
+
 class Paths(object):
     """Undirected, weighted graph of cities."""
 
@@ -61,6 +62,7 @@ class Paths(object):
                     queue[vertex] = (dist, vertex)
 
         return path
+
 
 def create_nodes(cities, home):
     """Create nodes from node class for city graph"""

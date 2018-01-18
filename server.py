@@ -15,7 +15,7 @@ app.secret_key = "Ahahahahahha!!!!!!"
 
 ##############################################################################
 
-# homepage with future login info
+
 @app.route('/')
 def index():
     """Welcome/home page"""
@@ -26,11 +26,13 @@ def index():
     else:
         return render_template('welcome.html')
 
+
 @app.route('/login')
 def login():
     """Show login form to user"""
     # allow user to login
     return render_template('login.html')
+
 
 @app.route('/login', methods=['POST'])
 def user_login():
@@ -62,12 +64,14 @@ def user_login():
         flash("No user exists with that information. Please register.")
         return redirect('/register')
 
+
 @app.route('/register')
 def register():
     """Show registration form"""
 
     #registration render
     return render_template('register.html')
+
 
 @app.route('/register-verify', methods=['POST'])
 def process_registration():
@@ -93,9 +97,10 @@ def process_registration():
     session['user_name'] = fname
     session['user_id'] = user_id
 
-    flash("Thank you for registering")
+    # flash("Thank you for registering")
 
     return redirect('/map')
+
 
 @app.route('/save-searches', methods=['POST'])
 def save_searches():
@@ -127,7 +132,6 @@ def save_searches():
     return jsonify(message=message)
 
 
-
 @app.route('/lat-long.json', methods=['GET'])
 def lat_long_info():
     """Return lat_long information to plot cities on map"""
@@ -154,6 +158,7 @@ def lat_long_info():
 
     return jsonify(data)
 
+
 @app.route('/map')
 def map():
     """Map page with month and region list, user saved cities, and hometown"""
@@ -165,6 +170,7 @@ def map():
 
     return render_template('weathermap.html', month_list=month_list,
                                               weathers=weathers)
+
 
 @app.route('/calc-city-order', methods=['POST'])
 def calc_city_order():
