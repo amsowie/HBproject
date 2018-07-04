@@ -2,20 +2,21 @@
 
 ## About
 
-Weather to Wander is a travel planning app that uses weather data from the
-Dark Sky API and Google maps to provide monthly weather predictions for world 
-cities. It also provides a route planning tool that calculates the best path
-prioritizing the last leg as the shortest route home in a multi-city vacation. I
-built it because I wanted users to be able to decide where to vacation based on
-weather without having to cross reference multiple websites. Planning a multi-city
-vacation can be complicated. It's difficult to decide on a route, but this app
-makes that easier. The last flight is always the most miserable, so I minimized 
-user suffering by making certain it would be as short as possible.
+eather to Wander is a travel planning app I built for my final class project.
+It uses weather data from the Dark Sky API and Google maps to provide monthly 
+weather predictions for world cities. It also provides a route planning tool that 
+calculates the best path prioritizing the last leg as the shortest route home in a 
+multi-city vacation. I built it because I wanted users to be able to decide where 
+to vacation based on weather without having to cross reference multiple websites. 
+Planning a multi-city vacation can be complicated. It's difficult to decide on a 
+route, but this app makes that easier. The last flight is always the most miserable, 
+so I minimized user suffering by making certain it would be as short as possible.
 
 ## Testing and Development
 
-Weather to Wander was developed using Test Driven Development and has 98% test
-coverage of the backend. The route planning tool is implemented using a graph
+Weather to Wander was developed using Test Driven Development and has significant 
+statement and branch coverage in the backend. It was my goal to get as much logical 
+coverage as possible. The route planning tool is implemented using a graph
 class and modified version of Dijkstra's algorithm. The map and markers were
 implemented with the Google Maps API and the Darksky API.
 
