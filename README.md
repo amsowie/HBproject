@@ -2,7 +2,7 @@
 
 ## About
 
-eather to Wander is a travel planning app I built for my final class project.
+Weather to Wander is a travel planning app I built for my final class project.
 It uses weather data from the Dark Sky API and Google maps to provide monthly 
 weather predictions for world cities. It also provides a route planning tool that 
 calculates the best path prioritizing the last leg as the shortest route home in a 
